@@ -1,5 +1,8 @@
 package de.jonashackt.springbootvuejs.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+import de.jonashackt.springbootvuejs.domain.Doctor;
+import de.jonashackt.springbootvuejs.domain.Nurse;
 import de.jonashackt.springbootvuejs.domain.User;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
@@ -8,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Random;
 
 @RestController()
 @RequestMapping("/api")
@@ -20,6 +25,7 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    Random r = new Random();
 
     @RequestMapping(path = "/hello")
     public String sayHello() {
@@ -27,14 +33,34 @@ public class UserController {
         return HELLO_TEXT;
     }
 
-    @RequestMapping(path = "/user/{lastName}/{firstName}/{email}/{userName}/{password}", method = RequestMethod.POST)
+    @RequestMapping(path = "/user/{lastName}/{firstName}/{email}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName,@PathVariable("firstName") String email,@PathVariable("firstName") String userName,@PathVariable("firstName") String password) {
-        User savedUser = userRepository.save(new User(firstName, lastName,email,userName,password));
-
+        String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        User savedUser = userRepository.save(new User(firstName, lastName,email,userName,s));
         LOG.info(savedUser.toString() + " successfully saved into DB");
 
         return savedUser.getId();
+    }
+
+    @RequestMapping(path = "/stafregistration/{lastName}/{firstName}/{email}/{userName}/{type}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public long addStafMember(@PathVariable("type") String type,@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName,@PathVariable("firstName") String email,@PathVariable("firstName") String userName,@PathVariable("firstName") String password) {
+        User savedUser = null;
+        System.out.println(type);
+        if(type.equalsIgnoreCase("Doctor")){
+            String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
+            savedUser = userRepository.save(new Doctor(firstName, lastName,email,userName,s));
+            LOG.info(savedUser.toString() + " successfully saved into DB");
+
+        }else if(type.equalsIgnoreCase("Nurse")){
+            String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
+             savedUser = userRepository.save(new Nurse(firstName, lastName,email,userName,s));
+            LOG.info(savedUser.toString() + " successfully saved into DB");
+        }
+        return savedUser.getId();
+
+
     }
 
     @GetMapping(path = "/user/{id}")

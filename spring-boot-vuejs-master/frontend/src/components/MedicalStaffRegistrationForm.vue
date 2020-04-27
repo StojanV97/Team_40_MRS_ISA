@@ -3,12 +3,10 @@
         <v-app id="inspire">
             <v-row align="center">
                 <v-row justify="space-around">
-                    <v-switch v-model="valid" class="ma-4" label="Valid" readonly></v-switch>
                 </v-row>
                 <v-form
                         ref="form"
                         v-model="valid"
-                        :lazy-validation="lazy"
                 >
                     <v-text-field
                             v-model="user.lastName"
@@ -26,27 +24,25 @@
                     ></v-text-field>
 
                     <v-text-field
+                            v-model="user.userName"
+                            :counter="10"
+                            label="UserName"
+                            required
+                    ></v-text-field>
+
+                    <v-text-field
                             v-model="user.email"
                             :rules="emailRules"
                             label="E-mail"
                             required
                     ></v-text-field>
-                        <v-radio-group
-                                row
-                                id="quantityOption"
-                                class="individual-button"
-                                buttons
-                                button-variant="outline-secondary"
-                                v-model="form.quantityOption"
-                                :options="quantityOptions"
-                                :state="state"
-                                required
-                        >
-                            <b-form-invalid-feedback :state="state">Please select one</b-form-invalid-feedback>
-                            <v-radio label="Nurse" value="radio-1" ></v-radio>
-                            <v-radio label="Doctor" value="radio-2" ></v-radio>
-
-                        </v-radio-group>
+                    <v-select
+                            v-model="select"
+                            :items="items"
+                            :rules="[v => !!v || 'Item is required']"
+                            label="Item"
+                            required
+                    ></v-select>
 
                     <v-checkbox
                             v-model="checkbox"
@@ -59,7 +55,7 @@
                             :disabled="!valid"
                             color="success"
                             class="mr-4"
-                            @click="createNewUser()"
+                            @click="createNewStafMemeber()"
                     >
                         Submit
                     </v-btn>
@@ -79,7 +75,7 @@
 
 <style>
     .forma{
-        margin-right: 200px;
+        margin-right: 640px;
     }
 
 </style>
@@ -90,17 +86,28 @@
     export default {
         name: "MedicalStaffRegistrationForm",
         data() {
+
             return {
+                flag : false,
                 form:{
                     quantityOption: null
                 },
+                select: null,
+                items: [
+                    'Nurse',
+                    'Doctor',
+                ],
                 valid: true,
                 user: {
                     name: '',
                     lastName: '',
+                    userName:'',
                     email: '',
                     id: 0
                 },
+                selectRules:[
+
+                ],
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 10) || 'Name must be less than 10 characters',
@@ -112,18 +119,27 @@
                 ],
                 select: null,
                 checkbox: false,
-                lazy: false,
+                flag: false,
             }
         },
         methods: {
+            checkValue(){
+                if (this.select == null){
+                    flag = false;
+                    this.preventDefault();
+                }
+            },
+            changeFlag(){
+                this.flag = true;
+            },
             validate() {
                 this.$refs.form.validate()
             },
             reset() {
                 this.$refs.form.reset()
             },
-            createNewUser() {
-                api.createUser(this.user.firstName, this.user.lastName, this.user.email).then(response => {
+            createNewStafMemeber() {
+                api.createStaffMember(this.user.firstName, this.user.lastName, this.user.email,this.user.userName,this.select).then(response => {
                     // JSON responses are automatically parsed.
                     this.response = response.data;
                     this.user.id = response.data;
@@ -136,6 +152,7 @@
             }
         },
         computed: {
+
             state() {
                 return Boolean(this.form.quantityOption)
             }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name="users")
 public class User {
 
+        public static String USER_TABLE = "";
     // PrimaryKey
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
