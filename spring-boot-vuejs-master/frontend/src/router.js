@@ -8,6 +8,7 @@ import Login from '@/components/Login'
 import Protected from '@/components/Protected'
 
 import store from './store'
+import MedicalStaffRegistrationForm from "./components/MedicalStaffRegistrationForm";
 
 Vue.use(Router);
 
@@ -15,6 +16,7 @@ const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
         { path: '/', component: Hello },
+        { path: '/staffregistration', component: MedicalStaffRegistrationForm },
         { path: '/callservice', component: Service },
         { path: '/bootstrap', component: Bootstrap },
         { path: '/user', component: User },
