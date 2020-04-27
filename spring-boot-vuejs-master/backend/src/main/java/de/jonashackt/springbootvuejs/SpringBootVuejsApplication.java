@@ -18,7 +18,7 @@ public class SpringBootVuejsApplication {
 	@Bean
 	CommandLineRunner runner(UserRepository userRepository){
 		return args -> {
-			userRepository.save(new User("Andrija","Velickovic"));
+			userRepository.save(new User("Andrija","Velickovic","s@gmail.com","adnrija1","andrija1"));
 		};
 
 	}

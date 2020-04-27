@@ -31,6 +31,7 @@
         user: {
           lastName: '',
           firstName: '',
+          email:'',
           id: 0
         },
         showResponse: false,
@@ -42,7 +43,7 @@
       // Fetches posts when the component is created.
       createNewUser () {
 
-        api.createUser(this.user.firstName, this.user.lastName).then(response => {
+        api.createUser(this.user.firstName, this.user.lastName,this.user.email).then(response => {
             // JSON responses are automatically parsed.
             this.response = response.data;
             this.user.id = response.data;

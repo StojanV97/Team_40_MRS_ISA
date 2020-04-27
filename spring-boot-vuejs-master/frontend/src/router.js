@@ -19,7 +19,7 @@ const router = new Router({
         { path: '/staffregistration', component: MedicalStaffRegistrationForm },
         { path: '/callservice', component: Service },
         { path: '/bootstrap', component: Bootstrap },
-        { path: '/user', component: User },
+        { path: '/user', component: MedicalStaffRegistrationForm },
         { path: '/login', component: Login },
         {
             path: '/protected',

@@ -11,7 +11,7 @@
                         :lazy-validation="lazy"
                 >
                     <v-text-field
-                            v-model="name"
+                            v-model="user.lastName"
                             :counter="10"
                             :rules="nameRules"
                             label="First Name"
@@ -19,25 +19,34 @@
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="lastname"
+                            v-model="user.firstName"
                             :counter="10"
-                            :rules="nameRules"
                             label="Last Name"
                             required
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="email"
+                            v-model="user.email"
                             :rules="emailRules"
                             label="E-mail"
                             required
                     ></v-text-field>
-                        <v-radio-group v-model="row" row>
-                            <v-radio label="Nurse" value="radio-1"></v-radio>
-                            <v-radio label="Doctor" value="radio-2"></v-radio>
-                            <v-radio label="Bla Bla" value="radio-3"></v-radio>
-                        </v-radio-group>
+                        <v-radio-group
+                                row
+                                id="quantityOption"
+                                class="individual-button"
+                                buttons
+                                button-variant="outline-secondary"
+                                v-model="form.quantityOption"
+                                :options="quantityOptions"
+                                :state="state"
+                                required
+                        >
+                            <b-form-invalid-feedback :state="state">Please select one</b-form-invalid-feedback>
+                            <v-radio label="Nurse" value="radio-1" ></v-radio>
+                            <v-radio label="Doctor" value="radio-2" ></v-radio>
 
+                        </v-radio-group>
 
                     <v-checkbox
                             v-model="checkbox"
@@ -50,7 +59,7 @@
                             :disabled="!valid"
                             color="success"
                             class="mr-4"
-                            @click="validate"
+                            @click="createNewUser()"
                     >
                         Submit
                     </v-btn>
@@ -76,15 +85,22 @@
 </style>
 
 <script>
-
+    import api from "./backend-api";
 
     export default {
         name: "MedicalStaffRegistrationForm",
-        data () {
+        data() {
             return {
+                form:{
+                    quantityOption: null
+                },
                 valid: true,
-                name: '',
-                lastname: '',
+                user: {
+                    name: '',
+                    lastName: '',
+                    email: '',
+                    id: 0
+                },
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 10) || 'Name must be less than 10 characters',
@@ -100,14 +116,30 @@
             }
         },
         methods: {
-            validate () {
+            validate() {
                 this.$refs.form.validate()
             },
-            reset () {
+            reset() {
                 this.$refs.form.reset()
             },
-
+            createNewUser() {
+                api.createUser(this.user.firstName, this.user.lastName, this.user.email).then(response => {
+                    // JSON responses are automatically parsed.
+                    this.response = response.data;
+                    this.user.id = response.data;
+                    console.log('Created new User with Id ' + response.data);
+                    this.showResponse = true
+                })
+                    .catch(e => {
+                        this.errors.push(e)
+                    })
+            }
         },
+        computed: {
+            state() {
+                return Boolean(this.form.quantityOption)
+            }
+        }
     }
 
 </script>

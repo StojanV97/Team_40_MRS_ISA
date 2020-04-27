@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/api")
-public class BackendController {
+public class UserController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
     public static final String SECURED_TEXT = "Hello from the secured resource!";
@@ -27,10 +27,10 @@ public class BackendController {
         return HELLO_TEXT;
     }
 
-    @RequestMapping(path = "/user/{lastName}/{firstName}", method = RequestMethod.POST)
+    @RequestMapping(path = "/user/{lastName}/{firstName}/{email}/{userName}/{password}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName) {
-        User savedUser = userRepository.save(new User(firstName, lastName));
+    public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName,@PathVariable("firstName") String email,@PathVariable("firstName") String userName,@PathVariable("firstName") String password) {
+        User savedUser = userRepository.save(new User(firstName, lastName,email,userName,password));
 
         LOG.info(savedUser.toString() + " successfully saved into DB");
 
