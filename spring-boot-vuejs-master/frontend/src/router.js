@@ -9,6 +9,7 @@ import Protected from '@/components/Protected'
 
 import store from './store'
 import MedicalStaffRegistrationForm from "./components/MedicalStaffRegistrationForm";
+import DeleteUser from "./components/DeleteUser";
 
 Vue.use(Router);
 
@@ -18,7 +19,7 @@ const router = new Router({
         { path: '/', component: Hello },
         { path: '/staffregistration', component: MedicalStaffRegistrationForm },
         { path: '/callservice', component: Service },
-        { path: '/bootstrap', component: Bootstrap },
+        { path: '/deleteStaff', component: DeleteUser },
         { path: '/stafregistration', component: MedicalStaffRegistrationForm },
         { path: '/login', component: Login },
         {

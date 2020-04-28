@@ -9,9 +9,11 @@ import de.jonashackt.springbootvuejs.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Random;
 
 @RestController()
@@ -63,7 +65,21 @@ public class UserController {
 
     }
 
-    @GetMapping(path = "/user/{id}")
+    @GetMapping(path = "/user/del/{userName}")
+    public void deleteUser(@PathVariable("userName") String userName) {
+        try{
+            User u  =  userRepository.findByUserName(userName);
+            userRepository.delete(u);
+        }catch (Exception e){
+            System.out.println("User Not Found in DataBase!!!!");
+        }
+
+
+
+    }
+
+
+    @GetMapping(path = "/userr/{id}")
     public User getUserById(@PathVariable("id") long id) {
 
         return userRepository.findById(id).map(user -> {

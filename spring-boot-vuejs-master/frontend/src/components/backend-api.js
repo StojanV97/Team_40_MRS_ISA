@@ -13,9 +13,15 @@ export default {
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
     },
+
+    getUserByUserName(userName) {
+        return AXIOS.get(`/user/del/` + userName);
+    },
+
     createUser(firstName, lastName) {
         return AXIOS.post(`/user/` + firstName + '/' + lastName);
     },
+
     createStaffMember(firstName, lastName,email,userName,type) {
         return AXIOS.post(`/stafregistration/` + firstName + '/' + lastName + '/' + email + '/' + userName + '/'+ type);
     },

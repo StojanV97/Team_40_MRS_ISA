@@ -1,5 +1,8 @@
 <template>
   <div class="unprotected" v-if="loginError">
+
+
+
     <h1><b-badge variant="danger">You don't have rights here, mate :D</b-badge></h1>
     <h5>Seams that you don't have access rights... </h5>
   </div>
@@ -8,6 +11,8 @@
     <h5>You're not logged in - so you don't see much here. Try to log in:</h5>
 
     <form @submit.prevent="callLogin()">
+
+      <v-btn @click="findUser()">Pronadji usera</v-btn>
       <input type="text" placeholder="username" v-model="user">
       <input type="password" placeholder="password" v-model="password">
       <b-btn variant="success" type="submit">Login</b-btn>
@@ -18,6 +23,7 @@
 </template>
 
 <script>
+  import api from "./backend-api";
 export default {
   name: 'login',
 
@@ -27,10 +33,24 @@ export default {
       user: '',
       password: '',
       error: false,
-      errors: []
+      errors: [],
+      retrievedUser: {},
+      showRetrievedUser: false
     }
   },
   methods: {
+    findUser(){
+      api.getUserByUserName("adnrija1").then(response => {
+        // JSON responses are automatically parsed.
+        this.retrievedUser = response.data;
+        this.showRetrievedUser = true
+      })
+              .catch(e => {
+                this.errors.push(e)
+              })
+    }
+
+    ,
     callLogin() {
       this.errors = [];
       this.$store.dispatch("login", { user: this.user, password: this.password})
