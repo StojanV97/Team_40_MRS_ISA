@@ -21,6 +21,7 @@ const router = new Router({
         { path: '/callservice', component: Service },
         { path: '/deleteStaff', component: DeleteUser },
         { path: '/stafregistration', component: MedicalStaffRegistrationForm },
+        { path: '/clinicregistration', component: ClinicRegistrationForm},
         { path: '/login', component: Login },
         {
             path: '/protected',

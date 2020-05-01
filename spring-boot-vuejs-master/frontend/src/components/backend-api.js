@@ -24,7 +24,9 @@ export default {
     deleteUser(userName){
         return AXIOS.post('user/delete/'+userName);
     },
-
+    createClinic(id, name, address, admin) {
+        return AXIOS.post(`/clinicregistration/` + id + '/' + name + '/' + address + '/' + admin);
+    },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
             auth: {
