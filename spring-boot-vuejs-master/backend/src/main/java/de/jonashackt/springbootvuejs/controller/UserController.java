@@ -6,13 +6,17 @@ import de.jonashackt.springbootvuejs.domain.Nurse;
 import de.jonashackt.springbootvuejs.domain.User;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
+import de.jonashackt.springbootvuejs.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -27,6 +31,10 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
     Random r = new Random();
 
     @RequestMapping(path = "/hello")
@@ -35,47 +43,16 @@ public class UserController {
         return HELLO_TEXT;
     }
 
-    @RequestMapping(path = "/user/{lastName}/{firstName}/{email}", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName,@PathVariable("firstName") String email,@PathVariable("firstName") String userName,@PathVariable("firstName") String password) {
-        String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
-        User savedUser = userRepository.save(new User(firstName, lastName,email,userName,s));
-        LOG.info(savedUser.toString() + " successfully saved into DB");
-
-        return savedUser.getId();
+    @PostMapping(value = "/staff/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createStaffMember(@RequestBody User user,@PathVariable String type) throws Exception {
+        String s = userService.createStaffMember(user,type);
+        return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/stafregistration/{lastName}/{firstName}/{email}/{userName}/{type}", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public long addStafMember(@PathVariable("type") String type,@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName,@PathVariable("firstName") String email,@PathVariable("firstName") String userName,@PathVariable("firstName") String password) {
-        User savedUser = null;
-        System.out.println(type);
-        if(type.equalsIgnoreCase("Doctor")){
-            String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
-            savedUser = userRepository.save(new Doctor(firstName, lastName,email,userName,s));
-            LOG.info(savedUser.toString() + " successfully saved into DB");
-
-        }else if(type.equalsIgnoreCase("Nurse")){
-            String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
-             savedUser = userRepository.save(new Nurse(firstName, lastName,email,userName,s));
-            LOG.info(savedUser.toString() + " successfully saved into DB");
-        }
-        return savedUser.getId();
-
-
-    }
-
-    @GetMapping(path = "/user/del/{userName}")
-    public void deleteUser(@PathVariable("userName") String userName) {
-        try{
-            User u  =  userRepository.findByUserName(userName);
-            userRepository.delete(u);
-        }catch (Exception e){
-            System.out.println("User Not Found in DataBase!!!!");
-        }
-
-
-
+    @PostMapping(path = "/user/delete/{userName}")
+    public ResponseEntity<String>  deleteUser(@PathVariable String userName) {
+        String s = userService.deleteUser(userName);
+        return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
 

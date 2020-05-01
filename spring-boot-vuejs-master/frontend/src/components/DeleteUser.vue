@@ -35,6 +35,20 @@
                     </v-btn>
                 </v-form>
             </v-row>
+            <div class="text-center ma-2">
+                <v-snackbar
+                        v-model="snackbar"
+                >
+                    {{msg}}
+                    <v-btn
+                            @click="snackbar = false"
+                            color="pink"
+                            text
+                    >
+                        Close
+                    </v-btn>
+                </v-snackbar>
+            </div>
         </v-app>
     </div>
 </template>
@@ -49,7 +63,8 @@
 
             return {
 
-
+                msg: '',
+                snackbar: false,
                 valid: true,
                 user: {
                     userName: '',
@@ -71,8 +86,6 @@
             }
         },
         methods: {
-
-
             validate() {
                 this.$refs.form.validate()
             },
@@ -80,14 +93,25 @@
                 this.$refs.form.reset()
             },
             deleteStafMember() {
-                api.getUserByUserName(this.user.userName).then(response => {
+                api.deleteUser(this.user.userName).then(response => {
                     // JSON responses are automatically parsed.
                    this.retrievedUser = response.data;
-                    console.log(this.retrievedUser);
-                    this.$router.push('home')
+                   console.log(response)
+                   if(response.data == '808'){
+                       this.msg = 'User with same username does not exist!';
+                       this.snackbar = true;
+                       this.user.userName = '';
+                   }else{
+                       this.msg = 'User deleted';
+                       this.snackbar = true;
+                       this.user.userName = '';
+                   }
+
                 })
                     .catch(e => {
-                        this.errors.push(e)
+                        console.log(e)
+                        this.snackbar = true;
+                        this.msg = 'Catch executed!';
                     })
             },
 

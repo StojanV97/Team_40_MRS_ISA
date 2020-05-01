@@ -15,16 +15,16 @@ export default {
     },
 
     getUserByUserName(userName) {
-        return AXIOS.get(`/user/del/` + userName);
+        return AXIOS.get(`/user/` + userName);
     },
 
-    createUser(firstName, lastName) {
-        return AXIOS.post(`/user/` + firstName + '/' + lastName);
+    createStaffMember(user,type) {
+        return AXIOS.post(`/staff/registration/`+ type, user);
+    },
+    deleteUser(userName){
+        return AXIOS.post('user/delete/'+userName);
     },
 
-    createStaffMember(firstName, lastName,email,userName,type) {
-        return AXIOS.post(`/stafregistration/` + firstName + '/' + lastName + '/' + email + '/' + userName + '/'+ type);
-    },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
             auth: {

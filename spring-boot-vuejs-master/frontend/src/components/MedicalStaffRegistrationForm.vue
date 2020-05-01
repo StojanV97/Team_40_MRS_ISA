@@ -69,6 +69,20 @@
                     </v-btn>
                 </v-form>
             </v-row>
+            <div class="text-center ma-2">
+                <v-snackbar
+                        v-model="snackbar"
+                >
+                    {{msg}}
+                    <v-btn
+                            @click="snackbar = false"
+                            color="pink"
+                            text
+                    >
+                        Close
+                    </v-btn>
+                </v-snackbar>
+            </div>
         </v-app>
     </div>
 </template>
@@ -88,6 +102,8 @@
         data() {
 
             return {
+                msg: '',
+                snackbar : false,
                 flag : false,
                 form:{
                     quantityOption: null
@@ -102,12 +118,9 @@
                     name: '',
                     lastName: '',
                     userName:'',
-                    email: '',
-                    id: 0
-                },
-                selectRules:[
+                    email: ''
 
-                ],
+                },
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 10) || 'Name must be less than 10 characters',
@@ -120,18 +133,11 @@
                 select: null,
                 checkbox: false,
                 flag: false,
+
             }
         },
         methods: {
-            checkValue(){
-                if (this.select == null){
-                    flag = false;
-                    this.preventDefault();
-                }
-            },
-            changeFlag(){
-                this.flag = true;
-            },
+
             validate() {
                 this.$refs.form.validate()
             },
@@ -139,18 +145,27 @@
                 this.$refs.form.reset()
             },
             createNewStafMemeber() {
-                api.createStaffMember(this.user.firstName, this.user.lastName, this.user.email,this.user.userName,this.select).then(response => {
+                api.createStaffMember(this.user,this.select).then(response => {
                     // JSON responses are automatically parsed.
                     this.response = response.data;
-                    this.user.id = response.data;
-                    console.log('Created new User with Id ' + response.data);
-                    this.showResponse = true
+                    console.log(response.data)
+                    if(response.data == "808"){
+                        this.msg = 'User with same username already exists!';
+                        this.snackbar = true;
+                    }else if(response.data == "800"){
+                        this.msg = 'User successfully added!'
+                        this.snackbar = true;
+                    }
+
+                    //this.$router.push('home')
                 })
+
                     .catch(e => {
-                        this.errors.push(e)
+                        console.log(e);
                     })
             }
         },
+
         computed: {
 
             state() {
