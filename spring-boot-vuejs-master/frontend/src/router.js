@@ -10,6 +10,7 @@ import Protected from '@/components/Protected'
 import store from './store'
 import MedicalStaffRegistrationForm from "./components/MedicalStaffRegistrationForm";
 import DeleteUser from "./components/DeleteUser";
+import ClinicRegistrationForm from "./components/ClinicRegistrationForm";
 
 Vue.use(Router);
 

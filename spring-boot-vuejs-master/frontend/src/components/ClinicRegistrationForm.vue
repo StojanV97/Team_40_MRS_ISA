@@ -25,7 +25,7 @@
         ></v-text-field>
 
         <v-text-field
-                v-model="clinic.admin"
+                v-model="clinic.administrator"
                 label="Administrator"
                 required
         ></v-text-field>
@@ -60,6 +60,20 @@
         >
             Reset Validation
         </v-btn>
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{msg}}
+                <v-btn
+                        @click="snackbar = false"
+                        color="pink"
+                        text
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
     </v-form>
 </template>
 
@@ -73,6 +87,8 @@
         data() {
 
             return {
+                msg: '',
+                snackbar : false,
                 flag : false,
                 form:{
                     quantityOption: null
@@ -83,7 +99,7 @@
                 clinic: {
                     name: '',
                     address: '',
-                    admin:'',
+                    administrator:'',
                     id: ''
                 },
                 selectRules:[
@@ -118,10 +134,17 @@
                 this.$refs.form.resetValidation()
             },
             createNewClinic() {
-                api.createClinic(this.clinic.id, this.clinic.name, this.clinic.address, this.clinic.admin).then(response => {
+                api.createClinic(this.clinic).then(response => {
 
                     this.response = response.data;
                     console.log(response.data);
+                    if(response.data == "postoji") {
+                        this.msg = 'Clinic with same username already exists!';
+                        this.snackbar = true;
+                    }else if(response.data == "upisan"){
+                        this.msg = 'Clinic successfully added!'
+                        this.snackbar = true;
+                    }
                 })
                     .catch(e => {
                         console.log(e);
