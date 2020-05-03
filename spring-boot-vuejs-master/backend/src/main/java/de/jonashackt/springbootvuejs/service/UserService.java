@@ -11,4 +11,7 @@ public interface UserService {
      String createStaffMember(User user, String type);
      String deleteUser(String user);
 
+     String createPatient(User user, String type);
+     String createClinicAdmin(User user, String type);
+
 }

@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Service from '@/components/Service'
-import Bootstrap from '@/components/Bootstrap'
-import User from '@/components/User'
+//import Bootstrap from '@/components/Bootstrap'
+//import User from '@/components/User'
 import Login from '@/components/Login'
 import Protected from '@/components/Protected'
 
@@ -11,7 +11,8 @@ import store from './store'
 import MedicalStaffRegistrationForm from "./components/MedicalStaffRegistrationForm";
 import DeleteUser from "./components/DeleteUser";
 import ClinicRegistrationForm from "./components/ClinicRegistrationForm";
-import ClinicDeleteForm from "./components/ClinicDeleteForm";
+import RegisterClinicAdmin from "./components/RegisterClinicAdmin";
+import EditUser from "./components/EditUser";
 
 Vue.use(Router);
 
@@ -24,8 +25,9 @@ const router = new Router({
         { path: '/deleteStaff', component: DeleteUser },
         { path: '/stafregistration', component: MedicalStaffRegistrationForm },
         { path: '/clinicregistration', component: ClinicRegistrationForm},
-        { path: '/clinicdelete', component: ClinicDeleteForm},
         { path: '/login', component: Login },
+        { path: '/regclinicadmin', component: RegisterClinicAdmin },
+        { path: '/editUser', component: EditUser },
         {
             path: '/protected',
             component: Protected,

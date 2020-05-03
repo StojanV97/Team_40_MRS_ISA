@@ -56,13 +56,25 @@ public class UserController {
     }
 
 
-    @GetMapping(path = "/userr/{id}")
+    @GetMapping(path = "/user/{id}")
     public User getUserById(@PathVariable("id") long id) {
 
         return userRepository.findById(id).map(user -> {
             LOG.info("Reading user with id " + id + " from database.");
             return user;
         }).orElseThrow(() -> new UserNotFoundException("The user with the id " + id + " couldn't be found in the database."));
+    }
+
+    @PostMapping(value = "/patient/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createPatient(@RequestBody User user,@PathVariable String type) throws Exception {
+        String s = userService.createPatient(user,type);
+        return new ResponseEntity<String>(s, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/clinicadmin/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createClinicAdmin(@RequestBody User user,@PathVariable String type) throws Exception {
+        String s = userService.createClinicAdmin(user,type);
+        return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
     @RequestMapping(path="/secured", method = RequestMethod.GET)

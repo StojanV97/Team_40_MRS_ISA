@@ -30,6 +30,12 @@ export default {
     deleteClinic(clinicId) {
         return AXIOS.post(`/clinic/delete/` + clinicId);
     },
+    createPatient(user,type) {
+        return AXIOS.post(`/patient/registration/`+ type, user);
+    },
+    createClinicAdmin(user,type) {
+        return AXIOS.post(`/clinicadmin/registration/`+ type, user);
+    },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
             auth: {

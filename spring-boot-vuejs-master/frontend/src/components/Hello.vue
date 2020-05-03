@@ -22,6 +22,8 @@
         <li><router-link to="/staffregistration">/addStaffMember</router-link></li>
         <li>Registration:</li>
         <li><router-link to="/deleteStaff">/deleteStaffMember</router-link></li>
+        <li>Add clinic administrators:</li>
+        <li><router-link to="/regclinicadmin">/regclinicadmin</router-link></li>
     </ul>
   </div>
 </template>
