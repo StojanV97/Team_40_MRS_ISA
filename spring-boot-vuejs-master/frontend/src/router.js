@@ -11,6 +11,7 @@ import store from './store'
 import MedicalStaffRegistrationForm from "./components/MedicalStaffRegistrationForm";
 import DeleteUser from "./components/DeleteUser";
 import ClinicRegistrationForm from "./components/ClinicRegistrationForm";
+import ClinicDeleteForm from "./components/ClinicDeleteForm";
 
 Vue.use(Router);
 
@@ -23,6 +24,7 @@ const router = new Router({
         { path: '/deleteStaff', component: DeleteUser },
         { path: '/stafregistration', component: MedicalStaffRegistrationForm },
         { path: '/clinicregistration', component: ClinicRegistrationForm},
+        { path: '/clinicdelete', component: ClinicDeleteForm},
         { path: '/login', component: Login },
         {
             path: '/protected',
