@@ -1,5 +1,6 @@
 package de.jonashackt.springbootvuejs;
 
+import de.jonashackt.springbootvuejs.domain.ClinicCenterAdmin;
 import de.jonashackt.springbootvuejs.domain.Nurse;
 import de.jonashackt.springbootvuejs.domain.Patient;
 import de.jonashackt.springbootvuejs.domain.User;
@@ -24,6 +25,7 @@ public class SpringBootVuejsApplication {
 			userRepository.save(new Nurse("Korinik2","Korinik2","s@gmail.com","Korinik2","andrija2"));
 			userRepository.save(new Nurse("Korinik3","Korinik3","s@gmail.com","Korinik3","andrija3"));
 			userRepository.save(new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent1","Pacijent1"));
+			userRepository.save(new ClinicCenterAdmin("CCAime","CCAprezime","cca@gmail.com","CCA1","CCA1"));
 		};
 
 	}

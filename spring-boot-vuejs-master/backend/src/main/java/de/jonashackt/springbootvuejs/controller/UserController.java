@@ -77,6 +77,12 @@ public class UserController {
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/cliniccenteradmin/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createClinicCenterAdmin(@RequestBody User user,@PathVariable String type) throws Exception {
+        String s = userService.createClinicCenterAdmin(user,type);
+        return new ResponseEntity<String>(s, HttpStatus.OK);
+    }
+
     @RequestMapping(path="/secured", method = RequestMethod.GET)
     public @ResponseBody String getSecured() {
         LOG.info("GET successfully called on /secured resource");
