@@ -29,4 +29,10 @@ public class ClinicServiceImpl implements ClinicService{
         }
         return "neuspesno";
     }
+
+    @Override
+    public String createClinicAgain(Clinic clinic) {
+        clinicRepository.save(clinic);
+        return "upisan";
+    }
 }

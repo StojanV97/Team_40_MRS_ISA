@@ -18,6 +18,8 @@ import RegisterClinicAdmin from "./components/RegisterClinicAdmin";
 import EditUser from "./components/EditUser";
 import RegisterForm from "./components/RegisterForm";
 import ClinicCenterAdminRegistrationForm from "./components/ClinicCenterAdminRegistrationForm";
+import ClinicCenterAdminEditForm from "./components/ClinicCenterAdminEditForm";
+import ClinicEditForm from "./components/ClinicEditForm";
 import AdminConfig from "./components/AdminConfig";
 
 
@@ -39,6 +41,8 @@ const router = new Router({
         { path: '/regclinicadmin', component: RegisterClinicAdmin },
         { path: '/editUser', component: EditUser },
         { path: '/ccareg', component: ClinicCenterAdminRegistrationForm },
+        { path: '/ccaedit', component: ClinicCenterAdminEditForm },
+        { path: '/clinicedit', component: ClinicEditForm },
         { path: '/register', component: RegisterForm },
 
 

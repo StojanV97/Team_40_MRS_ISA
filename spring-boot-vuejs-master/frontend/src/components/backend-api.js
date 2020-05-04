@@ -53,6 +53,9 @@ export default {
     createClinic(clinic) {
         return AXIOS.post(`/clinic/register/`, clinic);
     },
+    createClinicAgain(clinic) {
+        return AXIOS.post(`/clinic/regagain/`, clinic);
+    },
     deleteClinic(clinicId) {
         return AXIOS.post(`/clinic/delete/` + clinicId);
     },
@@ -70,6 +73,9 @@ export default {
 
     createClinicCenterAdmin(user,type) {
         return AXIOS.post(`/cliniccenteradmin/registration/`+ type, user);
+    },
+    getClinic(id) {
+        return AXIOS.post(`/clinic/` + id);
     },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
