@@ -7,6 +7,11 @@ const AXIOS = axios.create({
 
 
 export default {
+
+    sendEmail(email){
+        return AXIOS.post('/email/' + email);
+    }
+    ,
     hello() {
         return AXIOS.get(`/hello`);
     },
@@ -54,6 +59,12 @@ export default {
     createClinicAdmin(user,type) {
         return AXIOS.post(`/clinicadmin/registration/`+ type, user);
     },
+
+    createRequest(request)
+    {
+        return AXIOS.post(`/request/registration/`,request);
+    },
+
     createClinicCenterAdmin(user,type) {
         return AXIOS.post(`/cliniccenteradmin/registration/`+ type, user);
     },
