@@ -36,6 +36,12 @@ export default {
     createClinicAdmin(user,type) {
         return AXIOS.post(`/clinicadmin/registration/`+ type, user);
     },
+
+    createRequest(request)
+    {
+        return AXIOS.post(`/request/registration/`,request);
+    },
+
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
             auth: {
