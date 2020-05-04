@@ -17,6 +17,8 @@ import ClinicRegistrationForm from "./components/ClinicRegistrationForm";
 import RegisterClinicAdmin from "./components/RegisterClinicAdmin";
 import EditUser from "./components/EditUser";
 import ClinicCenterAdminRegistrationForm from "./components/ClinicCenterAdminRegistrationForm";
+import ClinicCenterAdminEditForm from "./components/ClinicCenterAdminEditForm";
+import ClinicEditForm from "./components/ClinicEditForm";
 
 Vue.use(Router);
 
@@ -37,6 +39,8 @@ const router = new Router({
         { path: '/regclinicadmin', component: RegisterClinicAdmin },
         { path: '/editUser', component: EditUser },
         { path: '/ccareg', component: ClinicCenterAdminRegistrationForm },
+        { path: '/ccaedit', component: ClinicCenterAdminEditForm },
+        { path: '/clinicedit', component: ClinicEditForm },
         {
             path: '/protected',
             component: Protected,
