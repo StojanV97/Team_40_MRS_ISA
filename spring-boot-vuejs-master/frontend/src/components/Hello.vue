@@ -26,6 +26,8 @@
         <li><router-link to="/roomregistration">/roomRegistration</router-link></li>
         <li>Delete Room:</li>
         <li><router-link to="/roomdelete">/DeleteRoom</router-link></li>
+        <li>Add clinic administrators:</li>
+        <li><router-link to="/regclinicadmin">/regclinicadmin</router-link></li>
     </ul>
   </div>
 </template>

@@ -39,6 +39,21 @@ export default {
     editDates(){
         return AXIOS.post('room/delete/'+id);
     },
+    createClinic(clinic) {
+        return AXIOS.post(`/clinic/register/`, clinic);
+    },
+    deleteClinic(clinicId) {
+        return AXIOS.post(`/clinic/delete/` + clinicId);
+    },
+    createPatient(user,type) {
+        return AXIOS.post(`/patient/registration/`+ type, user);
+    },
+    createClinicAdmin(user,type) {
+        return AXIOS.post(`/clinicadmin/registration/`+ type, user);
+    },
+    createClinicCenterAdmin(user,type) {
+        return AXIOS.post(`/cliniccenteradmin/registration/`+ type, user);
+    },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
             auth: {

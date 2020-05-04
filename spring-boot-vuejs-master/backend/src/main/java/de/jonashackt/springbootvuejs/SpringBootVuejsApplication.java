@@ -1,8 +1,10 @@
 package de.jonashackt.springbootvuejs;
 
+import de.jonashackt.springbootvuejs.domain.ClinicCenterAdmin;
 import de.jonashackt.springbootvuejs.domain.Nurse;
 import de.jonashackt.springbootvuejs.domain.Room;
 import de.jonashackt.springbootvuejs.domain.RoomType;
+import de.jonashackt.springbootvuejs.domain.Patient;
 import de.jonashackt.springbootvuejs.domain.User;
 import de.jonashackt.springbootvuejs.repository.RoomRepository;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
@@ -44,6 +46,8 @@ public class SpringBootVuejsApplication {
 			roomRepository.save(new Room(3, "Operation"));
 			roomRepository.save(new Room(4,"Operation"));
 			roomRepository.save(new Room(5, "Operation"));
+			userRepository.save(new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent1","Pacijent1"));
+			userRepository.save(new ClinicCenterAdmin("CCAime","CCAprezime","cca@gmail.com","CCA1","CCA1"));
 		};
 
 	}
