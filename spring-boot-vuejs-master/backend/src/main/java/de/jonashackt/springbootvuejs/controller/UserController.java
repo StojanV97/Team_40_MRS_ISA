@@ -75,9 +75,7 @@ public class UserController {
         } catch (MessagingException e) {
             System.out.println(e);
         }
-
-        return new ResponseEntity<String>("dasd", HttpStatus.OK);
-
+        return new ResponseEntity<String>("Sent", HttpStatus.OK);
 
     }
 

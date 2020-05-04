@@ -4,7 +4,10 @@ import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.RequestRepository;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 @Service
 public class RequestServiceImpl implements RequestService{
@@ -32,6 +35,20 @@ public class RequestServiceImpl implements RequestService{
 
         return response;
 
+    }
+
+    @Override
+    public String delete(String request) {
+        System.out.println(request);
+        RegisterRequests rg = requestRepository.findByUserName(request);
+        System.out.println(rg);
+       requestRepository.delete(rg);
+       return "Deleted";
+    }
+
+    @Override
+    public Collection<RegisterRequests> getAllRequests() {
+        return (Collection<RegisterRequests>) requestRepository.findAll();
     }
 }
 

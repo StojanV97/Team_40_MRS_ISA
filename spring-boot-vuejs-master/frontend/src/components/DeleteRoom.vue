@@ -9,12 +9,12 @@
                     ref="selectableTable"
                     responsive="sm">
                 <template v-slot:cell(Approve)="row">
-                    <b-button id="approve" @click="approveRequest(row.item.email)" class="mr-2">
+                    <b-button id="approve" @click="approveRequest(row.item.email,row.item.userName)" class="mr-2">
                         Approve
                     </b-button>
                 </template>
                 <template v-slot:cell(Decline)="row">
-                    <b-button  @click="declineRequest(row.userName)" class="mr-2">
+                    <b-button  @click="declineRequest(row.item.userName)" class="mr-2">
                         Decline
                     </b-button>
                 </template>
@@ -173,8 +173,21 @@
                     >Close</v-btn>
                 </v-card-actions>
             </v-card>
-
         </v-dialog>
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{msg}}
+                <v-btn
+                        @click="snackbar = false"
+                        color="pink"
+                        text
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
     </v-app>
 </template>
 
@@ -228,12 +241,7 @@
             drawer: null,
             fielsRequests : ['firstName','lastName','email','userName' , 'Approve','Decline'],
             requests : [
-                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'awdawda'},
-                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'dwass'},
-                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'awdda'},
-                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'awdada'},
-                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'a12333wda'},
-                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'awddwaawwwa'}
+
             ],
             fields: ["roomID","roomName","calendar","show_details"],
             room : {
@@ -257,20 +265,46 @@
             roomNameProp : null,
             calendarProp : [],
             tableRequestsDisabled : false,
+            snackbar : false,
+            msg : '',
         }),
 
         methods : {
             declineRequest(userName){
-                console.log(userName)
-            }
-            ,
-            approveRequest(email){
-                console.log(email)
-                api.sendEmail(email).then(response => {
-                    console.log(response)
+                for(let i = 0; i < this.requests.length ; i++){
+                    if(userName == this.requests[i].userName){
+                        this.requests.splice(i,1);
+                    }
+                }
+                api.deleteRegistrationRequest(userName).then(response=>{
+                        console.log(response);
                 }).catch(e => {
                     console.log(e)
+                });
+
+
+            }
+            ,
+            approveRequest(email,userName){
+
+                console.log(email)
+                api.sendEmail(email).then(response => {
+                    console.log(response.data)
+
+                }).catch(e => {
+                    this.msg = "Activation code sent!";
+                    this.snackbar = true;
                 })
+                for(let i = 0; i < this.requests.length ; i++){
+                    if(userName == this.requests[i].userName){
+                        this.requests.splice(i,1);
+                    }
+                }
+                api.deleteRegistrationRequest(userName).then(response=>{
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e)
+                });
             }
             ,
             closeDialog(){
@@ -349,6 +383,8 @@
                 }else{
                     this.tableRequestsDisabled = false;
                 }
+                console.log(this.requests)
+
             },
 
             getRooms(){
@@ -373,8 +409,14 @@
             }).catch( e => {
                 console.log(e);
                 }
+            );
+            api.getAllRegistrationRequests().then(response=>{
+                this.requests = response.data;
+                console.log(this.requests)
+            }).catch( e => {
+                console.log(e);
+            })
 
-            )
         }
     }
 </script>

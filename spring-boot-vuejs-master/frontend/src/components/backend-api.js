@@ -35,8 +35,14 @@ export default {
     getAllRooms(){
         return AXIOS.get('room/getall')
     },
+    getAllRegistrationRequests(){
+        return AXIOS.get('requests/getall')
+    },
     getRoom(){
         return AXIOS.get('room/getone')
+    },
+    deleteRegistrationRequest(userName){
+        return AXIOS.post('request/delete/' + userName);
     },
     deleteRoom(id){
         return AXIOS.post('room/delete/'+id);
