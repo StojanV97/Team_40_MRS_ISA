@@ -1,6 +1,25 @@
 
 <template>
     <v-app id="inspire">
+        <div v-if="tableRequestsDisabled">
+            <b-table
+                    hover
+                    :items="requests"
+                    :fields="fielsRequests"
+                    ref="selectableTable"
+                    responsive="sm">
+                <template v-slot:cell(Approve)="row">
+                    <b-button id="approve" @click="approveRequest(row.item.email)" class="mr-2">
+                        Approve
+                    </b-button>
+                </template>
+                <template v-slot:cell(Decline)="row">
+                    <b-button  @click="declineRequest(row.userName)" class="mr-2">
+                        Decline
+                    </b-button>
+                </template>
+            </b-table>
+        </div>
         <div v-if="tableDisabled">
             <b-table
                     hover
@@ -24,6 +43,8 @@
                 app
         >
             <v-list dense>
+                <h3>Rooms</h3>
+                <v-divider></v-divider>
                 <template v-for="item in items">
                     <v-row
                             v-if="item.heading"
@@ -46,6 +67,8 @@
                         </v-list-item-content>
                     </v-list-item>
                 </template>
+            <v-divider></v-divider>
+                <v-btn id="requestbtn" @click="showRequests()">Requests</v-btn>
             </v-list>
         </v-navigation-drawer>
 
@@ -156,8 +179,14 @@
 </template>
 
 <style scoped>
+    #requestbtn{
+        width: 250px;
+    }
     #container{
 
+    }
+    #approve{
+        background-color: green ;
     }
 
     #room_dialog{
@@ -197,6 +226,15 @@
             dialog: false,
             dialogEditRoom: false,
             drawer: null,
+            fielsRequests : ['firstName','lastName','email','userName' , 'Approve','Decline'],
+            requests : [
+                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'awdawda'},
+                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'dwass'},
+                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'awdda'},
+                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'awdada'},
+                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'a12333wda'},
+                {firstName : 'asdasd', lastName: 'asdasdas', email:'stojan.v1997@outlook.com',userName: 'awddwaawwwa'}
+            ],
             fields: ["roomID","roomName","calendar","show_details"],
             room : {
                 roomID: '',
@@ -218,9 +256,23 @@
             roomIDEdit : 0,
             roomNameProp : null,
             calendarProp : [],
+            tableRequestsDisabled : false,
         }),
 
         methods : {
+            declineRequest(userName){
+                console.log(userName)
+            }
+            ,
+            approveRequest(email){
+                console.log(email)
+                api.sendEmail(email).then(response => {
+                    console.log(response)
+                }).catch(e => {
+                    console.log(e)
+                })
+            }
+            ,
             closeDialog(){
                 if(this.dialogEditRoom){
                     this.dialogEditRoom = false;
@@ -285,8 +337,17 @@
             showClinic(text){
                 if (text === "Klinika1"){
                     this.tableDisabled = true;
+                    this.tableRequestsDisabled = false;
                 }else{
                     this.tableDisabled = false;
+                }
+            },
+            showRequests(){
+                if(!this.tableRequestsDisabled){
+                   this.tableRequestsDisabled = true;
+                   this.tableDisabled = false;
+                }else{
+                    this.tableRequestsDisabled = false;
                 }
             },
 

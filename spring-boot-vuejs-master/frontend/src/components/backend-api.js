@@ -7,6 +7,11 @@ const AXIOS = axios.create({
 
 
 export default {
+
+    sendEmail(email){
+        return AXIOS.post('/email/' + email);
+    }
+    ,
     hello() {
         return AXIOS.get(`/hello`);
     },

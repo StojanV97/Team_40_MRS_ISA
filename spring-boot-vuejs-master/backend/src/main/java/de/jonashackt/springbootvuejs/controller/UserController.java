@@ -1,8 +1,5 @@
 package de.jonashackt.springbootvuejs.controller;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import de.jonashackt.springbootvuejs.domain.Doctor;
-import de.jonashackt.springbootvuejs.domain.Nurse;
 import de.jonashackt.springbootvuejs.domain.User;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
@@ -10,22 +7,25 @@ import de.jonashackt.springbootvuejs.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.List;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Random;
-
 @RestController()
 @RequestMapping("/api")
 public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-
+    private static Properties properties = new Properties();
     public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
     public static final String SECURED_TEXT = "Hello from the secured resource!";
 
@@ -43,6 +43,47 @@ public class UserController {
         return HELLO_TEXT;
     }
 
+    @PostMapping(value = "/email/{email}")
+    public ResponseEntity<String> sendEmail(@PathVariable String email) throws MessagingException {
+        System.out.println(email);
+        final String username = "team40mrsisa@gmail.com";
+        final String password = "no0013144";
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username,password);
+            }
+        });
+        MimeMessage msg = new MimeMessage(session);
+        try {
+            msg.setFrom(new InternetAddress("team40mrsisa@gmail.com"));
+            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+            msg.setSubject("Activation Code");
+            Multipart emailContent = new MimeMultipart();
+            MimeBodyPart textBodyPart = new MimeBodyPart();
+            textBodyPart.setText("asdasdwqwekwdknk123nkawdwo");
+            emailContent.addBodyPart(textBodyPart);
+            //Attach multipart to message
+            msg.setContent(emailContent);
+            Transport.send(msg);
+            System.out.println("Sent message");
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+
+        return new ResponseEntity<String>("dasd", HttpStatus.OK);
+
+
+    }
+
+
+
+
     @PostMapping(value = "/staff/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createStaffMember(@RequestBody User user,@PathVariable String type) throws Exception {
         String s = userService.createStaffMember(user,type);
@@ -53,6 +94,7 @@ public class UserController {
     public ResponseEntity<String>  deleteUser(@PathVariable String userName) {
         String s = userService.deleteUser(userName);
         return new ResponseEntity<String>(s, HttpStatus.OK);
+
     }
 
 
