@@ -56,6 +56,12 @@ export default {
     createClinicAdmin(user,type) {
         return AXIOS.post(`/clinicadmin/registration/`+ type, user);
     },
+
+    createRequest(request)
+    {
+        return AXIOS.post(`/request/registration/`,request);
+    },
+
     createClinicCenterAdmin(user,type) {
         return AXIOS.post(`/cliniccenteradmin/registration/`+ type, user);
     },

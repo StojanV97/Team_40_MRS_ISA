@@ -30,7 +30,9 @@
         <li><router-link to="/regclinicadmin">/regclinicadmin</router-link></li>
         <li>Admin :</li>
         <li><router-link to="/adminConfig">/adminConfig</router-link></li>
+        <li></li>
     </ul>
+      <button class="button" ><router-link to="/register">REGISTER</router-link></button>
   </div>
 </template>
 
@@ -47,7 +49,14 @@ export default {
 h1, h2 {
   font-weight: normal;
 }
+.button{
 
+    background-color: lightslategray;
+    width: 250px;
+    outline-style: dot-dash;
+    margin-left: 1000px;
+    font-size: 40px;
+}
 ul {
   list-style-type: none;
   padding: 0;
