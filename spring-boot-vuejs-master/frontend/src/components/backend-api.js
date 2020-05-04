@@ -24,7 +24,21 @@ export default {
     deleteUser(userName){
         return AXIOS.post('user/delete/'+userName);
     },
-
+    createRoom(room){
+        return AXIOS.post('room/registration/',room);
+    },
+    getAllRooms(){
+        return AXIOS.get('room/getall')
+    },
+    getRoom(){
+        return AXIOS.get('room/getone')
+    },
+    deleteRoom(id){
+        return AXIOS.post('room/delete/'+id);
+    },
+    editDates(){
+        return AXIOS.post('room/delete/'+id);
+    },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
             auth: {

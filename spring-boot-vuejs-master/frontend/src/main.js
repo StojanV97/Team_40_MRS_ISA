@@ -7,6 +7,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import store from './store'
 import vuetify from './plugins/vuetify';
 
+
 Vue.config.productionTip = false;
 
 // Bootstrap
