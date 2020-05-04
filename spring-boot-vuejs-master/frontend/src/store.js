@@ -6,6 +6,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        listaObrisanih : [],
+        datesEditedRoom : [],
+        listOfRooms : [],
         loginSuccess: false,
         loginError: false,
         userName: null,
@@ -51,6 +54,7 @@ export default new Vuex.Store({
         }
     },
     getters: {
+        GetlistOfRooms : state => state.listOfRooms,
         isLoggedIn: state => state.loginSuccess,
         hasLoginErrored: state => state.loginError,
         getUserName: state => state.userName,

@@ -10,10 +10,14 @@ import Protected from '@/components/Protected'
 import store from './store'
 import MedicalStaffRegistrationForm from "./components/MedicalStaffRegistrationForm";
 import DeleteUser from "./components/DeleteUser";
+import RoomRegistrationForm from "./components/RoomRegistrationForm";
+import DeleteRoom from "./components/DeleteRoom";
+import EditRoom from "./components/EditRoom";
 import ClinicRegistrationForm from "./components/ClinicRegistrationForm";
 import RegisterClinicAdmin from "./components/RegisterClinicAdmin";
 import EditUser from "./components/EditUser";
 import RegisterForm from "./components/RegisterForm";
+import ClinicCenterAdminRegistrationForm from "./components/ClinicCenterAdminRegistrationForm";
 
 Vue.use(Router);
 
@@ -27,8 +31,13 @@ const router = new Router({
         { path: '/stafregistration', component: MedicalStaffRegistrationForm },
         { path: '/clinicregistration', component: ClinicRegistrationForm},
         { path: '/login', component: Login },
+        {path: '/roomregistration', component: RoomRegistrationForm},
+        {path: '/roomdelete', component: DeleteRoom},
+        {path: '/roomedit', component: EditRoom},
+
         { path: '/regclinicadmin', component: RegisterClinicAdmin },
         { path: '/editUser', component: EditUser },
+        { path: '/ccareg', component: ClinicCenterAdminRegistrationForm },
         { path: '/register', component: RegisterForm },
         {
             path: '/protected',

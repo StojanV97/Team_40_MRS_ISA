@@ -24,6 +24,21 @@ export default {
     deleteUser(userName){
         return AXIOS.post('user/delete/'+userName);
     },
+    createRoom(room){
+        return AXIOS.post('room/registration/',room);
+    },
+    getAllRooms(){
+        return AXIOS.get('room/getall')
+    },
+    getRoom(){
+        return AXIOS.get('room/getone')
+    },
+    deleteRoom(id){
+        return AXIOS.post('room/delete/'+id);
+    },
+    editDates(){
+        return AXIOS.post('room/delete/'+id);
+    },
     createClinic(clinic) {
         return AXIOS.post(`/clinic/register/`, clinic);
     },
@@ -42,6 +57,9 @@ export default {
         return AXIOS.post(`/request/registration/`,request);
     },
 
+    createClinicCenterAdmin(user,type) {
+        return AXIOS.post(`/cliniccenteradmin/registration/`+ type, user);
+    },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
             auth: {

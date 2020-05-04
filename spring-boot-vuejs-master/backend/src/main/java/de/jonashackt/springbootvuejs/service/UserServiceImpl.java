@@ -82,4 +82,21 @@ public class UserServiceImpl implements UserService{
         return response;
 
     }
+
+    @Override
+    public String createClinicCenterAdmin(User user, String type) {
+        //808 - admin sa tim korisnickim imenom vec postoji
+        // 800 - admin klinike upisan
+        // 801 - zaobisao uslove
+        String response = "801";
+        if(userRepository.findByUserName(user.getUserName()) != null){
+            return "808";
+        }
+
+        String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        userRepository.save(new ClinicCenterAdmin(user.getFirstName(), user.getLastName(),user.getEmail(),user.getUserName(),s));
+        response = "800";
+
+        return response;
+    }
 }
