@@ -83,7 +83,7 @@
                     style="width: 300px"
                     class="ml-0 pl-4"
             >
-                <span class="hidden-sm-and-down">Room Configuration</span>
+                <span class="hidden-sm-and-down">Admin Configuration</span>
             </v-toolbar-title>
             <v-text-field
                     v-model="search"

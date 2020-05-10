@@ -21,6 +21,7 @@ import ClinicCenterAdminRegistrationForm from "./components/ClinicCenterAdminReg
 import ClinicCenterAdminEditForm from "./components/ClinicCenterAdminEditForm";
 import ClinicEditForm from "./components/ClinicEditForm";
 import AdminConfig from "./components/AdminConfig";
+import DoctorHomePage from "./components/HomePage/DoctorHomePage";
 
 
 Vue.use(Router);
@@ -44,6 +45,7 @@ const router = new Router({
         { path: '/ccaedit', component: ClinicCenterAdminEditForm },
         { path: '/clinicedit', component: ClinicEditForm },
         { path: '/register', component: RegisterForm },
+        { path: '/dhomepage', component: DoctorHomePage },
 
 
         {

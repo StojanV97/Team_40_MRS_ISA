@@ -25,11 +25,13 @@
         <li>Room Registration:</li>
         <li><router-link to="/roomregistration">/roomRegistration</router-link></li>
         <li>Delete Room:</li>
-        <li><router-link to="/roomdelete">/DeleteRoom</router-link></li>
+        <li><router-link to="/roomdelete">/AdminConfig</router-link></li>
         <li>Add clinic administrators:</li>
         <li><router-link to="/regclinicadmin">/regclinicadmin</router-link></li>
         <li>Admin :</li>
         <li><router-link to="/adminConfig">/adminConfig</router-link></li>
+        <li>Doctor Home Page: </li>
+        <li><router-link to="/dhomepage">/DoctorHomePage</router-link></li>
         <li></li>
     </ul>
       <button class="button" ><router-link to="/register">REGISTER</router-link></button>
