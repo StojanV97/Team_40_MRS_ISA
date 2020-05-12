@@ -92,7 +92,7 @@
     import api from "./backend-api";
 
     export default {
-        name: "ClinicAdminRegistrationForm",
+        name: "RegisterClinicAdmin",
         data() {
 
             return {
