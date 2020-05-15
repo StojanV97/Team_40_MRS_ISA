@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 @RestController()
 @RequestMapping("/api")
 public class ClinicController {
@@ -39,11 +41,15 @@ public class ClinicController {
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/clinic/getall",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Clinic>> getAllClinics() {
+        Collection<Clinic> clinics = clinicService.getAllClinics();
+        return new ResponseEntity<Collection<Clinic>>(clinics, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/clinic/{id}")
-    public Clinic getClinicById(@PathVariable("id") long id) {
-        if(clinicRepository.existsById(id)) {
-            return clinicRepository.findById(id);
-        }
-        return null;
+    public ResponseEntity<Clinic> getClinicById(@PathVariable("id") long id) {
+        Clinic c = clinicService.getClinic(id);
+        return new ResponseEntity<Clinic>(c, HttpStatus.OK);
     }
 }

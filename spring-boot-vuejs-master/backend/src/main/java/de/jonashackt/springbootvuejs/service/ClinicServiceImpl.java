@@ -5,6 +5,8 @@ import de.jonashackt.springbootvuejs.repository.ClinicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
 public class ClinicServiceImpl implements ClinicService{
 
@@ -34,5 +36,18 @@ public class ClinicServiceImpl implements ClinicService{
     public String createClinicAgain(Clinic clinic) {
         clinicRepository.save(clinic);
         return "upisan";
+    }
+
+    @Override
+    public Collection<Clinic> getAllClinics() {
+        return (Collection<Clinic>) clinicRepository.findAll() ;
+    }
+
+    @Override
+    public Clinic getClinic(long id) {
+        if(clinicRepository.existsById(id)) {
+            return clinicRepository.findById(id);
+        }
+        return null;
     }
 }

@@ -57,7 +57,7 @@
                         <td>{{row.item.id}}</td>
                         <td>{{row.item.name}}</td>
                         <td>{{row.item.address}}</td>
-                        <td>{{row.item.admin}}</td>
+                        <td>{{row.item.administrator}}</td>
                     </tr>
                 </template>
             </v-data-table>
@@ -165,12 +165,11 @@
 
 <script>
 
-
-
     import ClinicRegistrationForm from "./ClinicRegistrationForm";
     import RegisterClinicAdmin from "./RegisterClinicAdmin";
     import ClinicDeleteForm from "./ClinicDeleteForm";
     import DeleteUser from "./DeleteUser";
+    import api from "./backend-api";
     export default {
         components:{
             DeleteUser,
@@ -231,7 +230,7 @@
                 },
                 { text: 'Name', value: 'name' },
                 { text: 'Address', value: 'address' },
-                { text: 'Admin', value: 'admin' },
+                { text: 'Administrator', value: 'administrator' },
             ],
             cadmins: [
                 {
@@ -258,32 +257,20 @@
 
             ],
             clinics: [
-                {
-                    id: '1',
-                    name: 'clinic1',
-                    address: 'clinicaddress1',
-                    admin: 'admin1',
-
-                },
-                {
-                    id: '2',
-                    name: 'clinic2',
-                    address: 'clinicaddress2',
-                    admin: 'admin2',
-                },
-                {
-                    id: '3',
-                    name: 'clinic3',
-                    address: 'clinicaddress3',
-                    admin: 'admin3',
-                },
 
             ],
 
         }),
+        mounted() {
+            api.getAllClinics().then(response => {
+                this.clinics = response.data;
+                console.log(this.clinics)
+            }).catch( e => {
+                    console.log(e);
+                }
+            );
+        },
         methods:{
-
-
             getOption(text){
                 console.log(text);
                 if(text === "Dark mode On/Off"){
@@ -334,7 +321,7 @@
                     this.deleteCA = true;
                 }
                 else{
-
+                    this.showClinics = false;
                     this.showClinicsAdmin = false;
                 }
             },

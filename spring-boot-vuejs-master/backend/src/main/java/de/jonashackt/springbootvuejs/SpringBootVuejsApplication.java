@@ -1,6 +1,7 @@
 package de.jonashackt.springbootvuejs;
 
 import de.jonashackt.springbootvuejs.domain.*;
+import de.jonashackt.springbootvuejs.repository.ClinicRepository;
 import de.jonashackt.springbootvuejs.repository.RequestRepository;
 import de.jonashackt.springbootvuejs.repository.RoomRepository;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
@@ -22,7 +23,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository){
+	CommandLineRunner runner(UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
 		return args -> {
 			userRepository.save(new Nurse("Korinik1","Korinik1","s@gmail.com","Korinik1","Korinik1"));
 			userRepository.save(new Nurse("Korinik2","Korinik2","s@gmail.com","Korinik2","andrija2"));
@@ -49,6 +50,9 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
+
+			clinicRepository.save(new Clinic(1, "klinika 1", "adresa 1", "admin1"));
+			clinicRepository.save(new Clinic(2, "klinika 2", "adresa 2", "admin2"));
 		};
 
 	}

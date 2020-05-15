@@ -75,7 +75,10 @@ export default {
         return AXIOS.post(`/cliniccenteradmin/registration/`+ type, user);
     },
     getClinic(id) {
-        return AXIOS.post(`/clinic/` + id);
+        return AXIOS.get(`/clinic/` + id);
+    },
+    getAllClinics() {
+        return AXIOS.get(`/clinic/getall`)  ;
     },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
