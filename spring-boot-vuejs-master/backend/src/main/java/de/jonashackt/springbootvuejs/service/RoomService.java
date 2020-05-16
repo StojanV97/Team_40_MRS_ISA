@@ -1,7 +1,6 @@
 package de.jonashackt.springbootvuejs.service;
 
 import de.jonashackt.springbootvuejs.domain.Room;
-import de.jonashackt.springbootvuejs.domain.RoomType;
 import de.jonashackt.springbootvuejs.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

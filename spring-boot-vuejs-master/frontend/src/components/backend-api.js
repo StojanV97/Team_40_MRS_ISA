@@ -80,6 +80,9 @@ export default {
     getAllClinics() {
         return AXIOS.get(`/clinic/getall`)  ;
     },
+    getAllCCAs() {
+        return AXIOS.get(`/cliniccenteradmin/getall`);
+    },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
             auth: {

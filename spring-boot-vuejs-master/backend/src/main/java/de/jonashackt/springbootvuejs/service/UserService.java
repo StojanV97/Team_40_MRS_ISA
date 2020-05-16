@@ -5,6 +5,8 @@ import de.jonashackt.springbootvuejs.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 
 public interface UserService {
 
@@ -15,5 +17,6 @@ public interface UserService {
      String createClinicAdmin(User user, String type);
 
      String createClinicCenterAdmin(User user, String type);
+     Collection<User> getAllCCAs();
 
 }

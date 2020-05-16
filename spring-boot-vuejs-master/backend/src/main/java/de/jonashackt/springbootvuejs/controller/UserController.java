@@ -18,8 +18,10 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Properties;
 import java.util.Random;
+
 @RestController()
 @RequestMapping("/api")
 public class UserController {
@@ -123,6 +125,12 @@ public class UserController {
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/cliniccenteradmin/getall",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<User>> getAllCCAs() {
+        Collection<User> ccas = userService.getAllCCAs();
+        return new ResponseEntity<Collection<User>>(ccas, HttpStatus.OK);
+    }
+
     @RequestMapping(path="/secured", method = RequestMethod.GET)
     public @ResponseBody String getSecured() {
         LOG.info("GET successfully called on /secured resource");
@@ -136,5 +144,7 @@ public class UserController {
         LOG.info("URL entered directly into the Browser, so we need to redirect...");
         return "forward:/";
     }
+
+
 
 }

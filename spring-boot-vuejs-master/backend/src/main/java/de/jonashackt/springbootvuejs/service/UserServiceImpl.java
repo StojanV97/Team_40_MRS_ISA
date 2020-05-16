@@ -6,6 +6,10 @@ import de.jonashackt.springbootvuejs.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -98,5 +102,17 @@ public class UserServiceImpl implements UserService{
         response = "800";
 
         return response;
+    }
+
+    @Override
+    public Collection<User> getAllCCAs() {
+        Collection<User> users = (Collection<User>) userRepository.findAll();
+        Collection<User> ccas = new ArrayList<>();
+        for (User user: users) {
+            if(user instanceof ClinicCenterAdmin) {
+                ccas.add(user);
+            }
+        }
+        return ccas;
     }
 }

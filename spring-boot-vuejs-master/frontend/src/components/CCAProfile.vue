@@ -19,7 +19,7 @@
             </v-card-title>
             <v-data-table
                     :headers="headers"
-                    :items="cadmins"
+                    :items="ccadmins"
                     :search="search"
                     height="554"
             >
@@ -232,38 +232,22 @@
                 { text: 'Address', value: 'address' },
                 { text: 'Administrator', value: 'administrator' },
             ],
-            cadmins: [
-                {
-                    id: '1',
-                    firstName: 'admin1',
-                    lastName: 'admin1',
-                    email: 'admin1@gmail.com',
 
-                },
-                {
-                    id: '2',
-                    firstName: 'admin2',
-                    lastName: 'admin2',
-                    email: 'admin2@gmail.com',
-
-
-                },
-                {
-                    id: '3',
-                    firstName: 'admin3',
-                    lastName: 'admin3',
-                    email: 'admin3@gmail.com',
-                },
-
-            ],
             clinics: [
 
             ],
-
+            ccadmins: [],
         }),
         mounted() {
             api.getAllClinics().then(response => {
                 this.clinics = response.data;
+                console.log(this.clinics)
+            }).catch( e => {
+                    console.log(e);
+                }
+            );
+            api.getAllCCAs().then(response => {
+                this.ccadmins = response.data;
                 console.log(this.clinics)
             }).catch( e => {
                     console.log(e);

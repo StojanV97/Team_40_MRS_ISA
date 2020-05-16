@@ -45,6 +45,7 @@ public class SpringBootVuejsApplication {
 			roomRepository.save(new Room(5, "Operation"));
 			userRepository.save(new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent1","Pacijent1"));
 			userRepository.save(new ClinicCenterAdmin("CCAime","CCAprezime","cca@gmail.com","CCA1","CCA1"));
+			userRepository.save(new ClinicCenterAdmin("CCAime2","CCAprezime2","cca2@gmail.com","CCA2","CCA2"));
 
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr1"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
