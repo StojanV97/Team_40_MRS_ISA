@@ -88,6 +88,29 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public String createClinicAdminAgain(User user, String type) {
+        String response = "801";
+
+        String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        userRepository.save(new ClinicAdmin(user.getFirstName(), user.getLastName(),user.getEmail(),user.getUserName(),s));
+        response = "800";
+
+        return response;
+    }
+
+    @Override
+    public Collection<User> getAllCAs() {
+        Collection<User> users = (Collection<User>) userRepository.findAll();
+        Collection<User> cas = new ArrayList<>();
+        for (User user: users) {
+            if(user instanceof ClinicAdmin) {
+                cas.add(user);
+            }
+        }
+        return cas;
+    }
+
+    @Override
     public String createClinicCenterAdmin(User user, String type) {
         //808 - admin sa tim korisnickim imenom vec postoji
         // 800 - admin klinike upisan

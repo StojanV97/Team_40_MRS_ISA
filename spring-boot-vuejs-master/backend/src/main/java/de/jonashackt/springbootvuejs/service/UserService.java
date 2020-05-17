@@ -14,7 +14,10 @@ public interface UserService {
      String deleteUser(String user);
 
      String createPatient(User user, String type);
+
      String createClinicAdmin(User user, String type);
+     String createClinicAdminAgain(User user, String type);
+     Collection<User> getAllCAs();
 
      String createClinicCenterAdmin(User user, String type);
      Collection<User> getAllCCAs();

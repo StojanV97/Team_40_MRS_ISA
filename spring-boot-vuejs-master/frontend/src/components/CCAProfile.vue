@@ -5,6 +5,8 @@
         <RegisterClinicAdmin v-if="this.registerClinicAdmin"></RegisterClinicAdmin>
         <ClinicDeleteForm v-if="this.deleteC"></ClinicDeleteForm>
         <DeleteUser v-if="this.deleteCA"></DeleteUser>
+        <ClinicEditForm v-if="this.editC"></ClinicEditForm>
+        <ClinicAdminEditForm v-if="this.editCA"></ClinicAdminEditForm>
         <v-card v-if="this.showClinicsAdmin">
             <v-card-title>
                 Clinics admins
@@ -19,7 +21,7 @@
             </v-card-title>
             <v-data-table
                     :headers="headers"
-                    :items="ccadmins"
+                    :items="cadmins"
                     :search="search"
                     height="554"
             >
@@ -141,7 +143,7 @@
         </v-navigation-drawer>
         <v-app-bar app clipped-left>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title>Predefinisani admin</v-toolbar-title>
+            <v-toolbar-title>Admin klinickog centra</v-toolbar-title>
             <v-spacer></v-spacer>
             <label for="signout">Sign Out</label>
             <v-btn id="signout" icon @click="signOut">
@@ -170,8 +172,12 @@
     import ClinicDeleteForm from "./ClinicDeleteForm";
     import DeleteUser from "./DeleteUser";
     import api from "./backend-api";
+    import ClinicEditForm from "./ClinicEditForm";
+    import ClinicAdminEditForm from "./ClinicAdminEditForm";
     export default {
         components:{
+            ClinicAdminEditForm,
+            ClinicEditForm,
             DeleteUser,
             ClinicDeleteForm,
             RegisterClinicAdmin,
@@ -186,6 +192,8 @@
             registerClinicAdmin: false,
             deleteC: false,
             deleteCA: false,
+            editC: false,
+            editCA: false,
             showClinics: false,
             dialog: false,
             dialogDaysOff : false,
@@ -194,10 +202,36 @@
             items: [
                 { icon: 'mdi-contacts', text: 'List of clinic admins' },
                 { icon: 'mdi-contacts', text: 'List of clinics' },
-                { icon: 'mdi-rename-box', text: 'Register clinic' },
-                { icon: 'mdi-rename-box', text: 'Register clinic admin' },
-                { icon: 'mdi-delete', text: 'Delete clinic' },
-                { icon: 'mdi-delete', text: 'Delete clinic admin' },
+                {
+                    icon: 'mdi-plus-circle-outline',
+                    'icon-alt': 'mdi-plus-circle-outline',
+                    text: 'Register',
+                    model: false,
+                    children: [
+                        { icon: 'mdi-plus-box', text: 'Register clinic' },
+                        { icon: 'mdi-account-plus', text: 'Register clinic admin' },
+                    ],
+                },
+                {
+                    icon: 'mdi-minus-circle-outline',
+                    'icon-alt': 'mdi-minus-circle-outline',
+                    text: 'Delete',
+                    model: false,
+                    children: [
+                        { icon: 'mdi-delete', text: 'Delete clinic' },
+                        { icon: 'mdi-account-remove', text: 'Delete clinic admin' },
+                    ],
+                },
+                {
+                    icon: 'mdi-pencil',
+                    'icon-alt': 'mdi-pencil',
+                    text: 'Edit',
+                    model: false,
+                    children: [
+                        { icon: 'mdi-rename-box', text: 'Edit clinic' },
+                        { icon: 'mdi-account', text: 'Edit clinic admin' },
+                    ],
+                },
                 {
                     icon: 'mdi-cog',
                     'icon-alt': 'mdi-cog',
@@ -236,7 +270,7 @@
             clinics: [
 
             ],
-            ccadmins: [],
+            cadmins: [],
         }),
         mounted() {
             api.getAllClinics().then(response => {
@@ -246,9 +280,9 @@
                     console.log(e);
                 }
             );
-            api.getAllCCAs().then(response => {
-                this.ccadmins = response.data;
-                console.log(this.clinics)
+            api.getAllCAs().then(response => {
+                this.cadmins = response.data;
+                console.log(this.cadmins)
             }).catch( e => {
                     console.log(e);
                 }
@@ -266,6 +300,8 @@
                     this.registerClinic = false;
                     this.deleteC = false;
                     this.deleteCA = false;
+                    this.editC = false;
+                    this.editCA = false;
                 }
                 else if(text === "List of clinics"){
                     this.showClinicsAdmin = false;
@@ -274,6 +310,8 @@
                     this.registerClinic = false;
                     this.deleteC = false;
                     this.deleteCA = false;
+                    this.editC = false;
+                    this.editCA = false;
                 }else if(text === "Register clinic"){
                     this.showClinicsAdmin = false;
                     this.showClinics = false;
@@ -281,6 +319,8 @@
                     this.registerClinic = true;
                     this.deleteC = false;
                     this.deleteCA = false;
+                    this.editC = false;
+                    this.editCA = false;
                 }else if(text === "Register clinic admin"){
                     this.showClinicsAdmin = false;
                     this.showClinics = false;
@@ -288,6 +328,8 @@
                     this.registerClinic = false;
                     this.deleteC = false;
                     this.deleteCA = false;
+                    this.editC = false;
+                    this.editCA = false;
                 }else if(text === "Delete clinic") {
                     this.showClinicsAdmin = false;
                     this.showClinics = false;
@@ -295,6 +337,8 @@
                     this.registerClinic = false;
                     this.deleteC = true;
                     this.deleteCA = false;
+                    this.editC = false;
+                    this.editCA = false;
                 }
                 else if(text === "Delete clinic admin") {
                     this.showClinicsAdmin = false;
@@ -303,6 +347,27 @@
                     this.registerClinic = false;
                     this.deleteC = false;
                     this.deleteCA = true;
+                    this.editC = false;
+                    this.editCA = false;
+                }
+                else if(text === "Edit clinic"){
+                    this.showClinicsAdmin = false;
+                    this.showClinics = false;
+                    this.registerClinicAdmin = false;
+                    this.registerClinic = false;
+                    this.deleteC = false;
+                    this.deleteCA = false;
+                    this.editC = true;
+                    this.editCA = false;
+                }else if(text === "Edit clinic admin"){
+                    this.showClinicsAdmin = false;
+                    this.showClinics = false;
+                    this.registerClinicAdmin = false;
+                    this.registerClinic = false;
+                    this.deleteC = false;
+                    this.deleteCA = false;
+                    this.editC = false;
+                    this.editCA = true;
                 }
                 else{
                     this.showClinics = false;

@@ -65,7 +65,9 @@ export default {
     createClinicAdmin(user,type) {
         return AXIOS.post(`/clinicadmin/registration/`+ type, user);
     },
-
+    createClinicAdminAgain(user,type) {
+        return AXIOS.post(`/clinicadmin/regagain/`+ type, user);
+    },
     createRequest(request)
     {
         return AXIOS.post(`/request/registration/`,request);
@@ -82,6 +84,9 @@ export default {
     },
     getAllCCAs() {
         return AXIOS.get(`/cliniccenteradmin/getall`);
+    },
+    getAllCAs() {
+        return AXIOS.get(`/clinicadmin/getall`);
     },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
