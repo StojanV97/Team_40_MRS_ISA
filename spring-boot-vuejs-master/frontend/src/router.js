@@ -23,6 +23,7 @@ import ClinicEditForm from "./components/ClinicEditForm";
 import DoctorHomePage from "./components/HomePage/DoctorHomePage";
 import CCAProfile from "./components/CCAProfile";
 import PatientHomePage from "./components/HomePage/PatientHomePage";
+import CAProfile from "./components/CAProfile";
 
 
 Vue.use(Router);
@@ -47,12 +48,9 @@ const router = new Router({
         { path: '/clinicedit', component: ClinicEditForm },
         { path: '/register', component: RegisterForm },
         { path: '/dhomepage', component: DoctorHomePage },
+        { path: '/caprofile', component: CAProfile },
         { path: '/ccaprofile', component: CCAProfile },
         { path: '/phomepage', component: PatientHomePage },
-
-
-
-
         {
             path: '/protected',
             component: Protected,

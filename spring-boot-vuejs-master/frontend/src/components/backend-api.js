@@ -73,6 +73,9 @@ export default {
     getAllClinics() {
         return AXIOS.get(`/clinic/getall`)  ;
     },
+    getAllCCAs() {
+        return AXIOS.get(`/cliniccenteradmin/getall`);
+    },
     getAllCAs() {
         return AXIOS.get(`/clinicadmin/getall`);
     },
