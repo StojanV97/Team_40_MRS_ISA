@@ -1,68 +1,66 @@
 <template>
     <div id="app" class="forma">
         <v-app id="inspire">
-            <v-row align="center">
-                <v-row justify="space-around">
-                </v-row>
-                <v-form
-                        ref="form"
-                        v-model="valid"
+            <v-card-text class="previewText">Edit your profile</v-card-text>
+
+            <v-form class="forma1"
+                    ref="form"
+                    v-model="valid"
+            >
+                <v-text-field class="field"
+                        v-model="user.lastName"
+                        :counter="10"
+                        :rules="nameRules"
+                        label="First Name"
+                        required
+                ></v-text-field>
+
+                <v-text-field class="field"
+                        v-model="user.firstName"
+                        :counter="10"
+                        label="Last Name"
+                        required
+                ></v-text-field>
+
+                <v-text-field class="field"
+                        v-model="user.userName"
+                        :counter="10"
+                        label="UserName"
+                        required
+                ></v-text-field>
+
+                <v-text-field class="field"
+                        v-model="user.email"
+                        contenteditable="false"
+                        label="E-mail"
+                        readonly="1"
+                        required
+                ></v-text-field>
+
+                <v-checkbox
+                        v-model="checkbox"
+                        :rules="[v => !!v || 'You must agree to continue!']"
+                        label="Do you agree?"
+                        required
+                ></v-checkbox>
+
+                <v-btn
+                        :disabled="!valid"
+                        color="success"
+                        class="mr-4"
+                        @click="editUser()"
                 >
-                    <v-text-field
-                            v-model="user.lastName"
-                            :counter="10"
-                            :rules="nameRules"
-                            label="First Name"
-                            required
-                    ></v-text-field>
+                    Submit
+                </v-btn>
 
-                    <v-text-field
-                            v-model="user.firstName"
-                            :counter="10"
-                            label="Last Name"
-                            required
-                    ></v-text-field>
-
-                    <v-text-field
-                            v-model="user.userName"
-                            :counter="10"
-                            label="UserName"
-                            required
-                    ></v-text-field>
-
-                    <v-text-field
-                            v-model="user.email"
-                            :rules="emailRules"
-                            label="E-mail"
-                            readonly="1"
-                            required
-                    ></v-text-field>
-
-                    <v-checkbox
-                            v-model="checkbox"
-                            :rules="[v => !!v || 'You must agree to continue!']"
-                            label="Do you agree?"
-                            required
-                    ></v-checkbox>
-
-                    <v-btn
-                            :disabled="!valid"
-                            color="success"
-                            class="mr-4"
-                            @click="editUser()"
-                    >
-                        Submit
-                    </v-btn>
-
-                    <v-btn
-                            color="error"
-                            class="mr-4"
-                            @click="reset"
-                    >
-                        Reset Form
-                    </v-btn>
-                </v-form>
-            </v-row>
+                <v-btn
+                        color="error"
+                        class="mr-4"
+                        @click="reset"
+                >
+                    Reset Form
+                </v-btn>
+            </v-form>
             <div class="text-center ma-2">
                 <v-snackbar
                         v-model="snackbar"
@@ -84,6 +82,19 @@
 <style>
     .forma{
         margin-right: 640px;
+    }
+    .field{
+        width: 600px;
+    }
+    .previewText{
+        margin-top: 50px;
+        font-size: 35px;
+        text-align: center;
+        margin-left: 100px;
+    }
+    .forma1{
+        margin-top:50px;
+        margin-left: 300px;
     }
 
 </style>
@@ -115,18 +126,13 @@
                     v => (v && v.length <= 10) || 'Name must be less than 10 characters',
                 ],
                 email: '',
-                emailRules: [
-                    v => !!v || 'E-mail is required',
-                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-                ],
                 select: null,
-                checkbox: false,
-                flag: false,
+                checkbox: false
 
             }
         },
         mounted(){
-            api.getUser("4").then(response => {
+            api.getUser(2).then(response => {
                 this.user.userName = response.data.userName
                 this.user.firstName = response.data.firstName
                 this.user.lastName = response.data.lastName
