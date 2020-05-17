@@ -31,7 +31,7 @@ export default new Vuex.Store({
                 console.log("Accessing backend with user: '" + user);
                 api.getSecured(user, password)
                     .then(response => {
-                        console.log("Response: '" + response.data + "' with Statuscode " + response.status);
+                        console.log("Response: '" + response.data + "' with Status code " + response.status);
                         if(response.status == 200) {
                             console.log("Login successful");
                             // place the loginSuccess state into our vuex store

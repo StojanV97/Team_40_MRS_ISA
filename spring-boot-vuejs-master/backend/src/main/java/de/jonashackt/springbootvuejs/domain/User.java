@@ -1,10 +1,17 @@
 package de.jonashackt.springbootvuejs.domain;
 
-import javax.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+@SuppressWarnings("ALL")
 @Entity
 @Table(name="users")
-public class User {
+public class User implements UserDetails {
 
         public static String USER_TABLE = "";
     // PrimaryKey
@@ -16,6 +23,7 @@ public class User {
     private String email;
     private String userName;
     private String password;
+    private ArrayList<Authority> authorities;
 
 
     protected User() {}
@@ -48,8 +56,38 @@ public class User {
         return userName;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
     @Override

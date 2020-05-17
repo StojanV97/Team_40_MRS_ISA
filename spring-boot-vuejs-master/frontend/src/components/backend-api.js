@@ -18,11 +18,6 @@ export default {
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
     },
-
-    getUserByUserName(userName) {
-        return AXIOS.get(`/user/` + userName);
-    },
-
     createStaffMember(user,type) {
         return AXIOS.post(`/staff/registration/`+ type, user);
     },
@@ -38,16 +33,10 @@ export default {
     getAllRegistrationRequests(){
         return AXIOS.get('requests/getall')
     },
-    getRoom(){
-        return AXIOS.get('room/getone')
-    },
     deleteRegistrationRequest(userName){
         return AXIOS.post('request/delete/' + userName);
     },
     deleteRoom(id){
-        return AXIOS.post('room/delete/'+id);
-    },
-    editDates(){
         return AXIOS.post('room/delete/'+id);
     },
     createClinic(clinic) {
@@ -83,9 +72,6 @@ export default {
     },
     getAllClinics() {
         return AXIOS.get(`/clinic/getall`)  ;
-    },
-    getAllCCAs() {
-        return AXIOS.get(`/cliniccenteradmin/getall`);
     },
     getAllCAs() {
         return AXIOS.get(`/clinicadmin/getall`);

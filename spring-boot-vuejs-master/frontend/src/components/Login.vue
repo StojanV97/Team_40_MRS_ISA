@@ -12,7 +12,6 @@
 
     <form @submit.prevent="callLogin()">
 
-      <v-btn @click="findUser()">Pronadji usera</v-btn>
       <input type="text" placeholder="username" v-model="user">
       <input type="password" placeholder="password" v-model="password">
       <b-btn variant="success" type="submit">Login</b-btn>
@@ -39,18 +38,6 @@ export default {
     }
   },
   methods: {
-    findUser(){
-      api.getUserByUserName("adnrija1").then(response => {
-        // JSON responses are automatically parsed.
-        this.retrievedUser = response.data;
-        this.showRetrievedUser = true
-      })
-              .catch(e => {
-                this.errors.push(e)
-              })
-    }
-
-    ,
     callLogin() {
       this.errors = [];
       this.$store.dispatch("login", { user: this.user, password: this.password})

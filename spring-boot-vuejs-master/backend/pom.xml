@@ -47,6 +47,15 @@
 			<version>1.4</version>
 			<scope>provided</scope> <!-- add this only if code will run in a java container (i.e. tomcat, etc)-->
 		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
 
 		<!-- In-Memory database used for local development & testing -->
 		<dependency>

@@ -72,7 +72,7 @@
                             append-icon=""
                     >
                         <template v-slot:activator>
-                            <v-list-item-content >
+                            <v-list-item-content>
                                 <v-list-item-title>
                                     {{ item.text }}
                                 </v-list-item-title>
@@ -141,17 +141,20 @@
                     <v-btn
                             text
                             color="primary"
-                    >More</v-btn>
+                    >More
+                    </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn
                             text
                             color="primary"
                             @click="dialog = false"
-                    >Cancel</v-btn>
+                    >Cancel
+                    </v-btn>
                     <v-btn
                             text
                             @click="dialog = false"
-                    >Save</v-btn>
+                    >Save
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -166,17 +169,20 @@
                     <v-btn
                             text
                             color="primary"
-                    >More</v-btn>
+                    >More
+                    </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn
                             text
                             color="primary"
                             @click="dialogDaysOff = false"
-                    >Cancel</v-btn>
+                    >Cancel
+                    </v-btn>
                     <v-btn
                             text
                             @click="dialogDaysOff = false"
-                    >Save</v-btn>
+                    >Save
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -191,7 +197,7 @@
 
 
     export default {
-        components:{
+        components: {
             Calendar,
             DoctorProfile,
             ScheduleExemination,
@@ -200,29 +206,29 @@
             source: String,
         },
         data: () => ({
-            showProfile : false,
+            showProfile: false,
             showCalendar: false,
             dialog: false,
-            showExaminationScheduling : false,
-            dialogDaysOff : false,
+            showExaminationScheduling: false,
+            dialogDaysOff: false,
             drawer: null,
-            showPatients:false,
+            showPatients: false,
             items: [
-                { icon: 'mdi-contacts', text: 'List of patients' },
-                { icon: 'mdi-history', text: 'Schedule examination' },
-                { icon: 'mdi-history', text: 'Working calendar' },
-                { icon: 'mdi-iframe-parentheses', text: 'Request days off' },
-                { icon: 'mdi-account-cog', text: 'Profile' },
+                {icon: 'mdi-contacts', text: 'List of patients'},
+                {icon: 'mdi-history', text: 'Schedule examination'},
+                {icon: 'mdi-history', text: 'Working calendar'},
+                {icon: 'mdi-iframe-parentheses', text: 'Request days off'},
+                {icon: 'mdi-account-cog', text: 'Profile'},
                 {
                     icon: 'mdi-cog',
                     'icon-alt': 'mdi-cog',
                     text: 'Settings',
                     model: false,
                     children: [
-                        { text: 'Dark mode On/Off' },
+                        {text: 'Dark mode On/Off'},
                     ],
                 },
-                { icon: 'mdi-help-circle', text: 'Help' },
+                {icon: 'mdi-help-circle', text: 'Help'},
 
             ],
             search: '',
@@ -233,10 +239,10 @@
                     sortable: false,
                     value: 'id',
                 },
-                { text: 'First Name', value: 'firstName' },
-                { text: 'Last Name', value: 'lastName' },
-                { text: 'Email', value: 'email' },
-                { text: 'Medical History', value: 'medicalHistory' },
+                {text: 'First Name', value: 'firstName'},
+                {text: 'Last Name', value: 'lastName'},
+                {text: 'Email', value: 'email'},
+                {text: 'Medical History', value: 'medicalHistory'},
             ],
             patients: [
                 {
@@ -244,88 +250,73 @@
                     firstName: 'genericPatient',
                     lastName: 'genericPatient',
                     email: 'genericEmail@lavabit.com',
-
                 },
                 {
                     id: '2',
                     firstName: 'genericPatient',
                     lastName: 'genericPatient',
                     email: 'genericEmail@lavabit.com',
-
-
                 },
                 {
                     id: '3',
                     firstName: 'genericPatient',
                     lastName: 'genericPatient',
                     email: 'genericEmail@lavabit.com',
-
-
                 },
                 {
                     id: '4',
                     firstName: 'genericPatient',
                     lastName: 'genericPatient',
                     email: 'genericEmail@lavabit.com',
-
-
                 },
                 {
                     id: '5',
                     firstName: 'genericPatient',
                     lastName: 'genericPatient',
                     email: 'genericEmail@lavabit.com',
-
-
                 },
-
-
-
-            ],
+           ],
 
         }),
-        methods:{
-
-
-            getOption(text){
-              console.log(text)
-              if(text === "Dark mode On/Off"){
-                  this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-                  this.calendar = false;
-              }else if(text === "Working calendar"){
-                  this.showCalendar = true;
-                  this.showProfile = false;
-                  this.showPatients = false;
-                  this.showExaminationScheduling = false;
-              }else if(text === "List of patients"){
-                  this.showPatients = true;
-                  this.showProfile = false;
-                  this.showCalendar = false;
-                  this.showExaminationScheduling = false;
-              }else if(text === "Profile"){
-                  this.showPatients = false;
-                  this.showCalendar = false;
-                  this.showProfile = true;
-                  this.showExaminationScheduling = false;
-              }else if(text === "Request days off"){
-                 this.dialogDaysOff = true;
-              }else if(text === "Schedule examination"){
-                  this.showExaminationScheduling = true;
-                  this.showProfile = false;
-                  this.showCalendar = false;
-                  this.showPatients = false;
-              }
-              else{
-                  this.showExaminationScheduling = false;
-                  this.showProfile = false;
-                  this.showCalendar = false;
-                  this.showPatients = false;
-              }
-          },
-            showHistoryDialog(){
+        methods: {
+            getOption(text) {
+                console.log(text)
+                if (text === "Dark mode On/Off") {
+                    this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+                    this.calendar = false;
+                } else if (text === "Working calendar") {
+                    this.showCalendar = true;
+                    this.showProfile = false;
+                    this.showPatients = false;
+                    this.showExaminationScheduling = false;
+                } else if (text === "List of patients") {
+                    this.showPatients = true;
+                    this.showProfile = false;
+                    this.showCalendar = false;
+                    this.showExaminationScheduling = false;
+                } else if (text === "Profile") {
+                    this.showPatients = false;
+                    this.showCalendar = false;
+                    this.showProfile = true;
+                    this.showExaminationScheduling = false;
+                } else if (text === "Request days off") {
+                    this.dialogDaysOff = true;
+                } else if (text === "Schedule examination") {
+                    this.showExaminationScheduling = true;
+                    this.showProfile = false;
+                    this.showCalendar = false;
+                    this.showPatients = false;
+                } else {
+                    this.showExaminationScheduling = false;
+                    this.showProfile = false;
+                    this.showCalendar = false;
+                    this.showPatients = false;
+                }
+            },
+            showHistoryDialog() {
                 this.dialog = true;
             },
-            signOut(){
+            signOut() {
                 this.$router.push('home')
             }
         },
@@ -340,7 +331,8 @@
         overflow: hidden;
         height: 100vh;
     }
-    #calendar{
+
+    #calendar {
         margin-top: -10px;
     }
 </style>
