@@ -9,14 +9,14 @@
                         v-model="valid"
                 >
                     <v-text-field
-                            v-model="user.lastName"
+                            v-model="user.firstName"
                             :rules="nameRules"
                             label="First Name"
                             required
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="user.firstName"
+                            v-model="user.lastName"
                             label="Last Name"
                             required
                     ></v-text-field>
@@ -31,7 +31,6 @@
                             v-model="user.email"
                             :rules="emailRules"
                             label="E-mail"
-                            readonly="1"
                             required
                     ></v-text-field>
 
@@ -101,7 +100,7 @@
                 },
                 valid: true,
                 user: {
-                    name: '',
+                    firstName: '',
                     lastName: '',
                     userName:'',
                     email: ''
@@ -141,27 +140,19 @@
                 this.$refs.form.reset()
             },
             editCCA() {
-                api.deleteUser(this.user.userName);
-                console.log("obrisan user");
-                api.createClinicCenterAdmin(this.user,"ClinicCenterAdmin").then(response => {
-                    // JSON responses are automatically parsed.
-                    this.response = response.data;
-                    console.log(response.data)
-                    if(response.data == "808"){
-                        this.msg = 'User with same username already exists!';
+                api.deleteUser(this.user.userName).then(response => {
+                    api.createClinicCenterAdminAgain(this.user, "ClinicCenterAdmin").then(response => {
+                        // JSON responses are automatically parsed.
+                        this.response = response.data;
+                        console.log(response.data);
+                        this.msg = 'Clinic center admin successfully edited!'
                         this.snackbar = true;
-                    }else if(response.data == "800"){
-                        this.msg = 'User successfully added!'
-                        this.snackbar = true;
-                        this.$router.push("Home");
-                    }
-
-                    //this.$router.push('home')
-                })
-
-                    .catch(e => {
-                        console.log(e);
                     })
+
+                        .catch(e => {
+                            console.log(e);
+                        })
+                });
             }
         },
 

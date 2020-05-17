@@ -72,9 +72,11 @@ export default {
     {
         return AXIOS.post(`/request/registration/`,request);
     },
-
     createClinicCenterAdmin(user,type) {
         return AXIOS.post(`/cliniccenteradmin/registration/`+ type, user);
+    },
+    createClinicCenterAdminAgain(user,type) {
+        return AXIOS.post(`/cliniccenteradmin/regagain/`+ type, user);
     },
     getClinic(id) {
         return AXIOS.get(`/clinic/` + id);

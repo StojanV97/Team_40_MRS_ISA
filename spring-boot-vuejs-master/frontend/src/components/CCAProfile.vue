@@ -28,6 +28,7 @@
                 <template v-slot:item="row">
                     <tr>
                         <td>{{row.item.id}}</td>
+                        <td>{{row.item.userName}}</td>
                         <td>{{row.item.firstName}}</td>
                         <td>{{row.item.lastName}}</td>
                         <td>{{row.item.email}}</td>
@@ -143,7 +144,7 @@
         </v-navigation-drawer>
         <v-app-bar app clipped-left>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title>Admin klinickog centra</v-toolbar-title>
+            <v-toolbar-title>Clinic center administrator</v-toolbar-title>
             <v-spacer></v-spacer>
             <label for="signout">Sign Out</label>
             <v-btn id="signout" icon @click="signOut">
@@ -251,6 +252,7 @@
                     sortable: false,
                     value: 'id',
                 },
+                { text: 'Username', value: 'userName' },
                 { text: 'First Name', value: 'firstName' },
                 { text: 'Last Name', value: 'lastName' },
                 { text: 'Email', value: 'email' },
@@ -289,6 +291,24 @@
             );
         },
         methods:{
+            getCAs() {
+                api.getAllCAs().then(response => {
+                    this.cadmins = response.data;
+                    console.log(this.cadmins)
+                }).catch( e => {
+                        console.log(e);
+                    }
+                );
+            },
+            getClinics() {
+                api.getAllClinics().then(response => {
+                    this.clinics = response.data;
+                    console.log(this.clinics)
+                }).catch( e => {
+                        console.log(e);
+                    }
+                );
+            },
             getOption(text){
                 console.log(text);
                 if(text === "Dark mode On/Off"){
@@ -302,6 +322,7 @@
                     this.deleteCA = false;
                     this.editC = false;
                     this.editCA = false;
+                    this.getCAs()
                 }
                 else if(text === "List of clinics"){
                     this.showClinicsAdmin = false;
@@ -312,6 +333,7 @@
                     this.deleteCA = false;
                     this.editC = false;
                     this.editCA = false;
+                    this.getClinics()
                 }else if(text === "Register clinic"){
                     this.showClinicsAdmin = false;
                     this.showClinics = false;

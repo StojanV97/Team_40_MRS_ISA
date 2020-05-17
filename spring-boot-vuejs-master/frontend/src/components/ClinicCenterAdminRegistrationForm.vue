@@ -9,7 +9,7 @@
                         v-model="valid"
                 >
                     <v-text-field
-                            v-model="user.lastName"
+                            v-model="user.firstName"
                             :counter="15"
                             :rules="nameRules"
                             label="First Name"
@@ -17,7 +17,7 @@
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="user.firstName"
+                            v-model="user.lastName"
                             :counter="15"
                             label="Last Name"
                             required
@@ -104,7 +104,7 @@
                 },
                 valid: true,
                 user: {
-                    name: '',
+                    firstName: '',
                     lastName: '',
                     userName:'',
                     email: ''
@@ -139,12 +139,11 @@
                     this.response = response.data;
                     console.log(response.data);
                     if(response.data == "808"){
-                        this.msg = 'User with same username already exists!';
+                        this.msg = 'Clinic center admin with same username already exists!';
                         this.snackbar = true;
                     }else if(response.data == "800"){
-                        this.msg = 'User successfully added!';
+                        this.msg = 'Clinic center admin successfully added!';
                         this.snackbar = true;
-                        this.$router.push("Home");
                     }
 
 

@@ -128,6 +128,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public String createClinicCenterAdminAgain(User user, String type) {
+        String response = "801";
+
+        String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        userRepository.save(new ClinicCenterAdmin(user.getFirstName(), user.getLastName(),user.getEmail(),user.getUserName(),s));
+        response = "800";
+
+        return response;
+    }
+
+    @Override
     public Collection<User> getAllCCAs() {
         Collection<User> users = (Collection<User>) userRepository.findAll();
         Collection<User> ccas = new ArrayList<>();

@@ -137,6 +137,12 @@ public class UserController {
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/cliniccenteradmin/regagain/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createClinicCenterAdminAgain(@RequestBody User user,@PathVariable String type) throws Exception {
+        String s = userService.createClinicCenterAdminAgain(user,type);
+        return new ResponseEntity<String>(s, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/cliniccenteradmin/getall",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<User>> getAllCCAs() {
         Collection<User> ccas = userService.getAllCCAs();

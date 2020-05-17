@@ -9,7 +9,7 @@
                         v-model="valid"
                 >
                     <v-text-field
-                            v-model="user.lastName"
+                            v-model="user.firstName"
                             :counter="10"
                             :rules="nameRules"
                             label="First Name"
@@ -17,7 +17,7 @@
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="user.firstName"
+                            v-model="user.lastName"
                             :counter="10"
                             label="Last Name"
                             required
@@ -34,7 +34,6 @@
                             v-model="user.email"
                             :rules="emailRules"
                             label="E-mail"
-                            readonly="1"
                             required
                     ></v-text-field>
 
@@ -97,7 +96,7 @@
                 },
                 valid: true,
                 user: {
-                    name: '',
+                    firstName: '',
                     lastName: '',
                     userName:'',
                     email: ''
@@ -142,9 +141,8 @@
                         // JSON responses are automatically parsed.
                         this.response = response.data;
                         console.log(response.data);
-                        this.msg = 'Clinic admin successfully added!'
+                        this.msg = 'Clinic admin successfully edited!'
                         this.snackbar = true;
-                        //this.$router.push('home')
                     })
 
                         .catch(e => {

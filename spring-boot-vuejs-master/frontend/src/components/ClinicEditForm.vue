@@ -139,9 +139,8 @@
                         // JSON responses are automatically parsed.
                         this.response = response.data;
                         console.log(response.data);
-                        this.msg = 'Clinic successfully added!'
+                        this.msg = 'Clinic successfully edited!'
                         this.snackbar = true;
-                        //this.$router.push('home')
                     })
 
                         .catch(e => {

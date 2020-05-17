@@ -20,6 +20,7 @@ public interface UserService {
      Collection<User> getAllCAs();
 
      String createClinicCenterAdmin(User user, String type);
+     String createClinicCenterAdminAgain(User user, String type);
      Collection<User> getAllCCAs();
 
 }
