@@ -1,15 +1,19 @@
 package de.jonashackt.springbootvuejs.controller;
 
-import de.jonashackt.springbootvuejs.domain.User;
+import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
 import de.jonashackt.springbootvuejs.service.UserService;
+import de.jonashackt.springbootvuejs.service.impl.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.*;
@@ -19,6 +23,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -36,6 +41,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     Random r = new Random();
 
@@ -81,6 +89,33 @@ public class UserController {
 
     }
 
+    @GetMapping(path = "/user/get-role-and-id")
+    public ResponseEntity<RoleId> getRoleAndID() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String username = authentication.getName();
+            User user = userService.findByUsername(username);
+
+            // ne znam sta se desava treba srediti
+            List<Authority> authorities = (List<Authority>) user.getAuthorities();
+            Long userID = user.getId();
+
+            RoleId roleID;
+           /* if (authorities.get(0).getName().equals(UserAuthorities.PATIENT.toString())) {
+                ClinicAdmin ca = (Patient)ca;
+                roleID =  new RoleId(authorities.get(0).getName(), ca.getId(), ca.getClinicId().getId());
+            } else if (authorities.get(0).getName().equals(UserAuthorities.CLINIC_CENTER_ADMIN.toString())) {
+                ClinicCenterAdmin cca = (ClinicCenterAdmin) cca;
+                roleID = new RoleId(authorities.get(0).getName(), cca.getId(), cca.getClinicCenter().getId());
+            } else {
+                roleID = new RoleId(authorities.get(0).getName(), userID);
+            }*/
+            roleID = new RoleId(authorities.get(0).getName(), userID);
+            return new ResponseEntity<>(roleID, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
 
 
