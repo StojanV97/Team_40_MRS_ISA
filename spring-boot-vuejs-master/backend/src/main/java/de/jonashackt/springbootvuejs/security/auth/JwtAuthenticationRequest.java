@@ -13,7 +13,7 @@ public class JwtAuthenticationRequest {
         this.setPassword(password);
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return this.username;
     }
 

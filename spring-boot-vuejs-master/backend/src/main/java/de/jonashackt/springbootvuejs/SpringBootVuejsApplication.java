@@ -1,14 +1,13 @@
 package de.jonashackt.springbootvuejs;
 
 import de.jonashackt.springbootvuejs.domain.*;
-import de.jonashackt.springbootvuejs.repository.ClinicRepository;
-import de.jonashackt.springbootvuejs.repository.RequestRepository;
-import de.jonashackt.springbootvuejs.repository.RoomRepository;
-import de.jonashackt.springbootvuejs.repository.UserRepository;
+import de.jonashackt.springbootvuejs.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import java.util.Date;
 
 @SpringBootApplication
 public class SpringBootVuejsApplication {
+	BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
 
 	public static void main(String[] args)
 	{
@@ -23,16 +23,24 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
+	CommandLineRunner runner(AuthorityRepository authorityRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
 		return args -> {
+			Authority a = new Authority();
+			a.setName(String.valueOf(UserAuthorities.DOCTOR));
+			Authority a1 = new Authority();
+			a1.setName(String.valueOf(UserAuthorities.SYS_ADMIN));
+			authorityRepository.save(a);
+			authorityRepository.save(a1);
 			Patient p = new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent1","Pacijent1");
 			Patient p1 = new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent2","Pacijent2");
 			Patient p2 = new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent3","Pacijent3");
 			Patient p3 = new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent4","Pacijent4");
-			Doctor doc = new Doctor("Korinik1","Korinik1","s@gmail.com","Korinik1","Korinik1");
+			Doctor doc = new Doctor("Korinik1","Korinik1","s@gmail.com","Korinik1","sifra");
 			doc.getListOfPatients().add(p.getUsername());
 			doc.getListOfPatients().add(p1.getUsername());
 			doc.getListOfPatients().add(p2.getUsername());
+			doc.getAuthorities().add(a1);
+			doc.setPassword(bc.encode("sifra"));
 			userRepository.save(p);
 			userRepository.save(p1);
 			userRepository.save(p2);
@@ -64,9 +72,13 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
-
 			clinicRepository.save(new Clinic(1, "klinika 1", "adresa 1", "admin1"));
 			clinicRepository.save(new Clinic(2, "klinika 2", "adresa 2", "admin2"));
+
+
+			for(Authority aut : doc.getAuthorities()){
+				System.out.println(aut.getName());
+			}
 		};
 
 	}

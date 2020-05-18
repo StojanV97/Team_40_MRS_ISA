@@ -1,9 +1,11 @@
 package de.jonashackt.springbootvuejs.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,13 +25,10 @@ public class User implements UserDetails {
     private String email;
     private String userName;
     private String password;
-
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-    private List<Authority> authorities;
+    private boolean enabled;
+    private Timestamp lastPasswordResetDate;
+    @Transient
+    private ArrayList<Authority> authorities;
 
 
     protected User() {}
@@ -40,39 +39,18 @@ public class User implements UserDetails {
         this.email = email;
         this.userName = userName;
         this.password = password;
+        this.authorities = new ArrayList<Authority>();
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAuthorities(Authority authoritie) {
+        this.authorities.add(authoritie);
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    //public String getUserName() {
-        //return userName;
-   // }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<Authority> getAuthorities() {
         return this.authorities;
-    }
-
-    //public List<Authority> getAuthorities() {
-     //   return authorities;
-   // }
-
-    public void setAuthorities(List<Authority> authorities) {
-        this.authorities = authorities;
     }
 
     public String getPassword() {
@@ -84,24 +62,40 @@ public class User implements UserDetails {
         return this.userName;
     }
 
+
+    public Timestamp getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
@@ -134,4 +128,20 @@ public class User implements UserDetails {
     public void setId(long id) {
         this.id = id;
     }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
 }

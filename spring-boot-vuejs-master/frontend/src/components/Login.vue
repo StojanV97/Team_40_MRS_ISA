@@ -22,6 +22,7 @@
 
 <script>
   import api from "./backend-api";
+  import {AxiosInstance as AXIOS} from "axios";
 
   export default {
     name: 'Login',
@@ -44,19 +45,19 @@
 
         api.login(user).then(response => {
           console.log(response)
-          if (response.status == 200) {
+          if (response.status === 200) {
             localStorage.setItem('token', response.data.accessToken);
             this.getRole();
           }
         }).catch(err => {
-            if (response.status == 400) {
-              this.errorMessage = "Wrong username or password!";
-              this.error = true
-            } else if (response.status == 403) {
-              this.errorMessage = "Check your email!";
-              this.error = true
+           // if (response.status == 400) {
+             // this.errorMessage = "Wrong username or password!";
+             // this.error = true
+            //} else if (response.status == 403) {
+             // this.errorMessage = "Check your email!";
+              //this.error = true
               console.log(err);
-            }
+            //}
 
 
           })

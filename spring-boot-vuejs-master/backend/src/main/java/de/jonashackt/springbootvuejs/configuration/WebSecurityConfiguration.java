@@ -2,6 +2,7 @@ package de.jonashackt.springbootvuejs.configuration;
 
 import de.jonashackt.springbootvuejs.security.TokenUtils;
 import de.jonashackt.springbootvuejs.security.auth.RestAuthenticationEntryPoint;
+import de.jonashackt.springbootvuejs.security.auth.TokenAuthenticationFilter;
 import de.jonashackt.springbootvuejs.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -31,8 +33,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService jwtUserDetailsService;
 
+
+
     // Neautorizovani pristup zastcenim resursima
-   // @Autowired
+    @Autowired
+    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    // @Autowired
     //private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
 
@@ -58,17 +65,24 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable(); //ne radi konzola baze bez ove linije
 
         http
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No session will be created or used by spring security
-        .and()
-            .httpBasic()
-        .and()
-            .authorizeRequests()
-                .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/user/**").permitAll() // allow every URI, that begins with '/api/user/'
-                .antMatchers("/api/secured").authenticated()
-                //.anyRequest().authenticated() // protect all other requests
-        .and()
-            .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
+                // komunikacija izmedju klijenta i servera je stateless
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+
+                // za neautorizovane zahteve posalji 401 gresku
+
+
+                // svim korisnicima dopusti da pristupe putanjama /auth/**, /h2-console/** i /api/foo
+                .authorizeRequests().antMatchers("/auth/**").permitAll().antMatchers("/h2/**").permitAll().antMatchers("/error").permitAll()
+                // svaki zahtev mora biti autorizovan
+                .anyRequest().authenticated().and()
+
+                .cors().and()
+
+                // presretni svaki zahtev filterom
+                .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
+                        BasicAuthenticationFilter.class);
+        http.csrf().disable();
+
     }
     //Generalna bezbednost aplikacije
     @Override
@@ -79,9 +93,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
     }
 
-    //@Override
-    //protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    //    auth.inMemoryAuthentication()
-    //            .withUser("foo").password("{noop}bar").roles("USER");
-    //}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("foo").password("user").roles("SYS_ADMIN");
+    }
 }
