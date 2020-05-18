@@ -2,12 +2,14 @@
     <v-form
             ref="form"
             v-model="valid"
+            class="postavljeno"
 
     >
         <v-text-field
                 v-model="clinic.id"
                 label="Id"
                 required
+                style="width: 450px"
         ></v-text-field>
 
         <v-text-field
@@ -16,18 +18,21 @@
                 :rules="nameRules"
                 label="Name"
                 required
+                style="width: 450px"
         ></v-text-field>
 
         <v-text-field
                 v-model="clinic.address"
                 label="Address"
                 required
+                style="width: 450px"
         ></v-text-field>
 
         <v-text-field
                 v-model="clinic.administrator"
                 label="Administrator"
                 required
+                style="width: 450px"
         ></v-text-field>
 
         <v-checkbox
@@ -37,29 +42,31 @@
                 required
         ></v-checkbox>
 
-        <v-btn
-                :disabled="!valid"
-                color="success"
-                class="mr-4"
-                @click="createNewClinic()"
-        >
-            Submit
-        </v-btn>
+        <div class="zajedno">
+            <v-btn
+                    :disabled="!valid"
+                    class="mr-4"
+                    @click="createNewClinic()"
 
-        <v-btn
-                color="error"
-                class="mr-4"
-                @click="reset"
-        >
-            Reset Form
-        </v-btn>
+            >
+                Submit
+            </v-btn>
+            <v-btn
+                    class="mr-4"
+                    @click="reset"
 
-        <v-btn
-                color="warning"
-                @click="resetValidation"
-        >
-            Reset Validation
-        </v-btn>
+            >
+                Clear
+            </v-btn>
+
+            <v-btn
+                    @click="resetValidation"
+
+            >
+                Reset Validation
+            </v-btn>
+        </div>
+
         <div class="text-center ma-2">
             <v-snackbar
                     v-model="snackbar"
@@ -163,5 +170,12 @@
 </script>
 
 <style scoped>
+    .postavljeno {
+        margin: 100px 300px;
+    }
+
+    .zajedno {
+        display: inline-block;
+    }
 
 </style>

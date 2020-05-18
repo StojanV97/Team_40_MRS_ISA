@@ -1,56 +1,55 @@
 <template>
-    <v-form
-            ref="form"
-            v-model="valid"
-
-    >
-        <v-text-field
-                v-model="clinicId"
-                label="Id"
-                required
-        ></v-text-field>
-
-
-        <v-checkbox
-                v-model="checkbox"
-                :rules="[v => !!v || 'You must agree to continue!']"
-                label="Are you sure?"
-                required
-        ></v-checkbox>
-
-        <v-btn
-                :disabled="!valid"
-                color="success"
-                class="mr-4"
-                @click="deleteClinicWithId()"
-        >
-            Delete
-        </v-btn>
-
-        <v-btn
-                color="error"
-                class="mr-4"
-                @click="reset"
-        >
-            Reset Form
-        </v-btn>
-
-
-        <div class="text-center ma-2">
-            <v-snackbar
-                    v-model="snackbar"
+            <v-form
+                    ref="form"
+                    v-model="valid"
+                    class="postavljeno"
             >
-                {{msg}}
+                <v-text-field
+                        v-model="clinicId"
+                        label="Id"
+                        required
+                ></v-text-field>
+
+
+                <v-checkbox
+                        v-model="checkbox"
+                        :rules="[v => !!v || 'You must agree to continue!']"
+                        label="Are you sure?"
+                        required
+                ></v-checkbox>
+
                 <v-btn
-                        @click="snackbar = false"
-                        color="pink"
-                        text
+                        :disabled="!valid"
+                        class="mr-4"
+                        @click="deleteClinicWithId()"
                 >
-                    Close
+                    Delete
                 </v-btn>
-            </v-snackbar>
-        </div>
-    </v-form>
+
+                <v-btn
+
+                        class="mr-4"
+                        @click="reset"
+                >
+                    Clear
+                </v-btn>
+
+
+                <div class="text-center ma-2">
+                    <v-snackbar
+                            v-model="snackbar"
+                    >
+                        {{msg}}
+                        <v-btn
+                                @click="snackbar = false"
+                                color="pink"
+                                text
+                        >
+                            Close
+                        </v-btn>
+                    </v-snackbar>
+                </div>
+            </v-form>
 </template>
 
 <script>
@@ -104,5 +103,9 @@
 </script>
 
 <style scoped>
+
+    .postavljeno {
+        margin: 150px 170px;
+    }
 
 </style>

@@ -5,8 +5,6 @@
         <RegisterClinicAdmin v-if="this.registerClinicAdmin"></RegisterClinicAdmin>
         <ClinicDeleteForm v-if="this.deleteC"></ClinicDeleteForm>
         <DeleteUser v-if="this.deleteCA"></DeleteUser>
-        <ClinicEditForm v-if="this.editC"></ClinicEditForm>
-        <ClinicAdminEditForm v-if="this.editCA"></ClinicAdminEditForm>
         <v-card v-if="this.showClinicsAdmin">
             <v-card-title>
                 Clinics admins
@@ -27,14 +25,67 @@
             >
                 <template v-slot:item="row">
                     <tr>
-                        <td>{{row.item.id}}</td>
                         <td>{{row.item.userName}}</td>
                         <td>{{row.item.firstName}}</td>
                         <td>{{row.item.lastName}}</td>
                         <td>{{row.item.email}}</td>
+                        <td>
+                            <v-btn icon="true" @click="editThisCA(row.item.userName, row.item.firstName, row.item.lastName, row.item.email)"><v-icon>mdi-pencil</v-icon></v-btn>
+                            <v-btn icon="true" @click="deleteThisAdmin(row.item.userName)"><v-icon>mdi-account-remove</v-icon></v-btn>
+                        </td>
                     </tr>
                 </template>
             </v-data-table>
+            <v-btn
+                    bottom
+                    dark
+                    fab
+                    fixed
+                    right
+                    @click="dialogACA = !dialogACA"
+            >
+                <v-icon>mdi-account-plus</v-icon>
+            </v-btn>
+            <v-dialog
+                    v-model="dialogACA"
+                    width="1200px"
+            >
+                <v-card>
+                    <v-card-title class="grey darken-2">
+                        Create clinic admin
+                    </v-card-title>
+                    <v-container>
+                        <RegisterClinicAdmin id="clinicadmin_dialog"/>
+                    </v-container>
+                    <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                                text
+                                @click="closeDialogAddCA()"
+                        >Close</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog
+                    v-model="dialogEditCA"
+                    width="1200px"
+            >
+                <v-card>
+                    <v-card-title class="grey darken-2">
+                        Edit clinic admin
+                    </v-card-title>
+                    <v-container>
+                        <ClinicAdminEditForm ref="ClinicAdminEditForm" id="clinicadmine_dialog"/>
+                    </v-container>
+                    <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                                text
+                                @click="closeDialogEditCA()"
+                        >Close</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-card>
 
         <v-card v-if="this.showClinics">
@@ -61,9 +112,63 @@
                         <td>{{row.item.name}}</td>
                         <td>{{row.item.address}}</td>
                         <td>{{row.item.administrator}}</td>
+                        <td>
+                            <v-btn icon="true" @click="editThisClinic(row.item.id, row.item.name, row.item.address, row.item.administrator)"><v-icon>mdi-pencil</v-icon></v-btn>
+                            <v-btn icon="true" @click="deleteThisClinic(row.item.id)"><v-icon>mdi-delete</v-icon></v-btn>
+                        </td>
                     </tr>
                 </template>
             </v-data-table>
+            <v-btn
+                    bottom
+                    dark
+                    fab
+                    fixed
+                    right
+                    @click="dialogAC = !dialogAC"
+            >
+                <v-icon>mdi-plus-box</v-icon>
+            </v-btn>
+            <v-dialog
+                    v-model="dialogAC"
+                    width="1200px"
+            >
+                <v-card>
+                    <v-card-title class="grey darken-2">
+                        Create clinic
+                    </v-card-title>
+                    <v-container>
+                        <ClinicRegistrationForm id="clinic_dialog"/>
+                    </v-container>
+                    <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                                text
+                                @click="closeDialogAddC()"
+                        >Close</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog
+                    v-model="dialogEditC"
+                    width="1200px"
+            >
+                <v-card>
+                    <v-card-title class="grey darken-2">
+                        Edit clinic
+                    </v-card-title>
+                    <v-container>
+                        <ClinicEditForm id="clinice_dialog" ref="ClinicEditForm"/>
+                    </v-container>
+                    <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                                text
+                                @click="closeDialogEditC()"
+                        >Close</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-card>
 
         <v-navigation-drawer
@@ -139,8 +244,7 @@
                     </v-list-item>
                 </template>
             </v-list>
-            <v-divider></v-divider>
-            <v-btn id="requestbtn">Requests</v-btn>
+
         </v-navigation-drawer>
         <v-app-bar app clipped-left>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -197,6 +301,10 @@
             editCA: false,
             showClinics: false,
             dialog: false,
+            dialogAC: false,
+            dialogACA: false,
+            dialogEditC: false,
+            dialogEditCA: false,
             dialogDaysOff : false,
             drawer: null,
             showClinicsAdmin:false,
@@ -223,16 +331,8 @@
                         { icon: 'mdi-account-remove', text: 'Delete clinic admin' },
                     ],
                 },
-                {
-                    icon: 'mdi-pencil',
-                    'icon-alt': 'mdi-pencil',
-                    text: 'Edit',
-                    model: false,
-                    children: [
-                        { icon: 'mdi-rename-box', text: 'Edit clinic' },
-                        { icon: 'mdi-account', text: 'Edit clinic admin' },
-                    ],
-                },
+
+                { icon: 'mdi-account-box-outline', text: 'Requests' },
                 {
                     icon: 'mdi-cog',
                     'icon-alt': 'mdi-cog',
@@ -246,16 +346,11 @@
             ],
             search: '',
             headers: [
-                {
-                    text: 'Id Number',
-                    align: 'start',
-                    sortable: false,
-                    value: 'id',
-                },
                 { text: 'Username', value: 'userName' },
                 { text: 'First Name', value: 'firstName' },
                 { text: 'Last Name', value: 'lastName' },
                 { text: 'Email', value: 'email' },
+                { text: 'Actions' },
             ],
             headers2: [
                 {
@@ -267,6 +362,7 @@
                 { text: 'Name', value: 'name' },
                 { text: 'Address', value: 'address' },
                 { text: 'Administrator', value: 'administrator' },
+                { text: 'Actions' },
             ],
 
             clinics: [
@@ -308,6 +404,48 @@
                         console.log(e);
                     }
                 );
+            },
+            deleteThisClinic(i) {
+                api.deleteClinic(i).then(response => {
+                    this.getClinics();
+                }).catch( e => {
+                        console.log(e);
+                    }
+                );
+            },
+            deleteThisAdmin(u) {
+                api.deleteUser(u).then(response => {
+                    this.getCAs();
+                }).catch( e => {
+                        console.log(e);
+                    }
+                );
+            },
+            closeDialogAddC() {
+                  this.dialogAC = false;
+                  this.getClinics();
+            },
+            closeDialogAddCA() {
+                this.dialogACA = false;
+                this.getCAs();
+            },
+            closeDialogEditC() {
+                this.dialogEditC = false;
+                this.getClinics();
+            },
+            closeDialogEditCA() {
+                this.dialogEditCA = false;
+                this.getCAs();
+            },
+            editThisClinic(i, n, a, ad) {
+
+                this.dialogEditC = true;
+                this.$refs.ClinicEditForm.setClinicValues(i, n, a, ad);
+            },
+            editThisCA(u, f, l, e) {
+
+                this.dialogEditCA = true;
+                this.$refs.ClinicAdminEditForm.setCAValues(u, f, l, e);
             },
             getOption(text){
                 console.log(text);
@@ -371,25 +509,6 @@
                     this.deleteCA = true;
                     this.editC = false;
                     this.editCA = false;
-                }
-                else if(text === "Edit clinic"){
-                    this.showClinicsAdmin = false;
-                    this.showClinics = false;
-                    this.registerClinicAdmin = false;
-                    this.registerClinic = false;
-                    this.deleteC = false;
-                    this.deleteCA = false;
-                    this.editC = true;
-                    this.editCA = false;
-                }else if(text === "Edit clinic admin"){
-                    this.showClinicsAdmin = false;
-                    this.showClinics = false;
-                    this.registerClinicAdmin = false;
-                    this.registerClinic = false;
-                    this.deleteC = false;
-                    this.deleteCA = false;
-                    this.editC = false;
-                    this.editCA = true;
                 }
                 else{
                     this.showClinics = false;
