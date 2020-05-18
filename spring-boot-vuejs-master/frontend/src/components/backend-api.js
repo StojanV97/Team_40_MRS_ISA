@@ -88,7 +88,15 @@ export default {
                 username: user,
                 password: password
             }});
+    },
+    login(user)
+    {
+        return AXIOS.post('/auth/login', user)
+    },
+    getRoleAndId(){
+        return AXIOS.get('/user/get-role-and-id');
     }
+
 }
 
 

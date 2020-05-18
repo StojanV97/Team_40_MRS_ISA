@@ -16,6 +16,8 @@ public interface UserService {
      String createClinicAdmin(User user, String type);
      String createClinicAdminAgain(User user, String type);
      Collection<User> getAllCAs();
+
+     User findByUsername(String username);
      String createClinicCenterAdmin(User user, String type);
      String createClinicCenterAdminAgain(User user, String type);
      Collection<User> getAllCCAs();

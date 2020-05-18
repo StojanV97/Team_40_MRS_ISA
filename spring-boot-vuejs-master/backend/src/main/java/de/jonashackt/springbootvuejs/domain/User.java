@@ -23,7 +23,13 @@ public class User implements UserDetails {
     private String email;
     private String userName;
     private String password;
-    private ArrayList<Authority> authorities;
+
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities;
 
 
     protected User() {}
@@ -52,13 +58,21 @@ public class User implements UserDetails {
         return email;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+    //public String getUserName() {
+        //return userName;
+   // }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
+    }
+
+    //public List<Authority> getAuthorities() {
+     //   return authorities;
+   // }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public String getPassword() {
@@ -67,7 +81,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return this.userName;
     }
 
     @Override

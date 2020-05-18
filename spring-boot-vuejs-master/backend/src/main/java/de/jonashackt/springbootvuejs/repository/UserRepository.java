@@ -15,4 +15,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByUserName(@Param("userName") String userName);
 
+
 }
