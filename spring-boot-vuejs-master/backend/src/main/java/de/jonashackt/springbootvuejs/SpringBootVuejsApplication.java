@@ -25,10 +25,20 @@ public class SpringBootVuejsApplication {
 	@Bean
 	CommandLineRunner runner(UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
 		return args -> {
-
-
-			userRepository.save(new Nurse("Korinik1","Korinik1","s@gmail.com","Korinik1","Korinik1"));
-			userRepository.save(new Nurse("Korinik2","Korinik2","s@gmail.com","Korinik2","andrija2"));
+			Patient p = new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent1","Pacijent1");
+			Patient p1 = new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent2","Pacijent2");
+			Patient p2 = new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent3","Pacijent3");
+			Patient p3 = new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent4","Pacijent4");
+			Doctor doc = new Doctor("Korinik1","Korinik1","s@gmail.com","Korinik1","Korinik1");
+			doc.getListOfPatients().add(p.getUsername());
+			doc.getListOfPatients().add(p1.getUsername());
+			doc.getListOfPatients().add(p2.getUsername());
+			userRepository.save(p);
+			userRepository.save(p1);
+			userRepository.save(p2);
+			userRepository.save(p3);
+			userRepository.save(doc);
+			userRepository.save(new Doctor("Korinik2","Korinik2","s@gmail.com","Korinik2","andrija2"));
 			userRepository.save(new Nurse("Korinik3","Korinik3","s@gmail.com","Korinik3","andrija3"));
 			ArrayList<String> l = new ArrayList<String>();
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
@@ -45,7 +55,6 @@ public class SpringBootVuejsApplication {
 			roomRepository.save(new Room(3, "Operation"));
 			roomRepository.save(new Room(4,"Operation"));
 			roomRepository.save(new Room(5, "Operation"));
-			userRepository.save(new Patient("PacijentIme","Prezime","pacijent@gmail.com","Pacijent1","Pacijent1"));
 			userRepository.save(new ClinicCenterAdmin("CCAime","CCAprezime","cca@gmail.com","CCA1","CCA1"));
 			userRepository.save(new ClinicCenterAdmin("CCAime2","CCAprezime2","cca2@gmail.com","CCA2","CCA2"));
 			userRepository.save(new ClinicAdmin("CAime","CAprezime","ca@gmail.com","CA","CA"));

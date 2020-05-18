@@ -67,6 +67,9 @@ export default {
     createClinicCenterAdminAgain(user,type) {
         return AXIOS.post(`/cliniccenteradmin/regagain/`+ type, user);
     },
+    getPatients(){
+        return AXIOS.get('user/patients')
+    },
     getClinic(id) {
         return AXIOS.get(`/clinic/` + id);
     },

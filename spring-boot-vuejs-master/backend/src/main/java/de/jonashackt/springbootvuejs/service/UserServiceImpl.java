@@ -149,4 +149,11 @@ public class UserServiceImpl implements UserService{
         }
         return ccas;
     }
+
+    @Override
+    public Collection<User> getPatients() {
+        Collection<User> listOfUsers = (Collection<User>) userRepository.findAll();
+        listOfUsers.removeIf(u -> !(u instanceof Patient));
+        return listOfUsers;
+    }
 }

@@ -191,6 +191,7 @@
 </template>
 
 <script>
+    import api from "../backend-api";
     import Calendar from "./Calendar";
     import DoctorProfile from "../Profiles/DoctorProfile";
     import ScheduleExemination from "../Scheduling/ScheduleExemination";
@@ -244,40 +245,18 @@
                 {text: 'Email', value: 'email'},
                 {text: 'Medical History', value: 'medicalHistory'},
             ],
-            patients: [
-                {
-                    id: '1',
-                    firstName: 'genericPatient',
-                    lastName: 'genericPatient',
-                    email: 'genericEmail@lavabit.com',
-                },
-                {
-                    id: '2',
-                    firstName: 'genericPatient',
-                    lastName: 'genericPatient',
-                    email: 'genericEmail@lavabit.com',
-                },
-                {
-                    id: '3',
-                    firstName: 'genericPatient',
-                    lastName: 'genericPatient',
-                    email: 'genericEmail@lavabit.com',
-                },
-                {
-                    id: '4',
-                    firstName: 'genericPatient',
-                    lastName: 'genericPatient',
-                    email: 'genericEmail@lavabit.com',
-                },
-                {
-                    id: '5',
-                    firstName: 'genericPatient',
-                    lastName: 'genericPatient',
-                    email: 'genericEmail@lavabit.com',
-                },
-           ],
+            patients: [],
 
         }),
+        mounted() {
+            api.getPatients().then(response => {
+                console.log(response.data)
+                this.patients = response.data;
+
+            }).catch(e => {
+                console.log(e)
+            })
+        },
         methods: {
             getOption(text) {
                 console.log(text)

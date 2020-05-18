@@ -97,7 +97,11 @@ public class UserController {
 
     }
 
-
+    @GetMapping(path = "/user/patients")
+    public ResponseEntity<Collection<User>> getPatients(){
+        Collection<User> listOfPatients = userService.getPatients();
+        return new ResponseEntity<Collection<User>>(listOfPatients, HttpStatus.OK);
+    }
     @GetMapping(path = "/user/{id}")
     public User getUserById(@PathVariable("id") long id) {
 

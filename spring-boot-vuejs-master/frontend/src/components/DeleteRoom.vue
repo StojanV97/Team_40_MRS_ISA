@@ -3,6 +3,7 @@
     <v-app id="inspire">
         <div v-if="tableRequestsDisabled">
             <b-table
+                    sticky-header = "600px"
                     hover
                     :items="requests"
                     :fields="fielsRequests"
@@ -22,14 +23,16 @@
         </div>
         <div v-if="tableDisabled">
             <b-table
-                    hover
-                    :items="clinics"
+                    sticky-header = "600px"
                     :fields="fields"
-                    ref="selectableTable"
+                    :items="clinics"
                     selectable
                     :select-mode="multi"
                     @row-selected="onRowSelected"
-                    responsive="sm">
+                    hover
+                    ref="selectableTable"
+                    responsive="sm"
+                    >
                 <template v-slot:cell(show_details)="row">
                     <b-button  @click="editRoom(row.item.roomID,row.item.roomName,row.item.calendar)" class="mr-2">
                         Edit Room
@@ -43,7 +46,7 @@
                 app
         >
             <v-list dense>
-                <h3>Rooms</h3>
+                <h3>Options</h3>
                 <v-divider></v-divider>
                 <template v-for="item in items">
                     <v-row
@@ -68,7 +71,7 @@
                     </v-list-item>
                 </template>
             <v-divider></v-divider>
-                <v-btn id="requestbtn" @click="showRequests()">Requests</v-btn>
+
             </v-list>
         </v-navigation-drawer>
 
@@ -251,11 +254,8 @@
             },
             clinics:[],
             items: [
-                {icon: 'mdi-home',text: 'Klinika1'},
-                {icon: 'mdi-home',text: 'Klinika2'},
-                {icon: 'mdi-home',text: 'Klinika3'},
-                {icon: 'mdi-home',text: 'Klinika4'},
-                {icon: 'mdi-home',text: 'Klinika5'},
+                {icon: 'mdi-home',text: 'Clinic'},
+                {icon: 'mdi-account',text: 'Requests'},
             ],
             tableDisabled : false,
             selected: [],
@@ -369,10 +369,15 @@
             }
             ,
             showClinic(text){
-                if (text === "Klinika1"){
+                if (text === "Clinic"){
                     this.tableDisabled = true;
                     this.tableRequestsDisabled = false;
-                }else{
+                }else if(text === "Requests"){
+                    this.tableRequestsDisabled = true;
+                    this.tableDisabled = false;
+                }
+                else{
+                    this.tableRequestsDisabled = false;
                     this.tableDisabled = false;
                 }
             },

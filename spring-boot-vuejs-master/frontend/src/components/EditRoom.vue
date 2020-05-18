@@ -1,4 +1,3 @@
-
 <template>
     <div class="child_div" id="div_left">
 
@@ -33,26 +32,28 @@
                         required
                 ></v-select>
                 <v-card
-                    class="mx-auto"
-                    max-width="300"
-                    tile="Dates"
-                    v-if="this.dates.length > 0"
-            >
-                <v-toolbar-title id="naslov">Dates</v-toolbar-title>
-                <div class="v-list">
-                    <div v-for="item in this.dates" :key="item" >
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title id="ajtem" >{{item}} <v-btn @click="deleteDateFromList(item)" class="dugme" icon>
-                                    <v-icon  color="blue lighten-1">mdi-delete</v-icon>
-                                </v-btn></v-list-item-title>
+                        class="mx-auto"
+                        max-width="400"
+                        tile="Dates"
+                        v-if="this.dates.length > 0"
+                >
+                    <v-toolbar-title id="naslov">Dates</v-toolbar-title>
+                    <div class="v-list">
+                        <div v-for="item in this.dates" :key="item">
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-list-item-title id="ajtem">{{item}}
+                                        <v-btn @click="deleteDateFromList(item)" class="dugme" icon>
+                                            <v-icon color="blue lighten-1">mdi-delete</v-icon>
+                                        </v-btn>
+                                    </v-list-item-title>
 
-                            </v-list-item-content>
-                        </v-list-item>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </div>
                     </div>
-                </div>
 
-            </v-card>
+                </v-card>
                 <v-btn
                         color="success"
                         class="mr-4"
@@ -89,18 +90,15 @@
     </div>
 
 
-
 </template>
 
 <script>
     import api from "./backend-api";
 
     export default {
-        components: {
+        components: {},
 
-        },
-
-        name : 'EditRoom',
+        name: 'EditRoom',
         props: {
             roomID: Number,
             roomNameProp: String,
@@ -109,16 +107,16 @@
 
         data: () => ({
             msg: '',
-            snackbar : false,
-            oldID : '',
-            date : null,
-            room : {
+            snackbar: false,
+            oldID: '',
+            date: null,
+            room: {
                 roomID: '',
                 roomName: null,
                 calendar: [],
             },
-            dateSelected : null,
-            dates : [],
+            dateSelected: null,
+            dates: [],
             valid: true,
             nameRules: [
                 v => !!v || 'ID is required',
@@ -136,17 +134,17 @@
         }
         ,
         methods: {
-            deleteDateFromList(event){
-                for(let i = 0; i < this.dates.length ; i++) {
-                    if (event === this.dates[i]){
-                        this.dates.splice(i,1);
+            deleteDateFromList(event) {
+                for (let i = 0; i < this.dates.length; i++) {
+                    if (event === this.dates[i]) {
+                        this.dates.splice(i, 1);
                     }
                 }
                 this.room.calendar = this.dates;
-                api.deleteRoom(this.$props.roomID).then(response =>{
+                api.deleteRoom(this.$props.roomID).then(response => {
                         console.log(response)
-                        api.createRoom(this.room).then(response =>{
-                             console.log(response)
+                        api.createRoom(this.room).then(response => {
+                                console.log(response)
                             }
                         ).catch(e => {
                             console.log(e)
@@ -158,53 +156,53 @@
 
 
             },
-            setFieldValues(id, lista,datumi){
-                this.dates = this.$store.datesEditedRoom ;
+            setFieldValues(id, lista, datumi) {
+                this.dates = this.$store.datesEditedRoom;
                 this.oldID = id;
                 this.room.roomID = id;
                 let option = "";
-                for(let i = 0 ; i < lista.length ; i++){
-                    if(id == lista[i].roomID){
+                for (let i = 0; i < lista.length; i++) {
+                    if (id == lista[i].roomID) {
                         option = lista[i].roomName;
                         break;
                     }
                 }
-                if(option == "EXAMINATION"){
+                if (option == "EXAMINATION") {
                     this.room.roomName = "Examination";
-                }else{
+                } else {
                     this.room.roomName = "Operation";
                 }
             }
             ,
-            validate () {
+            validate() {
                 let currentDate = new Date();
                 let inputDate = new Date(this.date);
                 console.log(currentDate.getTime())
                 console.log(new Date(this.date).getTime())
                 this.room.calendar = this.$store.datesEditedRoom;
-                if (this.date != null){
-                    if(inputDate.getTime() < currentDate.getTime()){
+                if (this.date != null) {
+                    if (inputDate.getTime() < currentDate.getTime()) {
                         this.msg = 'Illegal date!'
                         this.snackbar = true;
-                    }else{
-                        if(this.room.calendar.indexOf(this.date) === -1){
+                    } else {
+                        if (this.room.calendar.indexOf(this.date) === -1) {
                             this.room.calendar.push(this.date)
                         }
                     }
 
                 }
-                api.deleteRoom(this.$props.roomID).then(response =>{
+                api.deleteRoom(this.$props.roomID).then(response => {
                         console.log(response)
-                    api.createRoom(this.room).then(response =>{
-                            if (this.msg !== 'Illegal date!'){
-                                this.msg = 'Room Changed!'
-                                this.snackbar = true;
-                            }
+                        api.createRoom(this.room).then(response => {
+                                if (this.msg !== 'Illegal date!') {
+                                    this.msg = 'Room Changed!'
+                                    this.snackbar = true;
+                                }
 
-                        }
-                    ).catch(e => {
-                        console.log(e)
-                    })
+                            }
+                        ).catch(e => {
+                            console.log(e)
+                        })
                     }
                 ).catch(e => {
                     console.log(e)
@@ -212,10 +210,10 @@
                 console.log(this.room.calendar)
 
             },
-            reset () {
+            reset() {
                 this.$refs.form.reset()
             },
-            resetValidation () {
+            resetValidation() {
                 this.$refs.form.resetValidation()
             },
         },
@@ -225,27 +223,32 @@ Name
 
 
 <style scoped>
-    #div_unos{
+    #div_unos {
         margin-right: 640px;
         margin-top: 240px;
         width: 500px;
     }
 
-    .mr-4{
+    .mr-4 {
         margin-top: 15px;
     }
+
     .v-list {
 
         height: 250px;
         overflow-y: auto;
     }
-    #naslov{
+
+    #naslov {
         margin-left: 40px;
+
     }
-    .dugme{
+
+    .dugme {
         padding-left: 100px;
     }
-    #ajtem{
+
+    #ajtem {
         padding-left: 30px;
     }
 </style>
