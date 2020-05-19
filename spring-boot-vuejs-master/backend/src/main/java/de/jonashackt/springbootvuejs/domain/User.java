@@ -40,6 +40,7 @@ public class User implements UserDetails {
         this.userName = userName;
         this.password = password;
         this.authorities = new ArrayList<Authority>();
+        this.enabled = true;
     }
 
 

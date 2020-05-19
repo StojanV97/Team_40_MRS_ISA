@@ -22,7 +22,7 @@
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="user.userName"
+                            v-model="user.username"
                             label="UserName"
                             required
                     ></v-text-field>
@@ -102,7 +102,7 @@
                 user: {
                     firstName: '',
                     lastName: '',
-                    userName:'',
+                    username:'',
                     email: ''
 
                 },
@@ -123,7 +123,7 @@
         },
         mounted(){
             api.getUser("5").then(response => {
-                this.user.userName = response.data.userName
+                this.user.username = response.data.username
                 this.user.firstName = response.data.firstName
                 this.user.lastName = response.data.lastName
                 this.user.email = response.data.email
@@ -140,7 +140,7 @@
                 this.$refs.form.reset()
             },
             editCCA() {
-                api.deleteUser(this.user.userName).then(response => {
+                api.deleteUser(this.user.username).then(response => {
                     api.createClinicCenterAdminAgain(this.user, "ClinicCenterAdmin").then(response => {
                         // JSON responses are automatically parsed.
                         this.response = response.data;

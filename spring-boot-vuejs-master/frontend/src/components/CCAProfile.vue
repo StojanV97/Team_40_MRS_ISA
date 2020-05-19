@@ -28,7 +28,7 @@
                 <template v-slot:item="row">
                     <tr>
                         <td>{{row.item.id}}</td>
-                        <td>{{row.item.userName}}</td>
+                        <td>{{row.item.username}}</td>
                         <td>{{row.item.firstName}}</td>
                         <td>{{row.item.lastName}}</td>
                         <td>{{row.item.email}}</td>
@@ -252,7 +252,7 @@
                     sortable: false,
                     value: 'id',
                 },
-                { text: 'Username', value: 'userName' },
+                { text: 'Username', value: 'username' },
                 { text: 'First Name', value: 'firstName' },
                 { text: 'Last Name', value: 'lastName' },
                 { text: 'Email', value: 'email' },

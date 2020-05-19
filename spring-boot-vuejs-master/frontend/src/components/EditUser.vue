@@ -23,7 +23,7 @@
                 ></v-text-field>
 
                 <v-text-field class="field"
-                        v-model="user.userName"
+                        v-model="user.username"
                         :counter="10"
                         label="UserName"
                         required
@@ -117,7 +117,7 @@
                 user: {
                     name: '',
                     lastName: '',
-                    userName:'',
+                    username:'',
                     email: ''
 
                 },
@@ -133,7 +133,7 @@
         },
         mounted(){
             api.getUser(2).then(response => {
-                this.user.userName = response.data.userName
+                this.user.username = response.data.username
                 this.user.firstName = response.data.firstName
                 this.user.lastName = response.data.lastName
                 this.user.email = response.data.email
@@ -150,7 +150,7 @@
                 this.$refs.form.reset()
             },
             editUser() {
-                api.deleteUser(this.user.userName);
+                api.deleteUser(this.user.username);
                 console.log("obrisan user");
                 api.createPatient(this.user,"Patient").then(response => {
                     // JSON responses are automatically parsed.

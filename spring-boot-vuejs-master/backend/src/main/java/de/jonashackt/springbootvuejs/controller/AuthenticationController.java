@@ -83,8 +83,8 @@ public class AuthenticationController {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 */
-  /*  @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request) {
+    @RequestMapping(value = "/auth/refresh", method = RequestMethod.POST)
+    public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
 
         String token = tokenUtils.getToken(request);
         String username = this.tokenUtils.getUsernameFromToken(token);
@@ -100,7 +100,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(userTokenState);
         }
     }
-*/
+
    /* @RequestMapping(value = "/change-password", method = RequestMethod.POST)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
