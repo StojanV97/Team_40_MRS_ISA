@@ -31,7 +31,7 @@ Vue.use(Router);
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
-        { path: '/', component: Hello },
+        { path: '/', component: Login },
         { path: '/staffregistration', component: MedicalStaffRegistrationForm },
         { path: '/callservice', component: Service },
         { path: '/deleteStaff', component: DeleteUser },

@@ -43,7 +43,6 @@
 
                     <v-btn
                             :disabled="!valid"
-                            color="success"
                             class="mr-4"
                             @click="editClinic()"
                     >
@@ -51,7 +50,6 @@
                     </v-btn>
 
                     <v-btn
-                            color="error"
                             class="mr-4"
                             @click="reset"
                     >
@@ -126,7 +124,13 @@
         },
 
         methods: {
-
+            setClinicValues(i, n, a, ad) {
+                console.log("usao je u funkciju");
+                this.clinic.id = i;
+                this.clinic.name = n;
+                this.clinic.address = a;
+                this.clinic.administrator = ad;
+            },
             validate() {
                 this.$refs.form.validate()
             },

@@ -44,10 +44,9 @@
                             label="Do you agree?"
                             required
                     ></v-checkbox>
-
+                    <div class="zajedno">
                     <v-btn
                             :disabled="!valid"
-                            color="success"
                             class="mr-4"
                             @click="createClinicAdmin()"
                     >
@@ -55,12 +54,12 @@
                     </v-btn>
 
                     <v-btn
-                            color="error"
                             class="mr-4"
                             @click="reset"
                     >
-                        Reset Form
+                        Clear
                     </v-btn>
+                    </div>
                 </v-form>
             </v-row>
             <div class="text-center ma-2">
@@ -81,12 +80,6 @@
     </div>
 </template>
 
-<style>
-    .forma{
-        margin-right: 640px;
-    }
-
-</style>
 
 <script>
     import api from "./backend-api";
@@ -164,5 +157,12 @@
 </script>
 
 <style scoped>
+    .forma{
+        margin-right: 640px;
+        margin-left: 300px;
+    }
 
+    .zajedno {
+        display: inline-block;
+    }
 </style>

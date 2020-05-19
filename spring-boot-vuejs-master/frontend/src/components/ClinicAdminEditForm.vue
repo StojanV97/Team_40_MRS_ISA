@@ -46,7 +46,6 @@
 
                     <v-btn
                             :disabled="!valid"
-                            color="success"
                             class="mr-4"
                             @click="editClinicAdmin()"
                     >
@@ -54,7 +53,6 @@
                     </v-btn>
 
                     <v-btn
-                            color="error"
                             class="mr-4"
                             @click="reset"
                     >
@@ -100,7 +98,6 @@
                     lastName: '',
                     userName:'',
                     email: ''
-
                 },
                 nameRules: [
                     v => !!v || 'Name is required',
@@ -117,18 +114,15 @@
 
             }
         },
-        mounted(){
-            api.getUser("7").then(response => {
-                this.user.userName = response.data.userName
-                this.user.firstName = response.data.firstName
-                this.user.lastName = response.data.lastName
-                this.user.email = response.data.email
-            })
 
-        },
 
         methods: {
-
+            setCAValues(u, f, l, e) {
+                this.user.userName = u;
+                this.user.firstName = f;
+                this.user.lastName = l;
+                this.user.email = e;
+            },
             validate() {
                 this.$refs.form.validate()
             },
