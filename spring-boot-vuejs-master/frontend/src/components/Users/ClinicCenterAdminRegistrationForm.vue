@@ -10,6 +10,7 @@
                 >
                     <v-text-field
                             v-model="user.firstName"
+                            :counter="15"
                             :rules="nameRules"
                             label="First Name"
                             required
@@ -17,12 +18,14 @@
 
                     <v-text-field
                             v-model="user.lastName"
+                            :counter="15"
                             label="Last Name"
                             required
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="user.username"
+                            v-model="user.userName"
+                            :counter="15"
                             label="UserName"
                             required
                     ></v-text-field>
@@ -33,6 +36,7 @@
                             label="E-mail"
                             required
                     ></v-text-field>
+
 
                     <v-checkbox
                             v-model="checkbox"
@@ -45,7 +49,7 @@
                             :disabled="!valid"
                             color="success"
                             class="mr-4"
-                            @click="editCCA()"
+                            @click="createClinicCenterAdmin()"
                     >
                         Submit
                     </v-btn>
@@ -85,10 +89,10 @@
 </style>
 
 <script>
-    import api from "./backend-api";
+    import api from "../backend-api";
 
     export default {
-        name: "ClinicCenterAdminEditForm",
+        name: "ClinicCenterAdminRegistrationForm",
         data() {
 
             return {
@@ -102,13 +106,13 @@
                 user: {
                     firstName: '',
                     lastName: '',
-                    username:'',
+                    userName:'',
                     email: ''
 
                 },
                 nameRules: [
                     v => !!v || 'Name is required',
-                    v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+                    v => (v && v.length <= 15) || 'Name must be less than 15 characters',
                 ],
                 email: '',
                 emailRules: [
@@ -121,16 +125,6 @@
 
             }
         },
-        mounted(){
-            api.getUser("5").then(response => {
-                this.user.username = response.data.username
-                this.user.firstName = response.data.firstName
-                this.user.lastName = response.data.lastName
-                this.user.email = response.data.email
-            })
-
-        },
-
         methods: {
 
             validate() {
@@ -139,20 +133,25 @@
             reset() {
                 this.$refs.form.reset()
             },
-            editCCA() {
-                api.deleteUser(this.user.username).then(response => {
-                    api.createClinicCenterAdminAgain(this.user, "ClinicCenterAdmin").then(response => {
-                        // JSON responses are automatically parsed.
-                        this.response = response.data;
-                        console.log(response.data);
-                        this.msg = 'Clinic center admin successfully edited!'
+            createClinicCenterAdmin() {
+                api.createClinicCenterAdmin(this.user,"ClinicCenterAdmin").then(response => {
+                    // JSON responses are automatically parsed.
+                    this.response = response.data;
+                    console.log(response.data);
+                    if(response.data == "808"){
+                        this.msg = 'Clinic center admin with same username already exists!';
                         this.snackbar = true;
-                    })
+                    }else if(response.data == "800"){
+                        this.msg = 'Clinic center admin successfully added!';
+                        this.snackbar = true;
+                    }
 
-                        .catch(e => {
-                            console.log(e);
-                        })
-                });
+
+                })
+
+                    .catch(e => {
+                        console.log(e);
+                    })
             }
         },
 

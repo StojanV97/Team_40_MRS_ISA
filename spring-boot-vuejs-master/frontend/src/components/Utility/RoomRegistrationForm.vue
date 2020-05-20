@@ -1,4 +1,3 @@
-
 <template>
     <div id="div_unos">
         <v-row align="center">
@@ -19,7 +18,6 @@
                 ></v-text-field>
 
 
-
                 <v-select
                         v-model="room.roomName"
                         :items="items"
@@ -27,7 +25,6 @@
                         label="Item"
                         required
                 ></v-select>
-
 
 
                 <v-btn
@@ -67,13 +64,13 @@
 </template>
 
 <script>
-    import api from "./backend-api";
+    import api from "../backend-api";
 
     export default {
         data: () => ({
             msg: '',
-            snackbar : false,
-            room : {
+            snackbar: false,
+            room: {
                 roomID: '',
                 roomName: null,
                 calendar: [],
@@ -89,31 +86,31 @@
                 'Examination',
 
             ],
-            listOfDates : [],
+            listOfDates: [],
 
         }),
 
         methods: {
-            validate () {
+            validate() {
                 console.log(this.room);
                 api.createRoom(this.room).then(response => {
                     this.response = response.data;
-                    if(response.data == "808"){
+                    if (response.data == "808") {
                         this.msg = 'Room already exists!'
                         this.snackbar = true;
-                    }else if(response.data == "800"){
+                    } else if (response.data == "800") {
                         this.msg = 'Room successfully added!'
                         this.snackbar = true;
                     }
                 })
-                .catch(e => {
-                    console.log(e)
-                })
+                    .catch(e => {
+                        console.log(e)
+                    })
             },
-            reset () {
+            reset() {
                 this.$refs.form.reset()
             },
-            resetValidation () {
+            resetValidation() {
                 this.$refs.form.resetValidation()
             },
         },
@@ -123,8 +120,8 @@ Name
 
 
 <style scoped>
-#div_unos{
-    margin-right: 640px;
-    margin-top: 240px;
-}
+    #div_unos {
+        margin-right: 640px;
+        margin-top: 240px;
+    }
 </style>

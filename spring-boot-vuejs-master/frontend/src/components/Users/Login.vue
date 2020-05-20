@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import api from "./backend-api";
+  import api from "../backend-api";
   import {AxiosInstance as AXIOS} from "axios";
 
   export default {
@@ -51,7 +51,7 @@
           console.log(response)
           if (response.status === 200) {
             localStorage.setItem('token', response.data.accessToken);
-            this.getRole();
+            //this.getRole();
           }
         }).catch(err => {
           if (err.response.status === 400) {
@@ -71,7 +71,8 @@
 
         api.getRoleAndId()
                 .then(response => {
-                  if (response.data.role == "PATIENT") {
+                  console.log(response)
+            /*   if (response.data.role == "PATIENT") {
                     //this.isChangedPass(response.data.userID)
                     this.$router.push("/phomepage")
                   } else if (response.data.role == "DOCTOR") {
@@ -87,9 +88,12 @@
                     this.$router.push("/" + response.data.userID + "/home/reservations")
                   } else {
                     this.$router.push("/phomepage")
-                  }
-                });
+                  } */
+                }).catch(e => {
+                  console.log("asdasdasdads");
+        });
       }
+
       /*
       isChangedPass(id) {
         AXIOS.get("/users/" + id)

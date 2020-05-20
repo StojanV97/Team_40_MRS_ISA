@@ -53,7 +53,7 @@
 </template>
 
 <script>
-    import api from "./backend-api";
+    import api from "../backend-api";
 
     export default {
         name: "ClinicDeleteForm",

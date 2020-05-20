@@ -12,7 +12,8 @@
                             border="bottom"
                             color="green"
                             dark
-                    >Register here</v-alert>
+                    >Register here
+                    </v-alert>
 
                     <v-text-field
                             v-model="user.firstName"
@@ -30,11 +31,11 @@
                     ></v-text-field>
 
                     <v-text-field class="text"
-                            v-model="user.userName"
-                            :counter="10"
-                            label="UserName"
-                            required
-                    ></v-text-field >
+                                  v-model="user.userName"
+                                  :counter="10"
+                                  label="UserName"
+                                  required
+                    ></v-text-field>
 
                     <v-text-field
                             v-model="user.email"
@@ -88,19 +89,20 @@
 </template>
 
 <style>
-    .forma{
+    .forma {
         margin-right: 700px;
 
     }
-    .text{
-        width:  500px;
+
+    .text {
+        width: 500px;
     }
 
 
 </style>
 
 <script>
-    import api from "./backend-api";
+    import api from "../backend-api";
 
     export default {
         name: "MedicalStaffRegistrationForm",
@@ -108,15 +110,15 @@
 
             return {
                 msg: '',
-                snackbar : false,
-                form:{
+                snackbar: false,
+                form: {
                     quantityOption: null
                 },
                 valid: true,
                 user: {
                     firstName: '',
                     lastName: '',
-                    userName:'',
+                    userName: '',
                     email: ''
 
                 },
@@ -149,10 +151,10 @@
                     // JSON responses are automatically parsed.
                     this.response = response.data;
                     console.log(response.data)
-                    if(response.data == "808"){
+                    if (response.data == "808") {
                         this.msg = 'User with same username or email already exists!';
                         this.snackbar = true;
-                    }else if(response.data == "800"){
+                    } else if (response.data == "800") {
 
                         this.msg = 'Request successfully submitted!';
                         this.snackbar = true;

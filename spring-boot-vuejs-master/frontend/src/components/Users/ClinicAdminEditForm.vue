@@ -9,8 +9,9 @@
                         v-model="valid"
                 >
                     <v-text-field
+
                             v-model="user.firstName"
-                            :counter="15"
+                            :counter="10"
                             :rules="nameRules"
                             label="First Name"
                             required
@@ -18,14 +19,14 @@
 
                     <v-text-field
                             v-model="user.lastName"
-                            :counter="15"
+                            :counter="10"
                             label="Last Name"
                             required
                     ></v-text-field>
 
                     <v-text-field
                             v-model="user.userName"
-                            :counter="15"
+                            :counter="10"
                             label="UserName"
                             required
                     ></v-text-field>
@@ -37,7 +38,6 @@
                             required
                     ></v-text-field>
 
-
                     <v-checkbox
                             v-model="checkbox"
                             :rules="[v => !!v || 'You must agree to continue!']"
@@ -47,15 +47,13 @@
 
                     <v-btn
                             :disabled="!valid"
-                            color="success"
                             class="mr-4"
-                            @click="createClinicCenterAdmin()"
+                            @click="editClinicAdmin()"
                     >
                         Submit
                     </v-btn>
 
                     <v-btn
-                            color="error"
                             class="mr-4"
                             @click="reset"
                     >
@@ -81,18 +79,11 @@
     </div>
 </template>
 
-<style>
-    .forma{
-        margin-right: 640px;
-    }
-
-</style>
-
 <script>
-    import api from "./backend-api";
+    import api from "../backend-api";
 
     export default {
-        name: "ClinicCenterAdminRegistrationForm",
+        name: "ClinicAdminEditForm",
         data() {
 
             return {
@@ -108,11 +99,10 @@
                     lastName: '',
                     userName:'',
                     email: ''
-
                 },
                 nameRules: [
                     v => !!v || 'Name is required',
-                    v => (v && v.length <= 15) || 'Name must be less than 15 characters',
+                    v => (v && v.length <= 10) || 'Name must be less than 10 characters',
                 ],
                 email: '',
                 emailRules: [
@@ -125,33 +115,35 @@
 
             }
         },
-        methods: {
 
+
+        methods: {
+            setCAValues(u, f, l, e) {
+                this.user.userName = u;
+                this.user.firstName = f;
+                this.user.lastName = l;
+                this.user.email = e;
+            },
             validate() {
                 this.$refs.form.validate()
             },
             reset() {
                 this.$refs.form.reset()
             },
-            createClinicCenterAdmin() {
-                api.createClinicCenterAdmin(this.user,"ClinicCenterAdmin").then(response => {
-                    // JSON responses are automatically parsed.
-                    this.response = response.data;
-                    console.log(response.data);
-                    if(response.data == "808"){
-                        this.msg = 'Clinic center admin with same username already exists!';
+            editClinicAdmin() {
+                api.deleteUser(this.user.userName).then(response => {
+                    api.createClinicAdminAgain(this.user, "ClinicAdmin").then(response => {
+                        // JSON responses are automatically parsed.
+                        this.response = response.data;
+                        console.log(response.data);
+                        this.msg = 'Clinic admin successfully edited!'
                         this.snackbar = true;
-                    }else if(response.data == "800"){
-                        this.msg = 'Clinic center admin successfully added!';
-                        this.snackbar = true;
-                    }
-
-
-                })
-
-                    .catch(e => {
-                        console.log(e);
                     })
+
+                        .catch(e => {
+                            console.log(e);
+                        })
+                });
             }
         },
 
@@ -162,7 +154,6 @@
             }
         }
     }
-
 </script>
 
 <style scoped>

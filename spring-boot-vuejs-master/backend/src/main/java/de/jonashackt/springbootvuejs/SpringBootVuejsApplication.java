@@ -71,6 +71,10 @@ public class SpringBootVuejsApplication {
 			userRepository.save(clinincCenterAdmin);
 			userRepository.save(clinincAdmin);
 			userRepository.save(nurse);
+			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr1"));
+			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
+			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
+			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
 
 
 			//===========================================================================
@@ -83,10 +87,6 @@ public class SpringBootVuejsApplication {
 			roomRepository.save(new Room(3, "Operation"));
 			roomRepository.save(new Room(4,"Operation"));
 			roomRepository.save(new Room(5, "Operation"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr1"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
 			clinicRepository.save(new Clinic(1, "klinika 1", "adresa 1", "admin1"));
 			clinicRepository.save(new Clinic(2, "klinika 2", "adresa 2", "admin2"));
 			//===============================================================================================================================

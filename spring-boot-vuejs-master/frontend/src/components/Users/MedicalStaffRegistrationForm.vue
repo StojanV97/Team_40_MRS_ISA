@@ -9,7 +9,7 @@
                         v-model="valid"
                 >
                     <v-text-field
-                            v-model="user.firstName"
+                            v-model="user.lastName"
                             :counter="10"
                             :rules="nameRules"
                             label="First Name"
@@ -17,7 +17,7 @@
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="user.lastName"
+                            v-model="user.firstName"
                             :counter="10"
                             label="Last Name"
                             required
@@ -36,6 +36,13 @@
                             label="E-mail"
                             required
                     ></v-text-field>
+                    <v-select
+                            v-model="select"
+                            :items="items"
+                            :rules="[v => !!v || 'Item is required']"
+                            label="Item"
+                            required
+                    ></v-select>
 
                     <v-checkbox
                             v-model="checkbox"
@@ -46,13 +53,15 @@
 
                     <v-btn
                             :disabled="!valid"
+                            color="success"
                             class="mr-4"
-                            @click="editClinicAdmin()"
+                            @click="createNewStafMemeber()"
                     >
                         Submit
                     </v-btn>
 
                     <v-btn
+                            color="error"
                             class="mr-4"
                             @click="reset"
                     >
@@ -78,11 +87,18 @@
     </div>
 </template>
 
+<style>
+    .forma{
+        margin-right: 640px;
+    }
+
+</style>
+
 <script>
-    import api from "./backend-api";
+    import api from "../backend-api";
 
     export default {
-        name: "ClinicAdminEditForm",
+        name: "MedicalStaffRegistrationForm",
         data() {
 
             return {
@@ -92,12 +108,18 @@
                 form:{
                     quantityOption: null
                 },
+                select: null,
+                items: [
+                    'Nurse',
+                    'Doctor',
+                ],
                 valid: true,
                 user: {
-                    firstName: '',
+                    name: '',
                     lastName: '',
                     userName:'',
                     email: ''
+
                 },
                 nameRules: [
                     v => !!v || 'Name is required',
@@ -114,35 +136,33 @@
 
             }
         },
-
-
         methods: {
-            setCAValues(u, f, l, e) {
-                this.user.userName = u;
-                this.user.firstName = f;
-                this.user.lastName = l;
-                this.user.email = e;
-            },
+
             validate() {
                 this.$refs.form.validate()
             },
             reset() {
                 this.$refs.form.reset()
             },
-            editClinicAdmin() {
-                api.deleteUser(this.user.userName).then(response => {
-                    api.createClinicAdminAgain(this.user, "ClinicAdmin").then(response => {
-                        // JSON responses are automatically parsed.
-                        this.response = response.data;
-                        console.log(response.data);
-                        this.msg = 'Clinic admin successfully edited!'
+            createNewStafMemeber() {
+                api.createStaffMember(this.user,this.select).then(response => {
+                    // JSON responses are automatically parsed.
+                    this.response = response.data;
+                    console.log(response.data)
+                    if(response.data == "808"){
+                        this.msg = 'User with same username already exists!';
                         this.snackbar = true;
-                    })
+                    }else if(response.data == "800"){
+                        this.msg = 'User successfully added!'
+                        this.snackbar = true;
+                    }
 
-                        .catch(e => {
-                            console.log(e);
-                        })
-                });
+                    //this.$router.push('home')
+                })
+
+                    .catch(e => {
+                        console.log(e);
+                    })
             }
         },
 
@@ -153,6 +173,7 @@
             }
         }
     }
+
 </script>
 
 <style scoped>

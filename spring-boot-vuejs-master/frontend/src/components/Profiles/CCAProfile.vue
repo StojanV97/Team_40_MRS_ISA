@@ -272,13 +272,13 @@
 
 <script>
 
-    import ClinicRegistrationForm from "./ClinicRegistrationForm";
-    import RegisterClinicAdmin from "./RegisterClinicAdmin";
-    import ClinicDeleteForm from "./ClinicDeleteForm";
-    import DeleteUser from "./DeleteUser";
-    import api from "./backend-api";
-    import ClinicEditForm from "./ClinicEditForm";
-    import ClinicAdminEditForm from "./ClinicAdminEditForm";
+    import ClinicRegistrationForm from "../Utility/ClinicRegistrationForm";
+    import RegisterClinicAdmin from "../Users/RegisterClinicAdmin";
+    import ClinicDeleteForm from "../Utility/ClinicDeleteForm";
+    import DeleteUser from "../Users/DeleteUser";
+    import api from "../backend-api";
+    import ClinicEditForm from "../Utility/ClinicEditForm";
+    import ClinicAdminEditForm from "../Users/ClinicAdminEditForm";
     export default {
         components:{
             ClinicAdminEditForm,

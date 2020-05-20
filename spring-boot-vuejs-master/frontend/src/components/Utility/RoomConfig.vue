@@ -1,9 +1,8 @@
-
 <template>
     <v-app id="inspire">
         <div v-if="tableRequestsDisabled">
             <b-table
-                    sticky-header = "600px"
+                    sticky-header="600px"
                     hover
                     :items="requests"
                     :fields="fielsRequests"
@@ -15,7 +14,7 @@
                     </b-button>
                 </template>
                 <template v-slot:cell(Decline)="row">
-                    <b-button  @click="declineRequest(row.item.userName)" class="mr-2">
+                    <b-button @click="declineRequest(row.item.userName)" class="mr-2">
                         Decline
                     </b-button>
                 </template>
@@ -23,7 +22,7 @@
         </div>
         <div v-if="tableDisabled">
             <b-table
-                    sticky-header = "600px"
+                    sticky-header="600px"
                     :fields="fields"
                     :items="clinics"
                     selectable
@@ -32,9 +31,9 @@
                     hover
                     ref="selectableTable"
                     responsive="sm"
-                    >
+            >
                 <template v-slot:cell(show_details)="row">
-                    <b-button  @click="editRoom(row.item.roomID,row.item.roomName,row.item.calendar)" class="mr-2">
+                    <b-button @click="editRoom(row.item.roomID,row.item.roomName,row.item.calendar)" class="mr-2">
                         Edit Room
                     </b-button>
                 </template>
@@ -70,7 +69,7 @@
                         </v-list-item-content>
                     </v-list-item>
                 </template>
-            <v-divider></v-divider>
+                <v-divider></v-divider>
 
             </v-list>
         </v-navigation-drawer>
@@ -81,7 +80,7 @@
                 color="blue darken-3"
                 dark
         >
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
             <v-toolbar-title
                     style="width: 300px"
                     class="ml-0 pl-4"
@@ -134,26 +133,27 @@
             <v-icon>mdi-plus</v-icon>
         </v-btn>
         <v-dialog
-            v-model="dialog"
-            width="800px"
-    >
-        <v-card>
-            <v-card-title class="grey darken-2">
-                Create room
-            </v-card-title>
-            <v-container>
-                <RoomRegistrationForm id="room_dialog"/>
-            </v-container>
-            <v-card-actions>
-                <v-spacer />
-                <v-btn
-                        text
-                        color="primary"
-                        @click="closeDialog()"
-                >Close</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+                v-model="dialog"
+                width="800px"
+        >
+            <v-card>
+                <v-card-title class="grey darken-2">
+                    Create room
+                </v-card-title>
+                <v-container>
+                    <RoomRegistrationForm id="room_dialog"/>
+                </v-container>
+                <v-card-actions>
+                    <v-spacer/>
+                    <v-btn
+                            text
+                            color="primary"
+                            @click="closeDialog()"
+                    >Close
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
         <v-dialog
                 v-model="dialogEditRoom"
@@ -165,15 +165,17 @@
                     Edit room
                 </v-card-title>
                 <v-container id="container">
-                    <EditRoom class="child" ref="EditRoom" v-bind:roomNameProp="this.roomNameProp"  v-bind:roomID="this.roomIDEdit" v-bind:list="this.clinics" id="editForm"/>
+                    <EditRoom class="child" ref="EditRoom" v-bind:roomNameProp="this.roomNameProp"
+                              v-bind:roomID="this.roomIDEdit" v-bind:list="this.clinics" id="editForm"/>
                 </v-container>
                 <v-card-actions>
-                    <v-spacer />
+                    <v-spacer/>
                     <v-btn
                             text
                             color="primary"
                             @click="closeDialog()"
-                    >Close</v-btn>
+                    >Close
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -195,38 +197,42 @@
 </template>
 
 <style scoped>
-    #requestbtn{
+    #requestbtn {
         width: 250px;
     }
-    #container{
+
+    #container {
 
     }
-    #approve{
-        background-color: green ;
+
+    #approve {
+        background-color: green;
     }
 
-    #room_dialog{
+    #room_dialog {
         margin-right: 240px;
     }
-    #labela{
+
+    #labela {
         margin-left: 100px;
         font-size: 20px;
     }
-    #editForm{
+
+    #editForm {
         margin-right: 140px;
 
     }
-    #datumi{
+
+    #datumi {
         margin-top: 13px;
 
     }
 </style>
 
 <script>
-    import api from "./backend-api";
+    import api from "../backend-api";
     import EditRoom from "./EditRoom"
     import RoomRegistrationForm from "./RoomRegistrationForm";
-
 
 
     export default {
@@ -238,46 +244,44 @@
             source: String,
         },
         data: () => ({
-            search : '',
+            search: '',
             dialog: false,
             dialogEditRoom: false,
             drawer: null,
-            fielsRequests : ['firstName','lastName','email','userName' , 'Approve','Decline'],
-            requests : [
-
-            ],
-            fields: ["roomID","roomName","calendar","show_details"],
-            room : {
+            fielsRequests: ['firstName', 'lastName', 'email', 'userName', 'Approve', 'Decline'],
+            requests: [],
+            fields: ["roomID", "roomName", "calendar", "show_details"],
+            room: {
                 roomID: '',
                 roomName: null,
                 calendar: [],
             },
-            clinics:[],
+            clinics: [],
             items: [
-                {icon: 'mdi-home',text: 'Clinic'},
-                {icon: 'mdi-account',text: 'Requests'},
+                {icon: 'mdi-home', text: 'Clinic'},
+                {icon: 'mdi-account', text: 'Requests'},
             ],
-            tableDisabled : false,
+            tableDisabled: false,
             selected: [],
             filteredList: [],
-            originalList : [],
-            roomIDEdit : 0,
-            roomNameProp : null,
-            calendarProp : [],
-            tableRequestsDisabled : false,
-            snackbar : false,
-            msg : '',
+            originalList: [],
+            roomIDEdit: 0,
+            roomNameProp: null,
+            calendarProp: [],
+            tableRequestsDisabled: false,
+            snackbar: false,
+            msg: '',
         }),
 
-        methods : {
-            declineRequest(userName){
-                for(let i = 0; i < this.requests.length ; i++){
-                    if(userName == this.requests[i].userName){
-                        this.requests.splice(i,1);
+        methods: {
+            declineRequest(userName) {
+                for (let i = 0; i < this.requests.length; i++) {
+                    if (userName == this.requests[i].userName) {
+                        this.requests.splice(i, 1);
                     }
                 }
-                api.deleteRegistrationRequest(userName).then(response=>{
-                        console.log(response);
+                api.deleteRegistrationRequest(userName).then(response => {
+                    console.log(response);
                 }).catch(e => {
                     console.log(e)
                 });
@@ -285,7 +289,7 @@
 
             }
             ,
-            approveRequest(email,userName){
+            approveRequest(email, userName) {
 
                 console.log(email)
                 api.sendEmail(email).then(response => {
@@ -295,69 +299,68 @@
                     this.msg = "Activation code sent!";
                     this.snackbar = true;
                 })
-                for(let i = 0; i < this.requests.length ; i++){
-                    if(userName == this.requests[i].userName){
-                        this.requests.splice(i,1);
+                for (let i = 0; i < this.requests.length; i++) {
+                    if (userName == this.requests[i].userName) {
+                        this.requests.splice(i, 1);
                     }
                 }
-                api.deleteRegistrationRequest(userName).then(response=>{
+                api.deleteRegistrationRequest(userName).then(response => {
                     console.log(response);
                 }).catch(e => {
                     console.log(e)
                 });
             }
             ,
-            closeDialog(){
-                if(this.dialogEditRoom){
+            closeDialog() {
+                if (this.dialogEditRoom) {
                     this.dialogEditRoom = false;
                 }
                 this.room.roomID = this.roomIDEdit;
                 this.room.roomName = this.roomNameProp;
-                this.room.calendar =  this.$store.datesEditedRoom
+                this.room.calendar = this.$store.datesEditedRoom
                 this.dialog = false;
                 this.getRooms();
             }
             ,
-            editRoom(event,name,calendar){
+            editRoom(event, name, calendar) {
                 this.$store.datesEditedRoom = calendar;
                 this.$store.listaObrisanih = calendar;
                 this.calendarProp = calendar;
                 this.dialogEditRoom = !this.dialogEditRoom;
                 this.roomIDEdit = parseInt(event);
 
-                if(name === "EXAMINATION"){
+                if (name === "EXAMINATION") {
                     this.roomNameProp = "Examination";
-                }else{
+                } else {
                     this.roomNameProp = "Operation";
                 }
-                this.$refs.EditRoom.setFieldValues(this.roomIDEdit,this.clinics,this.calendarProp);
+                this.$refs.EditRoom.setFieldValues(this.roomIDEdit, this.clinics, this.calendarProp);
             }
             ,
-            filterRooms(event){
-                if(event == ""){
+            filterRooms(event) {
+                if (event == "") {
                     this.getRooms();
                     this.filteredList = [];
-                }else{
-                    for(var i = 0 ; i <= this.clinics.length ; i++){
-                        if (parseInt(event) === parseInt(this.clinics[i].roomID)){
+                } else {
+                    for (var i = 0; i <= this.clinics.length; i++) {
+                        if (parseInt(event) === parseInt(this.clinics[i].roomID)) {
                             this.filteredList.push(this.clinics[i])
-                        }else{
-                            this.clinics.splice(i,1);
+                        } else {
+                            this.clinics.splice(i, 1);
                         }
                     }
 
                 }
-                if(this.filteredList.length !== 0){
+                if (this.filteredList.length !== 0) {
                     console.log(this.clinics)
                 }
 
-
             }
             ,
-            deleteRooms(){
-                if(this.selected.length !== 0){
-                    for(var i = 0 ; i < this.selected.length ; i++){
-                        api.deleteRoom(this.selected[i].roomID).then(response =>{
+            deleteRooms() {
+                if (this.selected.length !== 0) {
+                    for (var i = 0; i < this.selected.length; i++) {
+                        api.deleteRoom(this.selected[i].roomID).then(response => {
                             this.getRooms();
                         });
                     }
@@ -368,40 +371,38 @@
                 this.selected = items;
             }
             ,
-            showClinic(text){
-                if (text === "Clinic"){
+            showClinic(text) {
+                if (text === "Clinic") {
                     this.tableDisabled = true;
                     this.tableRequestsDisabled = false;
-                }else if(text === "Requests"){
+                } else if (text === "Requests") {
                     this.tableRequestsDisabled = true;
                     this.tableDisabled = false;
-                }
-                else{
+                } else {
                     this.tableRequestsDisabled = false;
                     this.tableDisabled = false;
                 }
             },
-            showRequests(){
-                if(!this.tableRequestsDisabled){
-                   this.tableRequestsDisabled = true;
-                   this.tableDisabled = false;
-                }else{
+            showRequests() {
+                if (!this.tableRequestsDisabled) {
+                    this.tableRequestsDisabled = true;
+                    this.tableDisabled = false;
+                } else {
                     this.tableRequestsDisabled = false;
                 }
                 console.log(this.requests)
 
             },
 
-            getRooms(){
+            getRooms() {
                 api.getAllRooms().then(response => {
                     this.clinics = response.data;
                     this.$store.state.listOfRooms = this.clinics;
                     console.log(this.clinics)
 
-                }).catch( e => {
+                }).catch(e => {
                         console.log(e);
                     }
-
                 )
             }
         },
@@ -411,14 +412,14 @@
                 this.originalList = response.data;
                 this.$store.state.listOfRooms = this.clinics;
                 console.log(this.$store.listOfRooms)
-            }).catch( e => {
-                console.log(e);
+            }).catch(e => {
+                    console.log(e);
                 }
             );
-            api.getAllRegistrationRequests().then(response=>{
+            api.getAllRegistrationRequests().then(response => {
                 this.requests = response.data;
                 console.log(this.requests)
-            }).catch( e => {
+            }).catch(e => {
                 console.log(e);
             })
 

@@ -9,40 +9,30 @@
                         v-model="valid"
                 >
                     <v-text-field
-                            v-model="user.lastName"
-                            :counter="10"
+                            v-model="clinic.id"
+                            label="Id"
+                            required
+                    ></v-text-field>
+
+                    <v-text-field
+                            v-model="clinic.name"
+                            :counter="30"
                             :rules="nameRules"
-                            label="First Name"
+                            label="Name"
                             required
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="user.firstName"
-                            :counter="10"
-                            label="Last Name"
+                            v-model="clinic.address"
+                            label="Address"
                             required
                     ></v-text-field>
 
                     <v-text-field
-                            v-model="user.userName"
-                            :counter="10"
-                            label="UserName"
+                            v-model="clinic.administrator"
+                            label="Administrator"
                             required
                     ></v-text-field>
-
-                    <v-text-field
-                            v-model="user.email"
-                            :rules="emailRules"
-                            label="E-mail"
-                            required
-                    ></v-text-field>
-                    <v-select
-                            v-model="select"
-                            :items="items"
-                            :rules="[v => !!v || 'Item is required']"
-                            label="Item"
-                            required
-                    ></v-select>
 
                     <v-checkbox
                             v-model="checkbox"
@@ -53,15 +43,13 @@
 
                     <v-btn
                             :disabled="!valid"
-                            color="success"
                             class="mr-4"
-                            @click="createNewStafMemeber()"
+                            @click="editClinic()"
                     >
                         Submit
                     </v-btn>
 
                     <v-btn
-                            color="error"
                             class="mr-4"
                             @click="reset"
                     >
@@ -95,10 +83,10 @@
 </style>
 
 <script>
-    import api from "./backend-api";
+    import api from "../backend-api";
 
     export default {
-        name: "MedicalStaffRegistrationForm",
+        name: "ClinicEditForm",
         data() {
 
             return {
@@ -108,27 +96,16 @@
                 form:{
                     quantityOption: null
                 },
-                select: null,
-                items: [
-                    'Nurse',
-                    'Doctor',
-                ],
                 valid: true,
-                user: {
+                clinic: {
                     name: '',
-                    lastName: '',
-                    userName:'',
-                    email: ''
-
+                    address: '',
+                    administrator:'',
+                    id: ''
                 },
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-                ],
-                email: '',
-                emailRules: [
-                    v => !!v || 'E-mail is required',
-                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
                 ],
                 select: null,
                 checkbox: false,
@@ -136,33 +113,45 @@
 
             }
         },
-        methods: {
+        mounted(){
+            api.getClinic("1").then(response => {
+                this.clinic.name = response.data.name
+                this.clinic.id = response.data.id
+                this.clinic.address = response.data.address
+                this.clinic.administrator = response.data.administrator
+            })
 
+        },
+
+        methods: {
+            setClinicValues(i, n, a, ad) {
+                console.log("usao je u funkciju");
+                this.clinic.id = i;
+                this.clinic.name = n;
+                this.clinic.address = a;
+                this.clinic.administrator = ad;
+            },
             validate() {
                 this.$refs.form.validate()
             },
             reset() {
                 this.$refs.form.reset()
             },
-            createNewStafMemeber() {
-                api.createStaffMember(this.user,this.select).then(response => {
-                    // JSON responses are automatically parsed.
-                    this.response = response.data;
-                    console.log(response.data)
-                    if(response.data == "808"){
-                        this.msg = 'User with same username already exists!';
+            editClinic() {
+                api.deleteClinic(this.clinic.id).then(response => {
+                    api.createClinicAgain(this.clinic).then(response => {
+                        // JSON responses are automatically parsed.
+                        this.response = response.data;
+                        console.log(response.data);
+                        this.msg = 'Clinic successfully edited!'
                         this.snackbar = true;
-                    }else if(response.data == "800"){
-                        this.msg = 'User successfully added!'
-                        this.snackbar = true;
-                    }
-
-                    //this.$router.push('home')
-                })
-
-                    .catch(e => {
-                        console.log(e);
                     })
+
+                        .catch(e => {
+                            console.log(e);
+                        })
+                });
+
             }
         },
 

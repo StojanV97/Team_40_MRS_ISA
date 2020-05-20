@@ -4,26 +4,26 @@ import Hello from '@/components/Hello'
 import Service from '@/components/Service'
 //import Bootstrap from '@/components/Bootstrap'
 //import User from '@/components/User'
-import Login from '@/components/Login'
-import Protected from '@/components/Protected'
 
+import Protected from '@/components/Protected'
+import Login from './components/Users/Login'
 import store from './store'
-import MedicalStaffRegistrationForm from "./components/MedicalStaffRegistrationForm";
-import DeleteUser from "./components/DeleteUser";
-import RoomRegistrationForm from "./components/RoomRegistrationForm";
-import DeleteRoom from "./components/DeleteRoom";
-import EditRoom from "./components/EditRoom";
-import ClinicRegistrationForm from "./components/ClinicRegistrationForm";
-import RegisterClinicAdmin from "./components/RegisterClinicAdmin";
-import EditUser from "./components/EditUser";
-import RegisterForm from "./components/RegisterForm";
-import ClinicCenterAdminRegistrationForm from "./components/ClinicCenterAdminRegistrationForm";
-import ClinicCenterAdminEditForm from "./components/ClinicCenterAdminEditForm";
-import ClinicEditForm from "./components/ClinicEditForm";
+import MedicalStaffRegistrationForm from "./components/Users/MedicalStaffRegistrationForm";
+import DeleteUser from "./components/Users/DeleteUser";
+import RoomRegistrationForm from "./components/Utility/RoomRegistrationForm";
+import RoomConfig from "./components/Utility/RoomConfig";
+import EditRoom from "./components/Utility/EditRoom";
+import ClinicRegistrationForm from "./components/Utility/ClinicRegistrationForm";
+import RegisterClinicAdmin from "./components/Users/RegisterClinicAdmin";
+import EditUser from "./components/Users/EditUser";
+import RegisterForm from "./components/Users/RegisterForm";
+import ClinicCenterAdminRegistrationForm from "./components/Users/ClinicCenterAdminRegistrationForm";
+import ClinicCenterAdminEditForm from "./components/Users/ClinicCenterAdminEditForm";
+import ClinicEditForm from "./components/Utility/ClinicEditForm";
 import DoctorHomePage from "./components/HomePage/DoctorHomePage";
-import CCAProfile from "./components/CCAProfile";
+import CCAProfile from "./components/Profiles/CCAProfile";
 import PatientHomePage from "./components/HomePage/PatientHomePage";
-import CAProfile from "./components/CAProfile";
+import CAProfile from "./components/Profiles/CAProfile";
 
 
 Vue.use(Router);
@@ -31,26 +31,25 @@ Vue.use(Router);
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
-        { path: '/', component: Login },
-        { path: '/staffregistration', component: MedicalStaffRegistrationForm },
-        { path: '/callservice', component: Service },
-        { path: '/deleteStaff', component: DeleteUser },
-        { path: '/stafregistration', component: MedicalStaffRegistrationForm },
-        { path: '/clinicregistration', component: ClinicRegistrationForm},
-        { path: '/login', component: Login },
+        {path: '/', component: Login},
+        {path: '/staffregistration', component: MedicalStaffRegistrationForm},
+        {path: '/callservice', component: Service},
+        {path: '/deleteStaff', component: DeleteUser},
+        {path: '/stafregistration', component: MedicalStaffRegistrationForm},
+        {path: '/clinicregistration', component: ClinicRegistrationForm},
         {path: '/roomregistration', component: RoomRegistrationForm},
-        {path: '/roomdelete', component: DeleteRoom},
+        {path: '/roomconfiguration', component: RoomConfig},
         {path: '/roomedit', component: EditRoom},
-        { path: '/regclinicadmin', component: RegisterClinicAdmin },
-        { path: '/editUser', component: EditUser },
-        { path: '/ccareg', component: ClinicCenterAdminRegistrationForm },
-        { path: '/ccaedit', component: ClinicCenterAdminEditForm },
-        { path: '/clinicedit', component: ClinicEditForm },
-        { path: '/register', component: RegisterForm },
-        { path: '/dhomepage', component: DoctorHomePage },
-        { path: '/caprofile', component: CAProfile },
-        { path: '/ccaprofile', component: CCAProfile },
-        { path: '/phomepage', component: PatientHomePage },
+        {path: '/regclinicadmin', component: RegisterClinicAdmin},
+        {path: '/editUser', component: EditUser},
+        {path: '/ccareg', component: ClinicCenterAdminRegistrationForm},
+        {path: '/ccaedit', component: ClinicCenterAdminEditForm},
+        {path: '/clinicedit', component: ClinicEditForm},
+        {path: '/register', component: RegisterForm},
+        {path: '/dhomepage', component: DoctorHomePage},
+        {path: '/caprofile', component: CAProfile},
+        {path: '/ccaprofile', component: CCAProfile},
+        {path: '/phomepage', component: PatientHomePage},
         {
             path: '/protected',
             component: Protected,
@@ -60,7 +59,7 @@ const router = new Router({
         },
 
         // otherwise redirect to home
-        { path: '*', redirect: '/' }
+        {path: '*', redirect: '/'}
     ]
 });
 

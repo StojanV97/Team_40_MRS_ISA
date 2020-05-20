@@ -55,8 +55,8 @@
 </template>
 
 <script>
-    import api from "./backend-api";
-    import router from "../router";
+    import api from "../backend-api";
+    import router from "../../router";
 
     export default {
         name: "DeleteUser",
