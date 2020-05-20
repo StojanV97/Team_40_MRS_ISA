@@ -2,6 +2,7 @@ package de.jonashackt.springbootvuejs.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.function.LongSupplier;
 
@@ -10,7 +11,7 @@ import java.util.function.LongSupplier;
 @Table(name="doctors")
 public class Doctor extends User {
 
-
+    @Transient
     ArrayList<String> listOfPatients;
     public Doctor() {
         super();

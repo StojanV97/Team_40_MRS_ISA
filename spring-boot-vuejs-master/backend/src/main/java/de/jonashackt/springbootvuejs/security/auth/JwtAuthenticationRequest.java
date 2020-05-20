@@ -1,7 +1,10 @@
 package de.jonashackt.springbootvuejs.security.auth;
 
+import javax.persistence.Entity;
+
+
 public class JwtAuthenticationRequest {
-    private String username;
+    private String userName;
     private String password;
 
     public JwtAuthenticationRequest() {
@@ -13,12 +16,12 @@ public class JwtAuthenticationRequest {
         this.setPassword(password);
     }
 
-    public String getUserName() {
-        return this.username;
+    public String getUsername() {
+        return this.userName;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.userName = username;
     }
 
     public String getPassword() {

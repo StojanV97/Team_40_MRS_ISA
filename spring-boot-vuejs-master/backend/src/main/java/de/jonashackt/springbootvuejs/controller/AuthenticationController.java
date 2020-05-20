@@ -8,12 +8,14 @@ import de.jonashackt.springbootvuejs.security.auth.JwtAuthenticationRequest;
 import de.jonashackt.springbootvuejs.service.UserService;
 import de.jonashackt.springbootvuejs.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -47,26 +49,27 @@ public class AuthenticationController {
     private UserService userService;
 
     @PostMapping(value = "/auth/login")
-    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody User user1) throws AuthenticationException, IOException {
-        System.out.println("Sifra: " + user1.getPassword());
-        System.out.println("Korsnicko Ime: " + user1.getUsername());
-        final Authentication authentication;
-        String name = user1.getUsername();
-        authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(name,
-                        user1.getPassword()));
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody User authenticationRequest) throws AuthenticationException, IOException {
+        try{
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword()));
 
-        System.out.println("Sifra: " + user1.getPassword());
-        // Ubaci username + password u kontext
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            // Ubaci username + password u kontext
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Kreiraj token
-        User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
-        int expiresIn = tokenUtils.getExpiredIn();
+            // Kreiraj token
+            User user = (User) authentication.getPrincipal();
+            String jwt = tokenUtils.generateToken(user.getUsername());
+            int expiresIn = tokenUtils.getExpiredIn();
 
-        // Vrati token kao odgovor na uspesno autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+            // Vrati token kao odgovor na uspesno autentifikaciju
+            return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        }
+        catch (BadCredentialsException bce){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
  /*   @RequestMapping(method = POST, value = "/signup")

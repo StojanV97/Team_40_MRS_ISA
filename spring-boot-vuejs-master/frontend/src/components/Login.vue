@@ -1,10 +1,10 @@
 <template class="tmp">
-  <b-card-group>
+  <b-card-group id="loginForm">
     <b-card border-variant="light" style="max-width: 20rem;" class="mb-2 mx-auto">
       <b-form-group
               label-for="input-username"
       >
-        <b-form-input id="input-username" v-model="username" placeholder="Username"></b-form-input>
+        <b-form-input id="input-username" v-model="userName" placeholder="Username"></b-form-input>
       </b-form-group>
 
       <b-form-group
@@ -15,7 +15,11 @@
 
       <b-button variant="outline-primary" @click="signIn">Sign in</b-button><br><br>
       <b-link :to="{ path: 'register'}">Don't have account?</b-link><br><br>
-      <b-alert variant="danger" v-model="error" dismissible>{{this.errorMessage}}</b-alert>
+      <div class="text-center ma-2">
+        <v-snackbar v-model="error">{{errorMessage}}
+          <v-btn @click="error = false" color="pink" text>Close</v-btn>
+        </v-snackbar>
+      </div>
     </b-card>
   </b-card-group>
 </template>
@@ -28,7 +32,7 @@
     name: 'Login',
     data() {
       return {
-        username: '',
+        userName: '',
         password: '',
         error: null,
         errorMessage: ''
@@ -38,28 +42,25 @@
       signIn() {
         this.error = null
 
-        const user = {
-          'userName': this.username,
+        const jwtAuthenticationRequest = {
+          'userName': this.userName,
           'password': this.password
         }
 
-        api.login(user).then(response => {
+        api.login(jwtAuthenticationRequest).then(response => {
           console.log(response)
           if (response.status === 200) {
             localStorage.setItem('token', response.data.accessToken);
             this.getRole();
           }
         }).catch(err => {
-           // if (response.status == 400) {
-             // this.errorMessage = "Wrong username or password!";
-             // this.error = true
-            //} else if (response.status == 403) {
-             // this.errorMessage = "Check your email!";
-              //this.error = true
-              console.log(err);
-            //}
-
-
+          if (err.response.status === 400) {
+            this.errorMessage = "Wrong username or password!";
+            this.error = true
+          } else if (err.response.status === 403) {
+            this.errorMessage = "Check your email!";
+            this.error = true
+          }
           })
 
 
@@ -110,6 +111,9 @@
 
 <style>
 
+  #loginForm{
+    margin-top: 100px;
+  }
   .tmp{
     background-color: black;
   }

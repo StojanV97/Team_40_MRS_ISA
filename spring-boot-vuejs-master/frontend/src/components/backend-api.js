@@ -89,9 +89,9 @@ export default {
                 password: password
             }});
     },
-    login(user)
+    login(jwtAuthenticationRequest)
     {
-        return AXIOS.post('/auth/login', user)
+        return AXIOS.post('/auth/login', jwtAuthenticationRequest)
     },
     getRoleAndId(){
         return AXIOS.get('/user/get-role-and-id');
