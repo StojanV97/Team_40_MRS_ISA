@@ -104,10 +104,11 @@ public class UserController {
     public ArrayList<Patient> getPatientsForDoctor(@PathVariable String userName) {
         System.out.println(userName);
         Doctor doctor = (Doctor) userService.findByUsername(userName);
-        System.out.println(doctor);
-        System.out.println(doctor.getListOfPatients().size());
         ArrayList<Patient> returnList = new ArrayList<Patient>();
         Collection<User> patients = userService.getPatients();
+        for(User u : patients){
+            returnList.add((Patient) u);
+        }
         return returnList;
     }
 
