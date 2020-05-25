@@ -21,11 +21,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 @RestController()
 @RequestMapping("/api")
@@ -66,7 +62,7 @@ public class UserController {
         properties.put("mail.smtp.port", "587");
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username,password);
+                return new PasswordAuthentication(username, password);
             }
         });
         MimeMessage msg = new MimeMessage(session);
@@ -90,53 +86,50 @@ public class UserController {
     }
 
     @GetMapping(path = "/user/get-role-and-id")
-    public ResponseEntity<RoleId> getRoleAndID() {
+    public ResponseEntity<UserRole> getRoleAndID() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String username = authentication.getName();
             User user = userService.findByUsername(username);
-
-            // ne znam sta se desava treba srediti
-            List<Authority> authorities = (List<Authority>) user.getAuthorities();
-            Long userID = user.getId();
-
-            RoleId roleID;
-           /* if (authorities.get(0).getName().equals(UserAuthorities.PATIENT.toString())) {
-                ClinicAdmin ca = (Patient)ca;
-                roleID =  new RoleId(authorities.get(0).getName(), ca.getId(), ca.getClinicId().getId());
-            } else if (authorities.get(0).getName().equals(UserAuthorities.CLINIC_CENTER_ADMIN.toString())) {
-                ClinicCenterAdmin cca = (ClinicCenterAdmin) cca;
-                roleID = new RoleId(authorities.get(0).getName(), cca.getId(), cca.getClinicCenter().getId());
-            } else {
-                roleID = new RoleId(authorities.get(0).getName(), userID);
-            }*/
-            roleID = new RoleId(authorities.get(0).getName(), userID);
-            return new ResponseEntity<>(roleID, HttpStatus.OK);
+            ArrayList<Authority> authorities = (ArrayList<Authority>) user.getAuthorities();
+            System.out.println(authorities.get(0).getAuthority());
+            UserRole userRole = new UserRole((authorities.get(0).getAuthority()), user);
+            return new ResponseEntity<UserRole>(userRole, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/doctor/get-patients/{userName}")
+    public ArrayList<Patient> getPatientsForDoctor(@PathVariable String userName) {
+        System.out.println(userName);
+        Doctor doctor = (Doctor) userService.findByUsername(userName);
+        System.out.println(doctor);
+        System.out.println(doctor.getListOfPatients().size());
+        ArrayList<Patient> returnList = new ArrayList<Patient>();
+        Collection<User> patients = userService.getPatients();
+        return returnList;
+    }
 
-
-    @PostMapping(value = "/staff/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createStaffMember(@RequestBody User user,@PathVariable String type) throws Exception {
-        String s = userService.createStaffMember(user,type);
+    @PostMapping(value = "/staff/registration/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createStaffMember(@RequestBody User user, @PathVariable String type) throws Exception {
+        String s = userService.createStaffMember(user, type);
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
     @PostMapping(path = "/user/delete/{userName}")
-    public ResponseEntity<String>  deleteUser(@PathVariable String userName) {
+    public ResponseEntity<String> deleteUser(@PathVariable String userName) {
         String s = userService.deleteUser(userName);
         return new ResponseEntity<String>(s, HttpStatus.OK);
 
     }
 
-    @GetMapping(path = "/user/patients")
-    public ResponseEntity<Collection<User>> getPatients(){
+    @GetMapping(path = "/user/patients",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<User>> getPatients() {
         Collection<User> listOfPatients = userService.getPatients();
         return new ResponseEntity<Collection<User>>(listOfPatients, HttpStatus.OK);
     }
+
     @GetMapping(path = "/user/{id}")
     public User getUserById(@PathVariable("id") long id) {
 
@@ -146,50 +139,51 @@ public class UserController {
         }).orElseThrow(() -> new UserNotFoundException("The user with the id " + id + " couldn't be found in the database."));
     }
 
-    @PostMapping(value = "/patient/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createPatient(@RequestBody User user,@PathVariable String type) throws Exception {
-        String s = userService.createPatient(user,type);
+    @PostMapping(value = "/patient/registration/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createPatient(@RequestBody User user, @PathVariable String type) throws Exception {
+        String s = userService.createPatient(user, type);
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/clinicadmin/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createClinicAdmin(@RequestBody User user,@PathVariable String type) throws Exception {
-        String s = userService.createClinicAdmin(user,type);
+    @PostMapping(value = "/clinicadmin/registration/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createClinicAdmin(@RequestBody User user, @PathVariable String type) throws Exception {
+        String s = userService.createClinicAdmin(user, type);
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/clinicadmin/regagain/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createClinicAdminAgain(@RequestBody User user,@PathVariable String type) throws Exception {
-        String s = userService.createClinicAdminAgain(user,type);
+    @PostMapping(value = "/clinicadmin/regagain/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createClinicAdminAgain(@RequestBody User user, @PathVariable String type) throws Exception {
+        String s = userService.createClinicAdminAgain(user, type);
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/clinicadmin/getall",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/clinicadmin/getall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<User>> getAllCAs() {
         Collection<User> cas = userService.getAllCAs();
         return new ResponseEntity<Collection<User>>(cas, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/cliniccenteradmin/registration/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createClinicCenterAdmin(@RequestBody User user,@PathVariable String type) throws Exception {
-        String s = userService.createClinicCenterAdmin(user,type);
+    @PostMapping(value = "/cliniccenteradmin/registration/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createClinicCenterAdmin(@RequestBody User user, @PathVariable String type) throws Exception {
+        String s = userService.createClinicCenterAdmin(user, type);
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/cliniccenteradmin/regagain/{type}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createClinicCenterAdminAgain(@RequestBody User user,@PathVariable String type) throws Exception {
-        String s = userService.createClinicCenterAdminAgain(user,type);
+    @PostMapping(value = "/cliniccenteradmin/regagain/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createClinicCenterAdminAgain(@RequestBody User user, @PathVariable String type) throws Exception {
+        String s = userService.createClinicCenterAdminAgain(user, type);
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/cliniccenteradmin/getall",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/cliniccenteradmin/getall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<User>> getAllCCAs() {
         Collection<User> ccas = userService.getAllCCAs();
         return new ResponseEntity<Collection<User>>(ccas, HttpStatus.OK);
     }
 
-    @RequestMapping(path="/secured", method = RequestMethod.GET)
-    public @ResponseBody String getSecured() {
+    @RequestMapping(path = "/secured", method = RequestMethod.GET)
+    public @ResponseBody
+    String getSecured() {
         LOG.info("GET successfully called on /secured resource");
         return SECURED_TEXT;
     }
@@ -201,7 +195,6 @@ public class UserController {
         LOG.info("URL entered directly into the Browser, so we need to redirect...");
         return "forward:/";
     }
-
 
 
 }

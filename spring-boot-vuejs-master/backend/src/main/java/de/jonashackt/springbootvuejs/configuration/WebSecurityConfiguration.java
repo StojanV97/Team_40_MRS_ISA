@@ -66,19 +66,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.headers().frameOptions().disable(); //ne radi konzola baze bez ove linije
-
         http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No session will be created or used by spring security
-                .and()
-                .httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/user/**").permitAll() // allow every URI, that begins with '/api/user/'
-                //.anyRequest().authenticated() // protect all other requests
-                .and()
-                .formLogin(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
+                // komunikacija izmedju klijenta i servera je stateless
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                // za neautorizovane zahteve posalji 401 gresku
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+                // svim korisnicima dopusti da pristupe putanjama /auth/**, /h2-console/** i /api/foo
+                .authorizeRequests().antMatchers("/auth/**").permitAll().antMatchers("/h2/**").permitAll().antMatchers("/api/foo").permitAll()
+                // svaki zahtev mora biti autorizovan
+                .anyRequest().authenticated().and()
+                .cors().and()
+                // presretni svaki zahtev filterom
+                .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
+                BasicAuthenticationFilter.class);
+
+        http.csrf().disable();
 
     }
     //Generalna bezbednost aplikacije
@@ -86,7 +88,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
         web.ignoring().antMatchers(HttpMethod.POST, "/api/auth/login");
-
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
     }
 

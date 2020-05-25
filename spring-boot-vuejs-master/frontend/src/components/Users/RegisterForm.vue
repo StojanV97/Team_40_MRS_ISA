@@ -91,6 +91,7 @@
 <style>
     .forma {
         margin-right: 700px;
+        height: 580px;
 
     }
 

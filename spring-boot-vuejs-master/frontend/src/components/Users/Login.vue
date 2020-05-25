@@ -1,125 +1,165 @@
 <template class="tmp">
-  <b-card-group id="loginForm">
-    <b-card border-variant="light" style="max-width: 20rem;" class="mb-2 mx-auto">
-      <b-form-group
-              label-for="input-username"
-      >
-        <b-form-input id="input-username" v-model="userName" placeholder="Username"></b-form-input>
-      </b-form-group>
+    <div>
+        <v-dialog
+                id="registerDialog"
+                v-model="dialog"
+                width="600"
+                height="300px"
+        >
+            <v-card>
+                <RegisterForm id="forma"></RegisterForm>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                            text
+                            color="primary"
+                            @click="dialog = false"
+                    >Close
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <b-card-group id="loginForm">
 
-      <b-form-group
-              label-for="input-pass"
-      >
-        <b-form-input id="input-pass" type="password" v-model="password" placeholder="Password"></b-form-input>
-      </b-form-group>
+            <b-card border-variant="light" style="max-width: 20rem;" class="mb-2 mx-auto">
+                <b-form-group
+                        label-for="input-username"
+                >
+                    <b-form-input id="input-username" v-model="userName" placeholder="Username"></b-form-input>
+                </b-form-group>
 
-      <b-button variant="outline-primary" @click="signIn">Sign in</b-button><br><br>
-      <b-link :to="{ path: 'register'}">Don't have account?</b-link><br><br>
-      <div class="text-center ma-2">
-        <v-snackbar v-model="error">{{errorMessage}}
-          <v-btn @click="error = false" color="pink" text>Close</v-btn>
-        </v-snackbar>
-      </div>
-    </b-card>
-  </b-card-group>
+                <b-form-group
+                        label-for="input-pass"
+                >
+                    <b-form-input id="input-pass" type="password" v-model="password"
+                                  placeholder="Password"></b-form-input>
+                </b-form-group>
+
+                <b-button variant="outline-primary" @click="signIn">Sign in</b-button>
+                <br><br>
+                <div class="my-2">
+                    <v-btn color="primary" @click="dialog = !dialog">Dont have an account?</v-btn>
+                </div>
+
+                <div class="text-center ma-2">
+                    <v-snackbar v-model="error">{{errorMessage}}
+                        <v-btn @click="error = false" color="pink" text>Close</v-btn>
+                    </v-snackbar>
+                </div>
+            </b-card>
+        </b-card-group>
+    </div>
+
+
 </template>
 
 <script>
-  import api from "../backend-api";
-  import {AxiosInstance as AXIOS} from "axios";
+    import api from "../backend-api";
+    import RegisterForm from "./RegisterForm";
 
-  export default {
-    name: 'Login',
-    data() {
-      return {
-        userName: '',
-        password: '',
-        error: null,
-        errorMessage: ''
-      }
-    },
-    methods: {
-      signIn() {
-        this.error = null
 
-        const jwtAuthenticationRequest = {
-          'userName': this.userName,
-          'password': this.password
+    export default {
+        name: 'Login',
+        components: {
+            RegisterForm,
+        },
+        data() {
+            return {
+                dialog: false,
+                userName: '',
+                password: '',
+                error: null,
+                errorMessage: ''
+            }
+        },
+        methods: {
+            signIn() {
+                this.error = null
+
+                const jwtAuthenticationRequest = {
+                    'userName': this.userName,
+                    'password': this.password
+                }
+
+                api.login(jwtAuthenticationRequest).then(response => {
+                    console.log(response)
+
+                    if (response.status === 200) {
+                        localStorage.setItem('token', response.data.accessToken);
+                        localStorage.setItem('loggedIn','true');
+                        this.getRole();
+                    }
+                }).catch(err => {
+                    /*   if (err.response.status === 400) {
+                         this.errorMessage = "Wrong username or password!";
+                         this.error = true
+                       } else if (err.response.status === 403) {
+                         this.errorMessage = "Check your email!";
+                         this.error = true
+                       }*/
+                    console.log()
+                })
+
+
+            },
+            getRole() {
+                api.setAuthentication().defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+                api.getRoleAndId()
+                    .then(response => {
+                        localStorage.setItem("userName",response.data.userID.username);
+                        localStorage.setItem("firstName",response.data.userID.firstName);
+                        localStorage.setItem("lastName",response.data.userID.lastName);
+                        localStorage.setItem("role",response.data.role);
+                        console.log(response.data.role)
+                      if (response.data.role === "DOCTOR") {
+                            this.$router.push('/doctor-homepage')
+                        } else if (response.data.role === "CLINIC_ADMIN") {
+                            this.$router.push('/clinic-admin-profile')
+                        } else if (response.data.role === "CLINIC_CENTER_ADMIN") {
+                            this.$router.push('/center-admin-profile')
+                        } else if (response.data.role === "PATIENT") {
+                            this.$router.push('/patient-homepage')
+                        } else if (response.data.role === "NURSE") {
+                            this.$router.push('/nurse-homepage')
+                        }
+                    }).catch(e => {
+                    console.log("GetRoleCatchBlock");
+                });
+            }
+
+            /*
+            isChangedPass(id) {
+              AXIOS.get("/users/" + id)
+                      .then(response => {
+                        if (response.data.passChanged == false) {
+                          this.$router.push("/change-pass/" + response.data.id)
+                        }
+                      })
+                      .catch(err => console.log(err))
+            }
+          }
+
+
+               */
         }
 
-        api.login(jwtAuthenticationRequest).then(response => {
-          console.log(response)
-          if (response.status === 200) {
-            localStorage.setItem('token', response.data.accessToken);
-            //this.getRole();
-          }
-        }).catch(err => {
-          if (err.response.status === 400) {
-            this.errorMessage = "Wrong username or password!";
-            this.error = true
-          } else if (err.response.status === 403) {
-            this.errorMessage = "Check your email!";
-            this.error = true
-          }
-          })
-
-
-      },
-      getRole() {
-
-        AXIOS.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem('token');
-
-        api.getRoleAndId()
-                .then(response => {
-                  console.log(response)
-            /*   if (response.data.role == "PATIENT") {
-                    //this.isChangedPass(response.data.userID)
-                    this.$router.push("/phomepage")
-                  } else if (response.data.role == "DOCTOR") {
-                    //this.isChangedPass(response.data.userID)
-                    this.$router.push("/dhomepage")
-                  } else if (response.data.role == "NURSE") {
-                    //this.isChangedPass(response.data.userID)
-                    this.$router.push("/nursehomepage/")
-                  } else if (response.data.role == "CLINIC_CENTER_ADMIN") {
-                    //this.isChangedPass(response.data.userID)
-                    this.$router.push("/ccaprofile")
-                  } else if (response.data.role == "USER") {
-                    this.$router.push("/" + response.data.userID + "/home/reservations")
-                  } else {
-                    this.$router.push("/phomepage")
-                  } */
-                }).catch(e => {
-                  console.log("asdasdasdads");
-        });
-      }
-
-      /*
-      isChangedPass(id) {
-        AXIOS.get("/users/" + id)
-                .then(response => {
-                  if (response.data.passChanged == false) {
-                    this.$router.push("/change-pass/" + response.data.id)
-                  }
-                })
-                .catch(err => console.log(err))
-      }
     }
-
-
-         */
-    }
-
-  }
 </script>
 
 <style>
+    #forma {
+        margin-top: -80px;
+        margin-left: 65px;
+        margin-bottom: 60px;
 
-  #loginForm{
-    margin-top: 100px;
-  }
-  .tmp{
-    background-color: black;
-  }
+    }
+
+    #loginForm {
+        margin-top: 100px;
+    }
+
+    .tmp {
+        background-color: black;
+    }
 </style>
 

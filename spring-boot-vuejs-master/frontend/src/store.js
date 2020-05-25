@@ -12,13 +12,25 @@ export default new Vuex.Store({
         loginSuccess: false,
         loginError: false,
         userName: null,
-        userPass: null
+        userPass: null,
+        loggedInUser : {
+            username: "",
+            id : "",
+            firstName: "",
+            lastName: "",
+            email:"",
+            role: ""
+        }
     },
     mutations: {
+        logIn (state){
+            state.loginSuccess = true;
+        }
     },
     actions: {
     },
     getters: {
+        getRole : state => state.loggedInUser.role,
         GetlistOfRooms : state => state.listOfRooms,
         isLoggedIn: state => state.loginSuccess,
         hasLoginErrored: state => state.loginError,

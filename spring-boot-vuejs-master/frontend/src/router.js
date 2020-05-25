@@ -9,21 +9,16 @@ import Protected from '@/components/Protected'
 import Login from './components/Users/Login'
 import store from './store'
 import MedicalStaffRegistrationForm from "./components/Users/MedicalStaffRegistrationForm";
-import DeleteUser from "./components/Users/DeleteUser";
-import RoomRegistrationForm from "./components/Utility/RoomRegistrationForm";
 import RoomConfig from "./components/Utility/RoomConfig";
-import EditRoom from "./components/Utility/EditRoom";
-import ClinicRegistrationForm from "./components/Utility/ClinicRegistrationForm";
-import RegisterClinicAdmin from "./components/Users/RegisterClinicAdmin";
 import EditUser from "./components/Users/EditUser";
 import RegisterForm from "./components/Users/RegisterForm";
 import ClinicCenterAdminRegistrationForm from "./components/Users/ClinicCenterAdminRegistrationForm";
 import ClinicCenterAdminEditForm from "./components/Users/ClinicCenterAdminEditForm";
-import ClinicEditForm from "./components/Utility/ClinicEditForm";
 import DoctorHomePage from "./components/HomePage/DoctorHomePage";
 import CCAProfile from "./components/Profiles/CCAProfile";
 import PatientHomePage from "./components/HomePage/PatientHomePage";
 import CAProfile from "./components/Profiles/CAProfile";
+import NurseHomePage from "./components/HomePage/NurseHomePage";
 
 
 Vue.use(Router);
@@ -31,45 +26,90 @@ Vue.use(Router);
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
-        {path: '/', component: Login},
-        {path: '/staffregistration', component: MedicalStaffRegistrationForm},
-        {path: '/callservice', component: Service},
-        {path: '/deleteStaff', component: DeleteUser},
-        {path: '/stafregistration', component: MedicalStaffRegistrationForm},
-        {path: '/clinicregistration', component: ClinicRegistrationForm},
-        {path: '/roomregistration', component: RoomRegistrationForm},
-        {path: '/roomconfiguration', component: RoomConfig},
-        {path: '/roomedit', component: EditRoom},
-        {path: '/regclinicadmin', component: RegisterClinicAdmin},
-        {path: '/editUser', component: EditUser},
-        {path: '/ccareg', component: ClinicCenterAdminRegistrationForm},
-        {path: '/ccaedit', component: ClinicCenterAdminEditForm},
-        {path: '/clinicedit', component: ClinicEditForm},
-        {path: '/register', component: RegisterForm},
-        {path: '/dhomepage', component: DoctorHomePage},
-        {path: '/caprofile', component: CAProfile},
-        {path: '/ccaprofile', component: CCAProfile},
-        {path: '/phomepage', component: PatientHomePage},
         {
-            path: '/protected',
-            component: Protected,
+            path: '/', component: Login,
+            beforeEnter(to, from, next) {
+                localStorage.setItem('loggedIn', 'false');
+                localStorage.setItem('token', '');
+                localStorage.setItem('firstName', '');
+                localStorage.setItem('lastName', '');
+                localStorage.setItem('userName', '');
+                next();
+            }
+        },
+        {
+            path: '/room-config', component: RoomConfig,
             meta: {
                 requiresAuth: true
             }
         },
-
-        // otherwise redirect to home
+        {
+            path: '/editUser', component: EditUser,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/doctor-homepage', component: DoctorHomePage,
+            beforeEnter(to, from, next) {
+                if (localStorage.getItem('role') === 'DOCTOR') {
+                    next();
+                } else {
+                    next('/')
+                }
+            },
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {path: '/clinic-admin-profile', component: CAProfile},
+        {
+            path: '/center-admin-profile', component: CCAProfile,
+            beforeEnter(to, from, next) {
+                if (localStorage.getItem('role') === 'CLINIC_CENTER_ADMIN') {
+                    next();
+                } else {
+                    next('/')
+                }
+            },
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {path: '/patient-homepage', component: PatientHomePage,
+            beforeEnter(to, from, next) {
+                if (localStorage.getItem('role') === 'PATIENT') {
+                    next();
+                } else {
+                    next('/')
+                }
+            },
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {path: '/nurse-homepage', component: NurseHomePage,
+            beforeEnter(to, from, next) {
+                if (localStorage.getItem('role') === 'NURSE') {
+                    next();
+                } else {
+                    next('/')
+                }
+            },
+            meta: {
+                requiresAuth: true
+            }
+        },
         {path: '*', redirect: '/'}
+
     ]
 });
-
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        // this route requires auth, check if logged in
-        // if not, redirect to login page.
-        if (!store.getters.isLoggedIn) {
+        // pre  pristupa url-u proverava da li komponenta sa tim urlom zahteva autorizaciju (requiresAuth)
+        if (!localStorage.getItem('token')) {
             next({
-                path: '/login'
+                path: '/'
             })
         } else {
             next();
@@ -78,5 +118,6 @@ router.beforeEach((to, from, next) => {
         next(); // make sure to always call next()!
     }
 });
+
 
 export default router;

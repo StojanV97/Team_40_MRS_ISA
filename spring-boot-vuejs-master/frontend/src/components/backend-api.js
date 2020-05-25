@@ -2,12 +2,15 @@ import axios from 'axios'
 
 const AXIOS = axios.create({
   baseURL: `/api`,
-  timeout: 1000
+  timeout: 2000
 });
 
 
 export default {
 
+    setAuthentication(token){
+        return AXIOS;
+    },
     sendEmail(email){
         return AXIOS.post('/email/' + email);
     }
@@ -95,6 +98,10 @@ export default {
     },
     getRoleAndId(){
         return AXIOS.get('/user/get-role-and-id');
+    }
+    ,
+    getPatientsForDoctor(userName){
+        return AXIOS.get('/doctor/get-patients/' + userName);
     }
 
 }

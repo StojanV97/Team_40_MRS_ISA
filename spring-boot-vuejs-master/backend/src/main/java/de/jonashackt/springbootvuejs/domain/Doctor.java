@@ -11,7 +11,6 @@ import java.util.function.LongSupplier;
 @Table(name="doctors")
 public class Doctor extends User {
 
-    @Transient
     ArrayList<String> listOfPatients;
     public Doctor() {
         super();
@@ -24,5 +23,9 @@ public class Doctor extends User {
 
     public ArrayList<String> getListOfPatients() {
         return listOfPatients;
+    }
+
+    public void setListOfPatients(String listOfPatients) {
+        this.listOfPatients .add(listOfPatients);
     }
 }

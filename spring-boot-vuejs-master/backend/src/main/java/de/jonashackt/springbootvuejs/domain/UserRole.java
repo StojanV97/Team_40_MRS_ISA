@@ -1,16 +1,16 @@
 package de.jonashackt.springbootvuejs.domain;
 
-public class RoleId {
+public class UserRole {
 
     private String role;
-    private Long userID;
+    private User user;
     //private Integer adminOf;
 
-    public RoleId() {}
+    public UserRole() {}
 
-    public RoleId(String role, Long userID) {
+    public UserRole(String role, User userID) {
         this.role = role;
-        this.userID = userID;
+        this.user = userID;
     }
 
     /*
@@ -29,12 +29,12 @@ public class RoleId {
         this.role = role;
     }
 
-    public Long getUserID() {
-        return userID;
+    public User getUserID() {
+        return user;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
+    public void setUserID(User user) {
+        this.user = user;
     }
 
     /*public Integer getAdminOf() {

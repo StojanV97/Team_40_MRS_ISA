@@ -112,7 +112,7 @@
         </v-navigation-drawer>
         <v-app-bar app clipped-left>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title>Dr. Doc Doc</v-toolbar-title>
+            <v-toolbar-title>Dr. {{this.name}} {{this.lastName}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <label for="signout">Sign Out</label>
             <v-btn id="signout" icon @click="signOut">
@@ -246,20 +246,22 @@
                 {text: 'Medical History', value: 'medicalHistory'},
             ],
             patients: [],
+            name: '',
+            lastName: '',
 
         }),
         mounted() {
-            api.getPatients().then(response => {
-                console.log(response.data)
+            api.setAuthentication().defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            this.name = localStorage.getItem('firstName')
+            this.lastName = localStorage.getItem('lastName')
+            api.getPatientsForDoctor(localStorage.getItem('userName')).then(response => {
                 this.patients = response.data;
-
             }).catch(e => {
                 console.log(e)
             })
         },
         methods: {
             getOption(text) {
-                console.log(text)
                 if (text === "Dark mode On/Off") {
                     this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
                     this.calendar = false;
@@ -296,11 +298,11 @@
                 this.dialog = true;
             },
             signOut() {
-                this.$router.push('home')
+                this.$router.push('/')
             }
         },
         created() {
-            this.$vuetify.theme.dark = true
+            this.$vuetify.theme.dark = false
         },
     }
 </script>

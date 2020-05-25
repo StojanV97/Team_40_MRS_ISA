@@ -1,11 +1,9 @@
 <template>
     <v-app id="inspire">
-        <PatientProfile v-if="this.showProfile"></PatientProfile>
-        <EditUser v-if="this.showEditProfile"></EditUser>
-        <ScheduleHistory v-if="this.showExaminationHistory"></ScheduleHistory>
-        <v-card v-if="this.showClinics">
+        <calendar id="calendar" v-if="this.showCalendar"></calendar>
+        <v-card v-if="this.showPatients">
             <v-card-title>
-                Clinics
+                Patients
                 <v-spacer></v-spacer>
                 <v-text-field
                         v-model="search"
@@ -17,22 +15,21 @@
             </v-card-title>
             <v-data-table
                     :headers="headers"
-                    :items="clinics"
+                    :items="patients"
                     :search="search"
                     height="554"
             >
                 <template v-slot:item="row">
                     <tr>
                         <td>{{row.item.id}}</td>
-                        <td>{{row.item.clinicName}}</td>
-                        <td>{{row.item.address}}</td>
-
+                        <td>{{row.item.firstName}}</td>
+                        <td>{{row.item.lastName}}</td>
+                        <td>{{row.item.email}}</td>
 
                     </tr>
                 </template>
             </v-data-table>
         </v-card>
-
 
         <v-navigation-drawer
                 v-model="drawer"
@@ -69,7 +66,7 @@
                             append-icon=""
                     >
                         <template v-slot:activator>
-                            <v-list-item-content >
+                            <v-list-item-content>
                                 <v-list-item-title>
                                     {{ item.text }}
                                 </v-list-item-title>
@@ -109,7 +106,7 @@
         </v-navigation-drawer>
         <v-app-bar app clipped-left>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title>Patient Patientic</v-toolbar-title>
+            <v-toolbar-title>Dr. {{this.nurseName}} {{this.lastName}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <label for="signout">Sign Out</label>
             <v-btn id="signout" icon @click="signOut">
@@ -126,57 +123,48 @@
                     </v-col>
                 </v-row>
             </v-container>
-        </v-content>
-
+           </v-content>
     </v-app>
 </template>
 
 <script>
-
-    import PatientProfile from "../Profiles/PatientProfile";
-    import ScheduleHistory from "../Scheduling/ScheduleHistory";
-    import EditUser from "../Users/EditUser";
+    import api from "../backend-api";
+    import Calendar from "./Calendar";
+    import DoctorProfile from "../Profiles/DoctorProfile";
+    import ScheduleExemination from "../Scheduling/ScheduleExemination";
 
 
     export default {
-        components:{
-            ScheduleHistory,
-            PatientProfile,
-            EditUser
-
-
-
+        components: {
+            Calendar,
         },
         props: {
             source: String,
         },
         data: () => ({
-            showProfile : false,
-            showEditProfile : false,
+            showProfile: false,
             showCalendar: false,
             dialog: false,
-            showExaminationHistory : false,
-            dialogDaysOff : false,
+            showExaminationScheduling: false,
+            dialogDaysOff: false,
             drawer: null,
-            showClinics:false,
+            showPatients: false,
             items: [
-                { icon: 'mdi-contacts', text: 'List of clinics' },
-                { icon: 'mdi-history', text: 'Examination History' },
-                //{ icon: 'mdi-history', text: 'Working calendar' },
-                //{ icon: 'mdi-iframe-parentheses', text: 'Request days off' },
-                { icon: 'mdi-account-cog', text: 'Profile' },
-                { icon: 'mdi-account-cog', text: 'Edit Profile' },
+                {icon: 'mdi-contacts', text: 'List of patients'},
+                {icon: 'mdi-history', text: 'Schedule examination'},
+                {icon: 'mdi-history', text: 'Working calendar'},
+                {icon: 'mdi-iframe-parentheses', text: 'Request days off'},
+                {icon: 'mdi-account-cog', text: 'Profile'},
+                {icon: 'mdi-plus-network', text: 'Prescribe Recipe'},
                 {
                     icon: 'mdi-cog',
                     'icon-alt': 'mdi-cog',
                     text: 'Settings',
                     model: false,
                     children: [
-                        { text: 'Dark mode On/Off' },
+                        {text: 'Dark mode On/Off'},
                     ],
                 },
-                { icon: 'mdi-help-circle', text: 'Help' },
-
             ],
             search: '',
             headers: [
@@ -186,121 +174,70 @@
                     sortable: false,
                     value: 'id',
                 },
-                { text: 'Clinic Name', value: 'clinicName' },
-                { text: 'Address', value: 'address' },
-
-                //{ text: 'Medical History', value: 'medicalHistory' },
+                {text: 'First Name', value: 'firstName'},
+                {text: 'Last Name', value: 'lastName'},
+                {text: 'Email', value: 'email'},
             ],
-            clinics: [
-                {
-                    id: '1',
-                    clinicName: 'Clinic1',
-                    address: 'clinic adress1',
-
-
-                },
-                {
-                    id: '2',
-                    clinicName: 'Clinic2',
-                    address: 'clinic adress2',
-
-
-
-                },
-                {
-                    id: '3',
-                    clinicName: 'Clinic3',
-                    address: 'clinic adress3',
-
-
-
-                },
-                {
-                    id: '4',
-                    clinicName: 'Clinic4',
-                    address: 'clinic adress4',
-                    email: 'genericEmail@lavabit.com',
-
-
-                },
-                {
-                    id: '5',
-                    clinicName: 'Clinic4',
-                    address: 'clinic adress4',
-                    email: 'genericEmail@lavabit.com',
-
-
-                },
-
-
-
-            ],
+            nurseName : '',
+            lastName: '',
+            patients: [],
 
         }),
-        methods:{
+        mounted() {
+            this.nurseName = localStorage.getItem('firstName')
+            this.lastName = localStorage.getItem('lastName')
+            api.getPatients().then(response => {
+                console.log(response.data)
+                this.patients = response.data;
 
-
-            getOption(text){
+            }).catch(e => {
+                console.log(e)
+            })
+        },
+        methods: {
+            getOption(text) {
                 console.log(text)
-                if(text === "Dark mode On/Off"){
+                if (text === "Dark mode On/Off") {
                     this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
                     this.calendar = false;
-                }else if(text === "Working calendar"){
+                } else if (text === "Working calendar") {
                     this.showCalendar = true;
                     this.showProfile = false;
-                    this.showClinics = false;
-                    this.showExaminationHistory = false;
-                    this.showEditProfile = false;
-
-                }else if(text === "List of clinics"){
-                    this.showClinics = true;
+                    this.showPatients = false;
+                    this.showExaminationScheduling = false;
+                } else if (text === "List of patients") {
+                    this.showPatients = true;
                     this.showProfile = false;
                     this.showCalendar = false;
-                    this.showExaminationHistory = false;
-                    this.showEditProfile = false;
-
-                }else if(text === "Profile"){
-                    this.showClinics = false;
+                    this.showExaminationScheduling = false;
+                } else if (text === "Profile") {
+                    this.showPatients = false;
                     this.showCalendar = false;
                     this.showProfile = true;
-                    this.showExaminationHistory = false;
-                    this.showEditProfile = false;
-
-                }else if(text === "Request days off"){
+                    this.showExaminationScheduling = false;
+                } else if (text === "Request days off") {
                     this.dialogDaysOff = true;
-                }else if(text === "Examination History"){
-                    this.showExaminationHistory = true;
+                } else if (text === "Prescribe Recipe") {
+                    this.showExaminationScheduling = true;
                     this.showProfile = false;
                     this.showCalendar = false;
-                    this.showEditProfile = false;
-
-                    this.showClinics = false;
-
-                }else if(text === "Edit Profile"){
-                    this.showExaminationHistory = false;
+                    this.showPatients = false;
+                } else {
+                    this.showExaminationScheduling = false;
                     this.showProfile = false;
                     this.showCalendar = false;
-                    this.showClinics = false
-                    this.showEditProfile = true;
-
-                }
-                else{
-                    this.showExaminationHistory = false;
-                    this.showProfile = false;
-                    this.showCalendar = false;
-                    this.showClinics = false;
-                    this.showEditProfile = false;
+                    this.showPatients = false;
                 }
             },
-            showHistoryDialog(){
+            showHistoryDialog() {
                 this.dialog = true;
             },
-            signOut(){
+            signOut() {
                 this.$router.push('/')
             }
         },
         created() {
-            this.$vuetify.theme.dark = true
+            this.$vuetify.theme.dark = false
         },
     }
 </script>
@@ -311,4 +248,7 @@
         height: 100vh;
     }
 
+    #calendar {
+        margin-top: -10px;
+    }
 </style>

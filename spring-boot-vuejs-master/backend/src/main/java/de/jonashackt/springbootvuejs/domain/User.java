@@ -27,7 +27,6 @@ public class User implements UserDetails {
     private String password;
     private boolean enabled;
     private Timestamp lastPasswordResetDate;
-    @Transient
     private ArrayList<Authority> authorities;
 
 

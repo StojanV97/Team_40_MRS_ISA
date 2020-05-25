@@ -47,11 +47,11 @@ public class SpringBootVuejsApplication {
 			Authority patientAuthority = new Authority();
 			patientAuthority.setName(String.valueOf(UserAuthorities.PATIENT));
 			Authority userAuthority = new Authority();
-			patientAuthority.setName(String.valueOf(UserAuthorities.USER));
+			userAuthority.setName(String.valueOf(UserAuthorities.USER));
 			Authority clinicAdminAuthority = new Authority();
-			patientAuthority.setName(String.valueOf(UserAuthorities.CLINIC_ADMIN));
+			clinicAdminAuthority.setName(String.valueOf(UserAuthorities.CLINIC_ADMIN));
 			Authority clinicCenterAdminAuthority = new Authority();
-			patientAuthority.setName(String.valueOf(UserAuthorities.CLINIC_CENTER_ADMIN));
+			clinicCenterAdminAuthority.setName(String.valueOf(UserAuthorities.CLINIC_CENTER_ADMIN));
 			//============================================================================
 
 			//Users
@@ -63,8 +63,8 @@ public class SpringBootVuejsApplication {
 			clinincCenterAdmin.getAuthorities().add(clinicCenterAdminAuthority);
 			clinincAdmin.getAuthorities().add(clinicAdminAuthority);
 			nurse.getAuthorities().add(nurseAuthority);
-			patient.getAuthorities().add(userAuthority);
-			doctor.getListOfPatients().add(patient.getUsername());
+			patient.getAuthorities().add(patientAuthority);
+			doctor.setListOfPatients(patient.getFirstName());
 			doctor.getAuthorities().add(doctorAuthority);
 			userRepository.save(patient);
 			userRepository.save(doctor);
