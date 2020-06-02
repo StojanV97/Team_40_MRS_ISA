@@ -1,6 +1,8 @@
 package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.domain.Clinic;
+import de.jonashackt.springbootvuejs.domain.Doctor;
+import de.jonashackt.springbootvuejs.domain.Room;
 import de.jonashackt.springbootvuejs.domain.User;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.repository.ClinicRepository;
@@ -41,6 +43,11 @@ public class ClinicController {
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
+    @GetMapping("/admin/get-clinic/{userName}")
+    public Clinic getClinicForAdmin(@PathVariable String userName){
+        return new Clinic();
+    }
+
     @GetMapping(value = "/clinic/getall",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<Clinic>> getAllClinics() {
         Collection<Clinic> clinics = clinicService.getAllClinics();
@@ -50,6 +57,14 @@ public class ClinicController {
     @GetMapping(path = "/clinic/{id}")
     public ResponseEntity<Clinic> getClinicById(@PathVariable("id") long id) {
         Clinic c = clinicService.getClinic(id);
+        for(Room c1 : c.getRooms() ){
+            System.out.println(c1);
+        }
+
+        for(Doctor d : c.getDoctors()){
+            System.out.println("doktorjeovaj");
+            System.out.println(d);
+        }
         return new ResponseEntity<Clinic>(c, HttpStatus.OK);
     }
 }

@@ -1,25 +1,44 @@
 package de.jonashackt.springbootvuejs.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.print.Doc;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+@SuppressWarnings("ALL")
 @Entity
-@Table(name="clinics")
+@Table(name = "clinics")
 public class Clinic {
     @Id
     private long id;
     private String name;
     private String address;
-    private String administrator; // ovo treba biti admin klinike, kad se napravi
+    private ArrayList<String> administrator; // ovo treba biti admin klinike, kad se napravi
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Clinic_Doctors", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
+    private Set<Doctor> doctors = new HashSet<Doctor>();
 
-    public Clinic(){}
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "CLINIC_ROOMS", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "roomID"))
+    private Set<Room> rooms = new HashSet<Room>();
 
-    public Clinic(long id, String name, String address, String administrator) {
+    public Clinic() {
+    }
+
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    public Set<Doctor> getDoctors() {
+        return doctors;
+    }
+
+    public Clinic(long id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.administrator = administrator;
+        this.administrator = new ArrayList<String>();
     }
 
     public long getId() {
@@ -34,7 +53,7 @@ public class Clinic {
         return address;
     }
 
-    public String getAdministrator() {
+    public ArrayList<String> getAdministrator() {
         return administrator;
     }
 
@@ -51,6 +70,6 @@ public class Clinic {
     }
 
     public void setAdministrator(String administrator) {
-        this.administrator = administrator;
+        this.administrator.add(administrator);
     }
 }

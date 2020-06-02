@@ -103,7 +103,10 @@ export default {
     getPatientsForDoctor(userName){
         return AXIOS.get('/doctor/get-patients/' + userName);
     }
-
+    ,
+    getClinicForAdmin(userName){
+        return AXIOS.get('/admin/get-clinic/' + userName);
+    }
 }
 
 

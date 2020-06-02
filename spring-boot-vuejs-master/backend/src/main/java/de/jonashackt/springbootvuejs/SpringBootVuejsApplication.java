@@ -1,8 +1,9 @@
 package de.jonashackt.springbootvuejs;
 
 import de.jonashackt.springbootvuejs.domain.*;
+import de.jonashackt.springbootvuejs.joinedtables.ClinicRooms;
+import de.jonashackt.springbootvuejs.joinedtables.Clinic_Doctors;
 import de.jonashackt.springbootvuejs.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +24,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
+	CommandLineRunner runner(ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
 		return args -> {
 
 			//Date
@@ -54,11 +55,29 @@ public class SpringBootVuejsApplication {
 			clinicCenterAdminAuthority.setName(String.valueOf(UserAuthorities.CLINIC_CENTER_ADMIN));
 			//============================================================================
 
+			//Utilty
+			Room room = new Room(14,"Examination");
+			Clinic clinic = new Clinic(1, "Klinika", "Njegoseva 12");
+			clinic.setAdministrator("ClinicAdmin");
+			room.setCalendar(listOfDates);
+			roomRepository.save(room);
+			roomRepository.save(new Room(2,"Operation"));
+			roomRepository.save(new Room(3, "Operation"));
+			roomRepository.save(new Room(4,"Operation"));
+			roomRepository.save(new Room(5, "Operation"));
+			clinicRepository.save(clinic);
+			//===============================================================================================================================
+
 			//Users
 			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin("ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
-			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode(bc.encode("password")));
+			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
 			Patient patient = new Patient("Patient","Patient","Patient@gmail.com","Patient",bc.encode("password"));
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
+			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
+			Doctor doctor22 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor22",bc.encode("password"));
+			Doctor doctor23 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor23",bc.encode("password"));
+			Doctor doctor3 = new Doctor("Doctor3","Doctor3","Doctor3@gmail.com","Doctor3",bc.encode("password"));
+			Doctor doctor4 = new Doctor("Doctor4","Doctor4","Doctor4@gmail.com","Doctor4",bc.encode("password"));
 			Nurse nurse = new Nurse("Nurse","Nurse","Nurse@gmail.com","Nurse",bc.encode("password"));
 			clinincCenterAdmin.getAuthorities().add(clinicCenterAdminAuthority);
 			clinincAdmin.getAuthorities().add(clinicAdminAuthority);
@@ -66,8 +85,17 @@ public class SpringBootVuejsApplication {
 			patient.getAuthorities().add(patientAuthority);
 			doctor.setListOfPatients(patient.getFirstName());
 			doctor.getAuthorities().add(doctorAuthority);
+			doctor2.getAuthorities().add(doctorAuthority);
+			doctor3.getAuthorities().add(doctorAuthority);
+			doctor4.getAuthorities().add(doctorAuthority);
+			clinincAdmin.setClinicName((long) 1);
 			userRepository.save(patient);
 			userRepository.save(doctor);
+			userRepository.save(doctor2);
+			userRepository.save(doctor3);
+			userRepository.save(doctor4);
+			userRepository.save(doctor22);
+			userRepository.save(doctor23);
 			userRepository.save(clinincCenterAdmin);
 			userRepository.save(clinincAdmin);
 			userRepository.save(nurse);
@@ -76,20 +104,23 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
 
-
 			//===========================================================================
 
-			//Utilty
-			Room room = new Room(14,"Examination");
-			room.setCalendar(listOfDates);
-			roomRepository.save(room);
-			roomRepository.save(new Room(2,"Operation"));
-			roomRepository.save(new Room(3, "Operation"));
-			roomRepository.save(new Room(4,"Operation"));
-			roomRepository.save(new Room(5, "Operation"));
-			clinicRepository.save(new Clinic(1, "klinika 1", "adresa 1", "admin1"));
-			clinicRepository.save(new Clinic(2, "klinika 2", "adresa 2", "admin2"));
-			//===============================================================================================================================
+            Clinic_Doctors cd = new Clinic_Doctors(clinic.getId(),doctor.getId());
+			Clinic_Doctors cd2 = new Clinic_Doctors(clinic.getId(),doctor2.getId());
+			Clinic_Doctors cd3 = new Clinic_Doctors(clinic.getId(),doctor3.getId());
+			Clinic_Doctors cd4 = new Clinic_Doctors(clinic.getId(),doctor4.getId());
+			Clinic_Doctors cd32 = new Clinic_Doctors(clinic.getId(),doctor22.getId());
+			Clinic_Doctors cd43 = new Clinic_Doctors(clinic.getId(),doctor23.getId());
+            clinicDoctorRepository.save(cd);
+			clinicDoctorRepository.save(cd2);
+			clinicDoctorRepository.save(cd3);
+			clinicDoctorRepository.save(cd4);
+			clinicDoctorRepository.save(cd32);
+			clinicDoctorRepository.save(cd43);
+			ClinicRooms clinicRoom = new ClinicRooms(clinic.getId(),room.getRoomID());
+			clinicRoomRepository.save(clinicRoom);
+
 		};
 
 	}

@@ -9,13 +9,17 @@ import javax.persistence.Table;
 public class ClinicAdmin extends User {
 
 
-
+    public Long clinicID;
     public ClinicAdmin() {
         super();
     }
 
     public ClinicAdmin(String firstName, String lastName,String email, String userName, String password) {
         super(firstName,lastName,email,userName,password);
+        this.clinicID = null;
     }
 
+    public void setClinicName(Long clinicName) {
+        this.clinicID = clinicName;
+    }
 }
