@@ -1,13 +1,10 @@
-<template>
-    
-</template>
+<template></template>
 
 <script>
-    export default {
-        name: "ClinicCenterAdminDeleteForm"
-    }
+export default {
+  name: "ClinicCenterAdminDeleteForm"
+};
 </script>
 
 <style scoped>
-
 </style>

@@ -56,15 +56,19 @@ public class SpringBootVuejsApplication {
 			//============================================================================
 
 			//Utilty
-			Room room = new Room(14,"Examination");
+			Room room = new Room(1,"Examination");
+			Room room2 = new Room(2,"Examination");
+			Room room3 = new Room(3,"Operation");
+			Room room4 = new Room(4,"Examination");
+			Room room5 = new Room(5,"Operation");
 			Clinic clinic = new Clinic(1, "Klinika", "Njegoseva 12");
 			clinic.setAdministrator("ClinicAdmin");
 			room.setCalendar(listOfDates);
 			roomRepository.save(room);
-			roomRepository.save(new Room(2,"Operation"));
-			roomRepository.save(new Room(3, "Operation"));
-			roomRepository.save(new Room(4,"Operation"));
-			roomRepository.save(new Room(5, "Operation"));
+			roomRepository.save(room2);
+			roomRepository.save(room3);
+			roomRepository.save(room4);
+			roomRepository.save(room5);
 			clinicRepository.save(clinic);
 			//===============================================================================================================================
 
@@ -119,7 +123,15 @@ public class SpringBootVuejsApplication {
 			clinicDoctorRepository.save(cd32);
 			clinicDoctorRepository.save(cd43);
 			ClinicRooms clinicRoom = new ClinicRooms(clinic.getId(),room.getRoomID());
+			ClinicRooms clinicRoom2 = new ClinicRooms(clinic.getId(),room2.getRoomID());
+			ClinicRooms clinicRoom3 = new ClinicRooms(clinic.getId(),room3.getRoomID());
+			ClinicRooms clinicRoom4 = new ClinicRooms(clinic.getId(),room4.getRoomID());
+			ClinicRooms clinicRoom5 = new ClinicRooms(clinic.getId(),room5.getRoomID());
 			clinicRoomRepository.save(clinicRoom);
+			clinicRoomRepository.save(clinicRoom2);
+			clinicRoomRepository.save(clinicRoom3);
+			clinicRoomRepository.save(clinicRoom4);
+			clinicRoomRepository.save(clinicRoom5);
 
 		};
 

@@ -8,6 +8,7 @@ import de.jonashackt.springbootvuejs.service.impl.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +52,7 @@ public class UserController {
 
     @PostMapping(value = "/email/{email}")
     public ResponseEntity<String> sendEmail(@PathVariable String email) throws MessagingException {
-        System.out.println(email);
+
         final String username = "team40mrsisa@gmail.com";
         final String password = "no0013144";
 
@@ -93,7 +94,6 @@ public class UserController {
             String username = authentication.getName();
             User user = userService.findByUsername(username);
             ArrayList<Authority> authorities = (ArrayList<Authority>) user.getAuthorities();
-            System.out.println(authorities.get(0).getAuthority());
             UserRole userRole = new UserRole((authorities.get(0).getAuthority()), user);
             return new ResponseEntity<UserRole>(userRole, HttpStatus.OK);
         }
@@ -102,7 +102,6 @@ public class UserController {
 
     @GetMapping("/doctor/get-patients/{userName}")
     public ArrayList<Patient> getPatientsForDoctor(@PathVariable String userName) {
-        System.out.println(userName);
         Doctor doctor = (Doctor) userService.findByUsername(userName);
         ArrayList<Patient> returnList = new ArrayList<Patient>();
         Collection<User> patients = userService.getPatients();
@@ -111,6 +110,7 @@ public class UserController {
         }
         return returnList;
     }
+
 
     @PostMapping(value = "/staff/registration/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createStaffMember(@RequestBody User user, @PathVariable String type) throws Exception {
@@ -182,6 +182,18 @@ public class UserController {
         return new ResponseEntity<Collection<User>>(ccas, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/admin/change-clinic-id/{userName}/{newID}")
+    public ResponseEntity<String> createClinicCenterAdminAgain(@PathVariable String userName,@PathVariable Long newID) throws Exception {
+        ClinicAdmin s = (ClinicAdmin) userService.findByUsername(userName);
+        ClinicAdmin cl = new ClinicAdmin(s.getFirstName(),s.getLastName(),s.getEmail(),s.getUsername(),s.getPassword());
+        cl.setClinicName(newID);
+        for(Authority a : s.getAuthorities()){
+            cl.setAuthorities(a);
+        }
+        userService.deleteUser(s.getUsername());
+        userRepository.save(cl);
+        return new ResponseEntity<String>("", HttpStatus.OK);
+    }
     @RequestMapping(path = "/secured", method = RequestMethod.GET)
     public @ResponseBody
     String getSecured() {
@@ -196,6 +208,7 @@ public class UserController {
         LOG.info("URL entered directly into the Browser, so we need to redirect...");
         return "forward:/";
     }
+
 
 
 }

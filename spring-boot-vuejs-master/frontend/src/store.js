@@ -1,37 +1,45 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import api from './components/backend-api'
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        listaObrisanih : [],
-        datesEditedRoom : [],
-        listOfRooms : [],
+        listaObrisanih: [],
+        datesEditedRoom: [],
+        listOfRooms: [],
         loginSuccess: false,
         loginError: false,
+        clinic: null,
         userName: null,
         userPass: null,
-        loggedInUser : {
+        loggedInUser: {
             username: "",
-            id : "",
+            id: "",
             firstName: "",
             lastName: "",
-            email:"",
+            email: "",
             role: ""
         }
     },
+    plugins: [createPersistedState()],
+
     mutations: {
-        logIn (state){
+        logIn(state) {
             state.loginSuccess = true;
+        },
+        setClinic(state, newClinic) {
+            state.clinic = newClinic;
         }
     },
     actions: {
     },
     getters: {
-        getRole : state => state.loggedInUser.role,
-        GetlistOfRooms : state => state.listOfRooms,
+        getClinic: state => state.clinic,
+        getRole: state => state.loggedInUser.role,
+        GetlistOfRooms: state => state.listOfRooms,
         isLoggedIn: state => state.loginSuccess,
         hasLoginErrored: state => state.loginError,
         getUserName: state => state.userName,

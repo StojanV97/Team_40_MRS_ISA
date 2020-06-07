@@ -1,17 +1,17 @@
 import axios from 'axios'
 
 const AXIOS = axios.create({
-  baseURL: `/api`,
-  timeout: 2000
+    baseURL: `/api`,
+    timeout: 2000
 });
 
 
 export default {
 
-    setAuthentication(token){
+    setAuthentication(token) {
         return AXIOS;
     },
-    sendEmail(email){
+    sendEmail(email) {
         return AXIOS.post('/email/' + email);
     }
     ,
@@ -21,63 +21,68 @@ export default {
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
     },
-    createStaffMember(user,type) {
-        return AXIOS.post(`/staff/registration/`+ type, user);
+    createStaffMember(user, type) {
+        return AXIOS.post(`/staff/registration/` + type, user);
     },
-    deleteUser(userName){
-        return AXIOS.post('user/delete/'+userName);
+    deleteUser(userName) {
+        return AXIOS.post('user/delete/' + userName);
     },
-    createRoom(room){
-        return AXIOS.post('room/registration/',room);
+    createRoom(room, clinicID) {
+        return AXIOS.post('room/registration/' + clinicID, room);
     },
-    getAllRooms(){
+    editRoom(room, clinicID) {
+        return AXIOS.post('room/edit/' + clinicID, room);
+    },
+    getAllRooms() {
         return AXIOS.get('room/getall')
     },
-    getAllRegistrationRequests(){
+    getAllRegistrationRequests() {
         return AXIOS.get('requests/getall')
     },
-    deleteRegistrationRequest(userName){
+    deleteRegistrationRequest(userName) {
         return AXIOS.post('request/delete/' + userName);
     },
-    deleteRoom(id){
-        return AXIOS.post('room/delete/'+id);
+    deleteRoom(id) {
+        return AXIOS.post('room/delete/' + id);
     },
     createClinic(clinic) {
         return AXIOS.post(`/clinic/register/`, clinic);
     },
-    createClinicAgain(clinic) {
-        return AXIOS.post(`/clinic/regagain/`, clinic);
+    editClinicInfo(clinic, oldID) {
+        return AXIOS.post(`clinic/edit/` + oldID, clinic);
     },
     deleteClinic(clinicId) {
         return AXIOS.post(`/clinic/delete/` + clinicId);
     },
-    createPatient(user,type) {
-        return AXIOS.post(`/patient/registration/`+ type, user);
+    createPatient(user, type) {
+        return AXIOS.post(`/patient/registration/` + type, user);
     },
-    createClinicAdmin(user,type) {
-        return AXIOS.post(`/clinicadmin/registration/`+ type, user);
+    createClinicAdmin(user, type) {
+        return AXIOS.post(`/clinicadmin/registration/` + type, user);
     },
-    createClinicAdminAgain(user,type) {
-        return AXIOS.post(`/clinicadmin/regagain/`+ type, user);
+    createClinicAdminAgain(user, type) {
+        return AXIOS.post(`/clinicadmin/regagain/` + type, user);
     },
-    createRequest(request)
-    {
-        return AXIOS.post(`/request/registration/`,request);
+    createRequest(request) {
+        return AXIOS.post(`/request/registration/`, request);
     },
-    createClinicCenterAdmin(user,type) {
-        return AXIOS.post(`/cliniccenteradmin/registration/`+ type, user);
+    createClinicCenterAdmin(user, type) {
+        return AXIOS.post(`/cliniccenteradmin/registration/` + type, user);
     },
-    createClinicCenterAdminAgain(user,type) {
-        return AXIOS.post(`/cliniccenteradmin/regagain/`+ type, user);
+    createClinicCenterAdminAgain(user, type) {
+        return AXIOS.post(`/cliniccenteradmin/regagain/` + type, user);
     },
-    getPatients(){
+    getPatients() {
         return AXIOS.get('user/patients')
+    },
+    changeAdminClinicID(userName, newID) {
+        return AXIOS.post(`admin/change-clinic-id/` + userName + "/" + newID);
     },
     getClinic(id) {
         return AXIOS.get(`/clinic/` + id);
     },
     getAllClinics() {
-        return AXIOS.get(`/clinic/getall`)  ;
+        return AXIOS.get(`/clinic/getall`);
     },
     getAllCCAs() {
         return AXIOS.get(`/cliniccenteradmin/getall`);
@@ -86,25 +91,25 @@ export default {
         return AXIOS.get(`/clinicadmin/getall`);
     },
     getSecured(user, password) {
-        return AXIOS.get(`/secured/`,{
+        return AXIOS.get(`/secured/`, {
             auth: {
                 username: user,
                 password: password
-            }});
+            }
+        });
     },
-    login(jwtAuthenticationRequest)
-    {
+    login(jwtAuthenticationRequest) {
         return AXIOS.post('/auth/login', jwtAuthenticationRequest)
     },
-    getRoleAndId(){
+    getRoleAndId() {
         return AXIOS.get('/user/get-role-and-id');
     }
     ,
-    getPatientsForDoctor(userName){
+    getPatientsForDoctor(userName) {
         return AXIOS.get('/doctor/get-patients/' + userName);
     }
     ,
-    getClinicForAdmin(userName){
+    getClinicForAdmin(userName) {
         return AXIOS.get('/admin/get-clinic/' + userName);
     }
 }

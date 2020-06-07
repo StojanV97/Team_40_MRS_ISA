@@ -14,7 +14,7 @@ public class Clinic {
     private long id;
     private String name;
     private String address;
-    private ArrayList<String> administrator; // ovo treba biti admin klinike, kad se napravi
+    private String administrator; // ovo treba biti admin klinike, kad se napravi
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "Clinic_Doctors", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
     private Set<Doctor> doctors = new HashSet<Doctor>();
@@ -22,6 +22,7 @@ public class Clinic {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "CLINIC_ROOMS", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "roomID"))
     private Set<Room> rooms = new HashSet<Room>();
+
 
     public Clinic() {
     }
@@ -38,7 +39,6 @@ public class Clinic {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.administrator = new ArrayList<String>();
     }
 
     public long getId() {
@@ -53,7 +53,7 @@ public class Clinic {
         return address;
     }
 
-    public ArrayList<String> getAdministrator() {
+    public String getAdministrator() {
         return administrator;
     }
 
@@ -69,7 +69,15 @@ public class Clinic {
         this.address = address;
     }
 
+    public void setDoctors(Set<Doctor> doctors) {
+        this.doctors = doctors;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
+    }
+
     public void setAdministrator(String administrator) {
-        this.administrator.add(administrator);
+        this.administrator = administrator;
     }
 }

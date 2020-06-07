@@ -9,6 +9,7 @@ import javax.persistence.Table;
 public class ClinicAdmin extends User {
 
 
+
     public Long clinicID;
     public ClinicAdmin() {
         super();

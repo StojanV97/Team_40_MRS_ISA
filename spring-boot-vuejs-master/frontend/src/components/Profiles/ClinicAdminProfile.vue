@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
-    <ClinicEditForm v-bind:clinicEdit="this.clinic" v-if="this.editClinicProfile" />
-
+    <ClinicEditForm v-if="this.editClinicProfile" @editRoomsEvent="this.openEditRooms" />
+    <RoomConfig @goBack="this.openClinicProfile" v-if="this.roomConfig" />
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <v-list dense>
         <template v-for="item in items">
@@ -91,10 +91,12 @@
 <script>
 import api from "../backend-api";
 import ClinicEditForm from "../Utility/ClinicEditForm";
+import RoomConfig from "../Utility/RoomConfiguration";
 
 export default {
   components: {
-    ClinicEditForm
+    ClinicEditForm,
+    RoomConfig
   },
   props: {
     source: String
@@ -166,31 +168,42 @@ export default {
     patients: [],
     name: "",
     lastName: "",
-    clinic: null
+    roomConfig: false
   }),
   mounted() {
     api.setAuthentication().defaults.headers["Authorization"] =
       "Bearer " + localStorage.getItem("token");
     this.name = localStorage.getItem("firstName");
     this.lastName = localStorage.getItem("lastName");
+    console.log(localStorage.getItem("clinicID"));
     api
       .getClinic(localStorage.getItem("clinicID"))
       .then(response => {
-        this.clinic = response.data;
-        console.log(this.clinic.rooms);
+        this.$store.commit("setClinic", response.data);
       })
       .catch(error => {
         console.log();
       });
   },
   methods: {
+    openClinicProfile() {
+      this.roomConfig = false;
+      this.editClinicProfile = true;
+    },
+    openEditRooms() {
+      this.editClinicProfile = false;
+      this.roomConfig = true;
+    },
     getOption(text) {
       if (text === "Dark mode On/Off") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       } else if (text === "Working calendar") {
       } else if (text === "Edit Clinic info") {
+        this.roomConfig = false;
         this.editClinicProfile = true;
       } else if (text === "Profile") {
+        this.roomConfig = true;
+        this.editClinicProfile = false;
       } else if (text === "Request days off") {
       } else if (text === "Schedule examination") {
       } else {
@@ -209,7 +222,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body {
   overflow: hidden;
   height: 100vh;

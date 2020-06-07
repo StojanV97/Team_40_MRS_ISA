@@ -16,13 +16,11 @@ public class RoomService {
     RoomRepository roomRepository;
 
     public String addRoom(Room room){
-        try{
-            System.out.println(room);
-        }catch (Exception e){
-            System.out.println("Greska");
-        }
+        if(roomRepository.findByRoomID(room.getRoomID()) == null ){
         roomRepository.save(room);
         return "800";
+        }
+        return "801";
 
     }
 
@@ -41,7 +39,7 @@ public class RoomService {
 
     }
     public String editRoomData(Room room){
-        String code = "";
-        return code;
+        roomRepository.save(room);
+        return "code";
     }
 }

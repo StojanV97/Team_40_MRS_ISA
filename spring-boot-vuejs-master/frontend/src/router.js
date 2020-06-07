@@ -7,17 +7,12 @@ import Service from '@/components/Service'
 
 import Protected from '@/components/Protected'
 import Login from './components/Users/Login'
-import store from './store'
-import MedicalStaffRegistrationForm from "./components/Users/MedicalStaffRegistrationForm";
 import RoomConfig from "./components/Utility/RoomConfig";
 import EditUser from "./components/Users/EditUser";
-import RegisterForm from "./components/Users/RegisterForm";
-import ClinicCenterAdminRegistrationForm from "./components/Users/ClinicCenterAdminRegistrationForm";
-import ClinicCenterAdminEditForm from "./components/Users/ClinicCenterAdminEditForm";
 import DoctorHomePage from "./components/HomePage/DoctorHomePage";
 import CCAProfile from "./components/Profiles/CCAProfile";
 import PatientHomePage from "./components/HomePage/PatientHomePage";
-import CAProfile from "./components/Profiles/CAProfile";
+import CAProfile from "./components/Profiles/ClinicAdminProfile";
 import NurseHomePage from "./components/HomePage/NurseHomePage";
 
 
@@ -34,6 +29,7 @@ const router = new Router({
                 localStorage.setItem('firstName', '');
                 localStorage.setItem('lastName', '');
                 localStorage.setItem('userName', '');
+                localStorage.setItem('clinicID', '');
                 next();
             }
         },
@@ -62,7 +58,7 @@ const router = new Router({
                 requiresAuth: true
             }
         },
-        {path: '/clinic-admin-profile', component: CAProfile},
+        { path: '/clinic-admin-profile', component: CAProfile },
         {
             path: '/center-admin-profile', component: CCAProfile,
             beforeEnter(to, from, next) {
@@ -76,7 +72,8 @@ const router = new Router({
                 requiresAuth: true
             }
         },
-        {path: '/patient-homepage', component: PatientHomePage,
+        {
+            path: '/patient-homepage', component: PatientHomePage,
             beforeEnter(to, from, next) {
                 if (localStorage.getItem('role') === 'PATIENT') {
                     next();
@@ -88,7 +85,8 @@ const router = new Router({
                 requiresAuth: true
             }
         },
-        {path: '/nurse-homepage', component: NurseHomePage,
+        {
+            path: '/nurse-homepage', component: NurseHomePage,
             beforeEnter(to, from, next) {
                 if (localStorage.getItem('role') === 'NURSE') {
                     next();
@@ -100,7 +98,7 @@ const router = new Router({
                 requiresAuth: true
             }
         },
-        {path: '*', redirect: '/'}
+        { path: '*', redirect: '/' }
 
     ]
 });

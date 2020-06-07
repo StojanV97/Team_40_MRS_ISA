@@ -1,30 +1,36 @@
 <template>
   <div id="app" class="forma">
+    <RoomConfig v-if="this.dialogEditRooms" />
     <div>
       <v-form class="form-block" ref="form" v-model="valid">
         <div class="form-group">
           <label for="exampleInputEmail1">Clinic name</label>
-          <v-text-field v-model="this.$props.clinicEdit.name" :rules="nameRules" outlined dense />
+          <v-text-field v-model="$store.getters.getClinic.name" :rules="nameRules" outlined dense />
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Clinic ID</label>
-          <v-text-field v-model="this.$props.clinicEdit.id" type="number" outlined dense />
+          <v-text-field v-model="$store.getters.getClinic.id" type="number" outlined dense />
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Clinic address</label>
-          <v-text-field v-model="this.$props.clinicEdit.address" :rules="nameRules" outlined dense />
+          <v-text-field
+            v-model="$store.getters.getClinic.address"
+            :rules="nameRules"
+            outlined
+            dense
+          />
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Clinic administrator</label>
           <v-text-field
-            v-model="this.$props.clinicEdit.administrator"
+            v-model="$store.getters.getClinic.administrator"
             :rules="administratorRules"
             outlined
             dense
           />
         </div>
         <div>
-          <v-btn type="submit" class="btn btn-primary" @click="editClinic">Submit</v-btn>
+          <v-btn class="btn btn-primary" @click="editClinic()">Submit</v-btn>
           <v-btn class="ma-2" outlined color="indigo" @click="reset">Reset</v-btn>
         </div>
       </v-form>
@@ -39,7 +45,7 @@
         <ul class="list-group">
           <li
             class="list-group-item"
-            v-for="item in this.$props.clinicEdit.doctors"
+            v-for="item in $store.getters.getClinic.doctors"
             :key="item.firstName"
           >
             <span class="spanLI">{{ item.firstName }}</span>
@@ -47,6 +53,7 @@
           </li>
         </ul>
       </div>
+      <v-btn class="edit-btn" outlined color="warning">Edit Doctors</v-btn>
     </div>
 
     <div id="doctors-list">
@@ -58,7 +65,7 @@
         <ul class="list-group">
           <li
             class="list-group-item"
-            v-for="item in this.$props.clinicEdit.rooms"
+            v-for="item in $store.getters.getClinic.rooms"
             :key="item.roomID"
           >
             <span class="spanLI">{{ item.roomID }}</span>
@@ -66,11 +73,25 @@
           </li>
         </ul>
       </div>
+      <v-btn class="edit-btn" outlined color="warning" @click="editRooms()">Edit Rooms</v-btn>
+    </div>
+
+    <div class="text-center ma-2">
+      <v-snackbar v-model="snackbar">
+        {{msg}}
+        <v-btn @click="snackbar = false" color="pink" text>Close</v-btn>
+      </v-snackbar>
     </div>
   </div>
 </template>
 
 <style scoped>
+.edit-btn {
+  margin-left: 24px;
+  margin-top: 44px;
+  width: 280px;
+}
+
 .spanLI {
   margin-right: 20px;
 }
@@ -125,12 +146,17 @@
 
 <script>
 import api from "../backend-api";
-
+import RoomConfig from "../Utility/RoomConfig";
 export default {
+  components: {
+    RoomConfig
+  },
   name: "ClinicEditForm",
   props: ["clinicEdit"],
   data() {
     return {
+      dialogEditRooms: false,
+      oldID: null,
       valid: true,
       msg: "",
       snackbar: false,
@@ -156,8 +182,8 @@ export default {
       administratorRules: [
         v => !!v || "Administrator is required",
         v =>
-          (v && v.length <= 10) ||
-          "Administrator must be less than 10 characters"
+          (v && v.length <= 12) ||
+          "Administrator must be less than 12 characters"
       ],
       select: null,
       checkbox: false,
@@ -165,11 +191,15 @@ export default {
     };
   },
   mounted() {
-    console.log("Clinic: ");
-    console.log();
+    api.setAuthentication().defaults.headers["Authorization"] =
+      "Bearer " + localStorage.getItem("token");
+    this.oldID = this.$store.getters.getClinic.id;
   },
 
   methods: {
+    editRooms() {
+      this.$emit("editRoomsEvent");
+    },
     setClinicValues(i, n, a, ad) {
       //console.log("usao je u funkciju");
       this.clinic.id = i;
@@ -184,21 +214,32 @@ export default {
       this.$refs.form.reset();
     },
     editClinic() {
-      api.deleteClinic(this.clinic.id).then(response => {
-        api
-          .createClinicAgain(this.clinic)
-          .then(response => {
-            // JSON responses are automatically parsed.
-            this.response = response.data;
-            console.log(response.data);
-            this.msg = "Clinic successfully edited!";
-            this.snackbar = true;
-          })
+      this.clinic.id = this.$store.getters.getClinic.id;
+      this.clinic.name = this.$store.getters.getClinic.name;
+      this.clinic.address = this.$store.getters.getClinic.address;
 
-          .catch(e => {
-            console.log(e);
-          });
-      });
+      api
+        .editClinicInfo(this.clinic, this.oldID)
+        .then(response => {
+          localStorage.setItem("clinicID", this.$store.getters.getClinic.id);
+          api
+            .changeAdminClinicID(
+              localStorage.getItem("userName"),
+              this.$store.getters.getClinic.id
+            )
+            .then(response => {
+              console.log(response);
+              api.getClinic(localStorage.getItem("clinicID")).then(response => {
+                this.$store.commit("setClinic", response.data);
+              });
+            })
+            .catch(e => {
+              console.log();
+            });
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   },
 
