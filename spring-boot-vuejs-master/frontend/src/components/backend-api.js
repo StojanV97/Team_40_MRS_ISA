@@ -8,6 +8,8 @@ const AXIOS = axios.create({
 
 export default {
 
+
+    // USERS ====================================================================================
     setAuthentication(token) {
         return AXIOS;
     },
@@ -15,9 +17,6 @@ export default {
         return AXIOS.post('/email/' + email);
     }
     ,
-    hello() {
-        return AXIOS.get(`/hello`);
-    },
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
     },
@@ -27,6 +26,14 @@ export default {
     deleteUser(userName) {
         return AXIOS.post('user/delete/' + userName);
     },
+    editAdmin(admin, oldUserName) {
+        return AXIOS.post('user/admin-edit/' + oldUserName, admin)
+    },
+
+    changeUserName(userName, oldUserName) {
+        return AXIOS.post('user/admin-change-username/' + userName + '/' + oldUserName)
+    },
+    //==========================================================================================
     createRoom(room, clinicID) {
         return AXIOS.post('room/registration/' + clinicID, room);
     },

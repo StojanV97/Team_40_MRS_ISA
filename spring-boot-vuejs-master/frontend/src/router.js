@@ -12,7 +12,7 @@ import EditUser from "./components/Users/EditUser";
 import DoctorHomePage from "./components/HomePage/DoctorHomePage";
 import CCAProfile from "./components/Profiles/CCAProfile";
 import PatientHomePage from "./components/HomePage/PatientHomePage";
-import CAProfile from "./components/Profiles/ClinicAdminProfile";
+import CAProfile from "./components/HomePage/ClinicAdminHomePage";
 import NurseHomePage from "./components/HomePage/NurseHomePage";
 
 
@@ -42,7 +42,7 @@ const router = new Router({
         {
             path: '/editUser', component: EditUser,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {

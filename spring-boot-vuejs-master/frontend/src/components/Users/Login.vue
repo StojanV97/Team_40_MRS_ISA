@@ -71,6 +71,7 @@ export default {
 
           if (response.status === 200) {
             localStorage.setItem("token", response.data.accessToken);
+            console.log(response.data.accessToken);
             localStorage.setItem("loggedIn", "true");
             this.getRole();
           }
@@ -96,12 +97,14 @@ export default {
           localStorage.setItem("firstName", response.data.userID.firstName);
           localStorage.setItem("lastName", response.data.userID.lastName);
           localStorage.setItem("role", response.data.role);
+          localStorage.setItem("userID", response.data.userID.id);
+
           //console.log(response)
           if (response.data.role === "DOCTOR") {
             this.$router.push("/doctor-homepage");
           } else if (response.data.role === "CLINIC_ADMIN") {
-            console.log(response.data.userID.clinicID);
             localStorage.setItem("clinicID", response.data.userID.clinicID);
+            this.$store.commit("setUser", response.data.userID);
             this.$router.push("/clinic-admin-profile");
           } else if (response.data.role === "CLINIC_CENTER_ADMIN") {
             this.$router.push("/center-admin-profile");

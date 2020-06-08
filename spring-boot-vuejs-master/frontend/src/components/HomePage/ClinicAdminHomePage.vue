@@ -1,7 +1,13 @@
 <template>
   <v-app id="inspire">
-    <ClinicEditForm v-if="this.editClinicProfile" @editRoomsEvent="this.openEditRooms" />
+    <ClinicAdminProfile v-if="editAdminProfile" />
+    <ClinicEditForm
+      v-if="this.editClinicProfile"
+      @editRoomsEvent="this.openEditRooms"
+      @editDoctorsEvent="this.openEditDoctors"
+    />
     <RoomConfig @goBack="this.openClinicProfile" v-if="this.roomConfig" />
+    <EditDoctors @goBack="this.openClinicProfile" v-if="editDoctors" />
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <v-list dense>
         <template v-for="item in items">
@@ -92,11 +98,15 @@
 import api from "../backend-api";
 import ClinicEditForm from "../Utility/ClinicEditForm";
 import RoomConfig from "../Utility/RoomConfiguration";
+import EditDoctors from "../Utility/EditDoctors";
+import ClinicAdminProfile from "../Profiles/ClinidAdminProfile";
 
 export default {
   components: {
     ClinicEditForm,
-    RoomConfig
+    RoomConfig,
+    EditDoctors,
+    ClinicAdminProfile
   },
   props: {
     source: String
@@ -108,7 +118,7 @@ export default {
     editClinicProfile: false,
     items: [
       {
-        icon: "mdi-home",
+        icon: "mdi-arrow-down",
         text: "Edit clinic profile",
         "icon-alt": "mdi-home",
         text: "Clinic",
@@ -132,19 +142,15 @@ export default {
         ]
       },
       {
-        icon: "mdi-pencil-box-multiple",
+        icon: "mdi-arrow-down",
         "icon-alt": "mdi-pencil-box-multiple",
         text: "Edits",
         model: false,
-        children: [
-          { icon: "mdi-alpha-i", text: "Edit rooms" },
-          { icon: "mdi-roman-numeral-2", text: "Edit examinations" },
-          { icon: "mdi-roman-numeral-3", text: "Edit doctors" }
-        ]
+        children: [{ icon: "mdi-roman-numeral-1", text: "Edit examinations" }]
       },
       { icon: "mdi-account-cog", text: "Profile" },
       {
-        icon: "mdi-cog",
+        icon: "mdi-arrow-down",
         "icon-alt": "mdi-cog",
         text: "Settings",
         model: false,
@@ -168,7 +174,9 @@ export default {
     patients: [],
     name: "",
     lastName: "",
-    roomConfig: false
+    roomConfig: false,
+    editDoctors: false,
+    editAdminProfile: false
   }),
   mounted() {
     api.setAuthentication().defaults.headers["Authorization"] =
@@ -186,11 +194,18 @@ export default {
       });
   },
   methods: {
+    openEditDoctors() {
+      this.editDoctors = true;
+      this.roomConfig = false;
+      this.editClinicProfile = false;
+    },
     openClinicProfile() {
+      this.editDoctors = false;
       this.roomConfig = false;
       this.editClinicProfile = true;
     },
     openEditRooms() {
+      this.editDoctors = false;
       this.editClinicProfile = false;
       this.roomConfig = true;
     },
@@ -201,9 +216,11 @@ export default {
       } else if (text === "Edit Clinic info") {
         this.roomConfig = false;
         this.editClinicProfile = true;
+        this.editAdminProfile = false;
       } else if (text === "Profile") {
-        this.roomConfig = true;
+        this.editAdminProfile = true;
         this.editClinicProfile = false;
+        this.roomConfig = false;
       } else if (text === "Request days off") {
       } else if (text === "Schedule examination") {
       } else {

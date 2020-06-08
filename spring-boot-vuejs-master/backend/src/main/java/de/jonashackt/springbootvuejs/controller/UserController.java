@@ -2,6 +2,8 @@ package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
+import de.jonashackt.springbootvuejs.joinedtables.Clinic_Doctors;
+import de.jonashackt.springbootvuejs.repository.ClinicDoctorRepository;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
 import de.jonashackt.springbootvuejs.service.UserService;
 import de.jonashackt.springbootvuejs.service.impl.CustomUserDetailsService;
@@ -41,6 +43,8 @@ public class UserController {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+    @Autowired
+    private ClinicDoctorRepository clinicDoctorRepository;
 
     Random r = new Random();
 
@@ -120,8 +124,9 @@ public class UserController {
 
     @PostMapping(path = "/user/delete/{userName}")
     public ResponseEntity<String> deleteUser(@PathVariable String userName) {
-        String s = userService.deleteUser(userName);
-        return new ResponseEntity<String>(s, HttpStatus.OK);
+        Doctor d = (Doctor) userService.findByUsername(userName);
+      clinicDoctorRepository.deleteById(d.getId());
+        return new ResponseEntity<String>("", HttpStatus.OK);
 
     }
 
@@ -193,6 +198,44 @@ public class UserController {
         userService.deleteUser(s.getUsername());
         userRepository.save(cl);
         return new ResponseEntity<String>("", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/user/admin-edit/{oldUserName}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> editAdmin(@RequestBody ClinicAdmin clinicAdmin,@PathVariable String oldUserName){
+        Optional<User> u  = userRepository.findById(clinicAdmin.getId());
+        System.out.println(clinicAdmin.getUsername());
+        System.out.println(clinicAdmin.getEmail());
+        System.out.println(clinicAdmin.getLastName());
+        String s = null;
+        if(u.isPresent()){
+        User user = u.get();
+        User u2 = userService.findByUsername(clinicAdmin.getUsername());
+            if(u2 == null){
+                user.setEmail(clinicAdmin.getEmail());
+                user.setFirstName(clinicAdmin.getFirstName());
+                user.setLastName(clinicAdmin.getLastName());
+                user.setUserName(clinicAdmin.getUsername());
+                System.out.println(clinicAdmin.getUsername());
+                userRepository.save(user);
+                return new ResponseEntity<User>(user, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<User>(user, HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+        return new ResponseEntity<String>("ok", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/user/admin-change-username/{userName}/{oldUserName}")
+    public ResponseEntity<?> changeUserName(@PathVariable String userName,@PathVariable String oldUserName){
+        User user = userService.findByUsername(userName);
+        if(user != null){
+            return new ResponseEntity<String>("Existing Username!", HttpStatus.NOT_ACCEPTABLE);
+        }else {
+            User user2 = userService.findByUsername(oldUserName);
+            user2.setUserName(userName);
+            userRepository.save(user2);
+        }
+        return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
     @RequestMapping(path = "/secured", method = RequestMethod.GET)
     public @ResponseBody

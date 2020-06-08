@@ -15,14 +15,7 @@ export default new Vuex.Store({
         clinic: null,
         userName: null,
         userPass: null,
-        loggedInUser: {
-            username: "",
-            id: "",
-            firstName: "",
-            lastName: "",
-            email: "",
-            role: ""
-        }
+        loggedInUser: null,
     },
     plugins: [createPersistedState()],
 
@@ -32,11 +25,18 @@ export default new Vuex.Store({
         },
         setClinic(state, newClinic) {
             state.clinic = newClinic;
+        },
+        setUser(state, user) {
+            state.loggedInUser = user;
+        },
+        setUserID(state, id) {
+            state.loggedInUser.id = id;
         }
     },
     actions: {
     },
     getters: {
+        getUser: state => state.loggedInUser,
         getClinic: state => state.clinic,
         getRole: state => state.loggedInUser.role,
         GetlistOfRooms: state => state.listOfRooms,

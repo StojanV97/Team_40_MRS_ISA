@@ -1,15 +1,26 @@
 <template>
   <div id="app" class="forma">
-    <RoomConfig v-if="this.dialogEditRooms" />
     <div>
       <v-form class="form-block" ref="form" v-model="valid">
         <div class="form-group">
           <label for="exampleInputEmail1">Clinic name</label>
-          <v-text-field v-model="$store.getters.getClinic.name" :rules="nameRules" outlined dense />
+          <v-text-field
+            v-model="$store.getters.getClinic.name"
+            :rules="nameRules"
+            outlined
+            dense
+            required
+          />
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Clinic ID</label>
-          <v-text-field v-model="$store.getters.getClinic.id" type="number" outlined dense />
+          <v-text-field
+            v-model="$store.getters.getClinic.id"
+            type="number"
+            required
+            outlined
+            dense
+          />
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Clinic address</label>
@@ -18,6 +29,7 @@
             :rules="nameRules"
             outlined
             dense
+            required
           />
         </div>
         <div class="form-group">
@@ -27,10 +39,11 @@
             :rules="administratorRules"
             outlined
             dense
+            disabled="true"
           />
         </div>
         <div>
-          <v-btn class="btn btn-primary" @click="editClinic()">Submit</v-btn>
+          <v-btn class="btn btn-primary" :disabled="!valid" @click="editClinic()">Submit</v-btn>
           <v-btn class="ma-2" outlined color="indigo" @click="reset">Reset</v-btn>
         </div>
       </v-form>
@@ -53,7 +66,7 @@
           </li>
         </ul>
       </div>
-      <v-btn class="edit-btn" outlined color="warning">Edit Doctors</v-btn>
+      <v-btn class="edit-btn" outlined color="warning" @click="editDoctors()">Edit Doctors</v-btn>
     </div>
 
     <div id="doctors-list">
@@ -197,6 +210,10 @@ export default {
   },
 
   methods: {
+    editDoctors() {
+      this.$emit("editDoctorsEvent");
+    },
+
     editRooms() {
       this.$emit("editRoomsEvent");
     },
@@ -228,9 +245,10 @@ export default {
               this.$store.getters.getClinic.id
             )
             .then(response => {
-              console.log(response);
               api.getClinic(localStorage.getItem("clinicID")).then(response => {
                 this.$store.commit("setClinic", response.data);
+                this.snackbar = true;
+                this.msg = "Successufully changed!";
               });
             })
             .catch(e => {
