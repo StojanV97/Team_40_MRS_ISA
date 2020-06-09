@@ -27,7 +27,6 @@
 
                 <v-text-field class="field"
                         v-model="user.userName"
-                        :counter="10"
                         readonly="1"
                         label="UserName"
                 ></v-text-field>
@@ -90,11 +89,13 @@
             }
         },
         mounted(){
-            api.getUser(2).then(response => {
-                this.user.userName = response.data.userName
-                this.user.firstName = response.data.firstName
-                this.user.lastName = response.data.lastName
-                this.user.email = response.data.email
+            api.setAuthentication().defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            api.getUser(localStorage.getItem('userID')).then(response => {
+
+                this.user.userName = response.data.username;
+                this.user.lastName = response.data.lastName;
+                this.user.firstName = response.data.firstName;
+                this.user.email = response.data.email;
             })
 
         },

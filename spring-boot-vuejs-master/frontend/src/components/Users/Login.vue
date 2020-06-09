@@ -120,7 +120,14 @@ export default {
           } else if (response.data.role === "CLINIC_CENTER_ADMIN") {
             this.$router.push("/center-admin-profile");
           } else if (response.data.role === "PATIENT") {
-            this.$router.push("/patient-homepage");
+
+            this.$store.commit("setUser", response.data.userID);
+            if (response.data.userID.passChanged) {
+              this.$router.push("/patient-homepage");
+            } else {
+              this.$router.push("/change-password");
+            }
+
           } else if (response.data.role === "NURSE") {
             this.$router.push("/nurse-homepage");
           }

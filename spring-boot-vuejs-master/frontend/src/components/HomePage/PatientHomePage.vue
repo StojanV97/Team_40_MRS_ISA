@@ -7,6 +7,7 @@
             <v-card-title>
                 Clinics
                 <v-spacer></v-spacer>
+
                 <v-text-field
                         v-model="search"
                         append-icon="mdi-magnify"
@@ -23,10 +24,8 @@
             >
                 <template v-slot:item="row">
                     <tr>
-                        <td>{{row.item.id}}</td>
-                        <td>{{row.item.clinicName}}</td>
+                        <td>{{row.item.name}}</td>
                         <td>{{row.item.address}}</td>
-
 
                     </tr>
                 </template>
@@ -109,7 +108,7 @@
         </v-navigation-drawer>
         <v-app-bar app clipped-left>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title>Patient Patientic</v-toolbar-title>
+            <v-toolbar-title >{{this.firstName + " " +this.lastName}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <label for="signout">Sign Out</label>
             <v-btn id="signout" icon @click="signOut">
@@ -136,6 +135,7 @@
     import PatientProfile from "../Profiles/PatientProfile";
     import ScheduleHistory from "../Scheduling/ScheduleHistory";
     import EditUser from "../Users/EditUser";
+    import api from "../backend-api";
 
 
     export default {
@@ -180,63 +180,28 @@
             ],
             search: '',
             headers: [
-                {
-                    text: 'Id Number',
-                    align: 'start',
-                    sortable: false,
-                    value: 'id',
-                },
-                { text: 'Clinic Name', value: 'clinicName' },
+                { text: 'Clinic Name', value: 'name' },
                 { text: 'Address', value: 'address' },
-
                 //{ text: 'Medical History', value: 'medicalHistory' },
             ],
-            clinics: [
-                {
-                    id: '1',
-                    clinicName: 'Clinic1',
-                    address: 'clinic adress1',
+            clinics: [],
+            firstName: '',
+            lastName: '',
 
-
-                },
-                {
-                    id: '2',
-                    clinicName: 'Clinic2',
-                    address: 'clinic adress2',
-
-
-
-                },
-                {
-                    id: '3',
-                    clinicName: 'Clinic3',
-                    address: 'clinic adress3',
-
-
-
-                },
-                {
-                    id: '4',
-                    clinicName: 'Clinic4',
-                    address: 'clinic adress4',
-                    email: 'genericEmail@lavabit.com',
-
-
-                },
-                {
-                    id: '5',
-                    clinicName: 'Clinic4',
-                    address: 'clinic adress4',
-                    email: 'genericEmail@lavabit.com',
-
-
-                },
-
-
-
-            ],
 
         }),
+        mounted() {
+            api.setAuthentication().defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            this.firstName = localStorage.getItem('firstName')
+            this.lastName = localStorage.getItem('lastName')
+            api.getAllClinics().then(response => {
+                this.clinics = response.data;
+                console.log(this.clinics)
+            }).catch( e => {
+                    console.log(e);
+                }
+            );
+        },
         methods:{
 
 

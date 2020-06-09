@@ -221,6 +221,40 @@ public class UserController {
         return new ResponseEntity<String>("ok", HttpStatus.OK);
     }
 
+    @PostMapping(value = "/user/patient-edit/{oldUserName}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> editPatient(@RequestBody Patient patient,@PathVariable String oldUserName){
+        Optional<User> u  = userRepository.findById(patient.getId());
+        String s = null;
+        if(u.isPresent()){
+            User user = u.get();
+            User u2 = userService.findByUsername(patient.getUsername());
+            if(u2 != null){
+                user.setEmail(patient.getEmail());
+                user.setFirstName(patient.getFirstName());
+                user.setLastName(patient.getLastName());
+                user.setUserName(patient.getUsername());
+                userRepository.save(user);
+                return new ResponseEntity<User>(user, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<User>(user, HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+        return new ResponseEntity<String>("ok", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/user/patient-change-username/{userName}/{oldUserName}")
+    public ResponseEntity<?> changePatientUserName(@PathVariable String userName,@PathVariable String oldUserName){
+        User user = userService.findByUsername(userName);
+        if(user != null){
+            return new ResponseEntity<String>("Existing Username!", HttpStatus.NOT_ACCEPTABLE);
+        }else {
+            User user2 = userService.findByUsername(oldUserName);
+            user2.setUserName(userName);
+            userRepository.save(user2);
+        }
+        return new ResponseEntity<String>("OK", HttpStatus.OK);
+    }
+
     @PostMapping(value = "/user/admin-change-username/{userName}/{oldUserName}")
     public ResponseEntity<?> changeUserName(@PathVariable String userName,@PathVariable String oldUserName){
         User user = userService.findByUsername(userName);
@@ -233,6 +267,7 @@ public class UserController {
         }
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
+
     @RequestMapping(path = "/secured", method = RequestMethod.GET)
     public @ResponseBody
     String getSecured() {

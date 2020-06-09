@@ -40,6 +40,9 @@ export default {
     editAdmin(admin, oldUserName) {
         return AXIOS.post('user/admin-edit/' + oldUserName, admin)
     },
+    editPatient(patient, oldUserName) {
+        return AXIOS.post('user/patient-edit/' + oldUserName, patient)
+    },
 
     changeUserName(userName, oldUserName) {
         return AXIOS.post('user/admin-change-username/' + userName + '/' + oldUserName)
