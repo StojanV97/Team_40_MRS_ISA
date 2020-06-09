@@ -201,16 +201,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/admin-edit/{oldUserName}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editAdmin(@RequestBody ClinicAdmin clinicAdmin,@PathVariable String oldUserName){
+    public ResponseEntity<?> editAdmin(@RequestBody User clinicAdmin,@PathVariable String oldUserName){
         Optional<User> u  = userRepository.findById(clinicAdmin.getId());
-        System.out.println(clinicAdmin.getUsername());
-        System.out.println(clinicAdmin.getEmail());
-        System.out.println(clinicAdmin.getLastName());
         String s = null;
         if(u.isPresent()){
         User user = u.get();
         User u2 = userService.findByUsername(clinicAdmin.getUsername());
             if(u2 == null){
+                return new ResponseEntity<User>(user, HttpStatus.NOT_ACCEPTABLE);
+            }else{
                 user.setEmail(clinicAdmin.getEmail());
                 user.setFirstName(clinicAdmin.getFirstName());
                 user.setLastName(clinicAdmin.getLastName());
@@ -218,8 +217,6 @@ public class UserController {
                 System.out.println(clinicAdmin.getUsername());
                 userRepository.save(user);
                 return new ResponseEntity<User>(user, HttpStatus.OK);
-            }else{
-                return new ResponseEntity<User>(user, HttpStatus.NOT_ACCEPTABLE);
             }
         }
         return new ResponseEntity<String>("ok", HttpStatus.OK);

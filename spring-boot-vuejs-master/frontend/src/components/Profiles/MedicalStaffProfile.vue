@@ -68,7 +68,7 @@
           <v-btn id="password-btn" @click="changePassword">Change Password</v-btn>
         </div>
         <div id="buttons">
-          <v-btn class="btn btn-primary" :disabled="!valid" @click="editAdmin()">Submit</v-btn>
+          <v-btn class="btn btn-primary" :disabled="!valid" @click="editUser()">Submit</v-btn>
           <v-btn class="ma-2" outlined color="indigo" @click="reset">Reset</v-btn>
         </div>
       </v-form>
@@ -89,7 +89,7 @@
 
     <v-dialog v-model="changePasswordDialog" width="400px">
       <v-card>
-        <v-card-title class="grey darken-2">Change Password</v-card-title>
+        <v-card-title class="grey darken-2">Change User Name</v-card-title>
         <v-container>
           <ChangePassword @CloseDialogEvent="closeChangePass($event)" />
         </v-container>
@@ -215,24 +215,12 @@ export default {
   },
 
   methods: {
-    closeDialogEvent(event) {
-      this.msg = event;
-      this.changeUserNameDialog = false;
-      this.snackbar = true;
-    },
-    validate() {
-      this.$refs.form.validate();
-    },
-    reset() {
-      this.$refs.form.reset();
-    },
-    editAdmin() {
+    editUser() {
       this.user.id = this.$store.getters.getUser.id;
       this.user.firstName = this.$store.getters.getUser.firstName;
       this.user.lastName = this.$store.getters.getUser.lastName;
       this.user.email = this.$store.getters.getUser.email;
       this.user.userName = this.$store.getters.getUser.username;
-      console.log(this.user);
       api
         .editAdmin(this.user, localStorage.getItem("userName"))
         .then(response => {
@@ -241,6 +229,23 @@ export default {
           this.$store.commit("setUser", response.data);
           console.log(response);
         });
+    },
+
+    closeDialogEvent(event) {
+      this.msg = event;
+      this.changeUserNameDialog = false;
+      this.snackbar = true;
+    },
+    closeChangePass() {
+      this.msg = event;
+      this.changePasswordDialog = false;
+      this.snackbar = true;
+    },
+    validate() {
+      this.$refs.form.validate();
+    },
+    reset() {
+      this.$refs.form.reset();
     },
     changeUserName() {
       this.changeUserNameDialog = !this.changeUserNameDialog;

@@ -119,7 +119,7 @@
 <script>
 import api from "../backend-api";
 import Calendar from "./Calendar";
-import DoctorProfile from "../Profiles/DoctorProfile";
+import DoctorProfile from "../Profiles/MedicalStaffProfile";
 import ScheduleExemination from "../Scheduling/ScheduleExemination";
 
 export default {

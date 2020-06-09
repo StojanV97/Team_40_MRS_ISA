@@ -26,6 +26,17 @@ public class User implements UserDetails {
     private String userName;
     private String password;
     private boolean enabled;
+
+    private Boolean passChanged;
+
+    public void setPassChanged(Boolean passChanged) {
+        this.passChanged = passChanged;
+    }
+
+    public Boolean getPassChanged() {
+        return passChanged;
+    }
+
     private Timestamp lastPasswordResetDate;
     private ArrayList<Authority> authorities;
 

@@ -58,7 +58,19 @@ const router = new Router({
                 requiresAuth: true
             }
         },
-        { path: '/clinic-admin-profile', component: CAProfile },
+        {
+            path: '/clinic-admin-profile', component: CAProfile,
+            beforeEnter(to, from, next) {
+                if (localStorage.getItem('role') === 'CLINIC_ADMIN') {
+                    next();
+                } else {
+                    next('/')
+                }
+            },
+            meta: {
+                requiresAuth: true
+            }
+        },
         {
             path: '/center-admin-profile', component: CCAProfile,
             beforeEnter(to, from, next) {

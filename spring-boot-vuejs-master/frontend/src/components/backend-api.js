@@ -10,6 +10,17 @@ export default {
 
 
     // USERS ====================================================================================
+    login(jwtAuthenticationRequest) {
+        return AXIOS.post('/auth/login', jwtAuthenticationRequest)
+    },
+    getRoleAndId() {
+        return AXIOS.get('/user/get-role-and-id');
+    }
+    ,
+    getPatientsForDoctor(userName) {
+        return AXIOS.get('/doctor/get-patients/' + userName);
+    }
+    ,
     setAuthentication(token) {
         return AXIOS;
     },
@@ -32,6 +43,10 @@ export default {
 
     changeUserName(userName, oldUserName) {
         return AXIOS.post('user/admin-change-username/' + userName + '/' + oldUserName)
+    },
+
+    changePassword(passwordChanger) {
+        return AXIOS.post('/change-password', passwordChanger);
     },
     //==========================================================================================
     createRoom(room, clinicID) {
@@ -105,17 +120,6 @@ export default {
             }
         });
     },
-    login(jwtAuthenticationRequest) {
-        return AXIOS.post('/auth/login', jwtAuthenticationRequest)
-    },
-    getRoleAndId() {
-        return AXIOS.get('/user/get-role-and-id');
-    }
-    ,
-    getPatientsForDoctor(userName) {
-        return AXIOS.get('/doctor/get-patients/' + userName);
-    }
-    ,
     getClinicForAdmin(userName) {
         return AXIOS.get('/admin/get-clinic/' + userName);
     }

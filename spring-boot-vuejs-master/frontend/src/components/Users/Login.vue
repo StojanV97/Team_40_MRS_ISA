@@ -102,6 +102,7 @@ export default {
           //console.log(response)
           if (response.data.role === "DOCTOR") {
             this.$router.push("/doctor-homepage");
+            this.$store.commit("setUser", response.data.userID);
           } else if (response.data.role === "CLINIC_ADMIN") {
             localStorage.setItem("clinicID", response.data.userID.clinicID);
             this.$store.commit("setUser", response.data.userID);

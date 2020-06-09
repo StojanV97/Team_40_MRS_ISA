@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -103,16 +105,13 @@ public class AuthenticationController {
         }
     }
 
-    /* @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-     @PreAuthorize("hasRole('USER')")
-     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
-         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
-
-         Map<String, String> result = new HashMap<>();
-         result.put("result", "success");
-         return ResponseEntity.accepted().body(result);
-     }
- */
+    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
+        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "success");
+        return ResponseEntity.accepted().body(result);
+    }
     static class PasswordChanger {
         public String oldPassword;
         public String newPassword;
