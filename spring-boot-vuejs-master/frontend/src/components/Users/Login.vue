@@ -56,6 +56,7 @@ export default {
     };
   },
   methods: {
+    passwordChanged() {},
     signIn() {
       this.error = null;
 
@@ -101,12 +102,21 @@ export default {
 
           //console.log(response)
           if (response.data.role === "DOCTOR") {
-            this.$router.push("/doctor-homepage");
             this.$store.commit("setUser", response.data.userID);
+            if (response.data.userID.passChanged) {
+              this.$router.push("/doctor-homepage");
+            } else {
+              this.$router.push("/change-password");
+            }
           } else if (response.data.role === "CLINIC_ADMIN") {
+            console.log(response.data.userID);
             localStorage.setItem("clinicID", response.data.userID.clinicID);
             this.$store.commit("setUser", response.data.userID);
-            this.$router.push("/clinic-admin-profile");
+            if (response.data.userID.passChanged) {
+              this.$router.push("/clinic-admin-profile");
+            } else {
+              this.$router.push("/change-password");
+            }
           } else if (response.data.role === "CLINIC_CENTER_ADMIN") {
             this.$router.push("/center-admin-profile");
           } else if (response.data.role === "PATIENT") {

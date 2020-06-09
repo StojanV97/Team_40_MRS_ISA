@@ -14,6 +14,7 @@ import CCAProfile from "./components/Profiles/CCAProfile";
 import PatientHomePage from "./components/HomePage/PatientHomePage";
 import CAProfile from "./components/HomePage/ClinicAdminHomePage";
 import NurseHomePage from "./components/HomePage/NurseHomePage";
+import FirstLogIn from "./components/Users/FirstLogIn"
 
 
 Vue.use(Router);
@@ -110,7 +111,13 @@ const router = new Router({
                 requiresAuth: true
             }
         },
-        { path: '*', redirect: '/' }
+        { path: '*', redirect: '/' },
+        {
+            path: '/change-password', component: FirstLogIn,
+            meta: {
+                requiresAuth: true
+            }
+        }
 
     ]
 });

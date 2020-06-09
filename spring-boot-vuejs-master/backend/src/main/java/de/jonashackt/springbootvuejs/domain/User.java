@@ -51,6 +51,7 @@ public class User implements UserDetails {
         this.password = password;
         this.authorities = new ArrayList<Authority>();
         this.enabled = true;
+        this.passChanged = false;
     }
 
 
