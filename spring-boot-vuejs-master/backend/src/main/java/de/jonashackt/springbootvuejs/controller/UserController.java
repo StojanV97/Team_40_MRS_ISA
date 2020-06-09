@@ -206,7 +206,7 @@ public class UserController {
         String s = null;
         if(u.isPresent()){
         User user = u.get();
-        User u2 = userService.findByUsername(clinicAdmin.getUsername());
+            User u2 = userService.findByUsername(clinicAdmin.getUsername());
             if(u2 == null){
                 return new ResponseEntity<User>(user, HttpStatus.NOT_ACCEPTABLE);
             }else{
@@ -214,7 +214,6 @@ public class UserController {
                 user.setFirstName(clinicAdmin.getFirstName());
                 user.setLastName(clinicAdmin.getLastName());
                 user.setUserName(clinicAdmin.getUsername());
-                System.out.println(clinicAdmin.getUsername());
                 userRepository.save(user);
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             }

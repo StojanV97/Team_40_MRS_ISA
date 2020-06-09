@@ -89,7 +89,7 @@
 
     <v-dialog v-model="changePasswordDialog" width="400px">
       <v-card>
-        <v-card-title class="grey darken-2">Change User Name</v-card-title>
+        <v-card-title class="grey darken-2">Change Password</v-card-title>
         <v-container>
           <ChangePassword @CloseDialogEvent="closeChangePass($event)" />
         </v-container>
@@ -227,7 +227,8 @@ export default {
           localStorage.setItem("firstName", response.data.firstName);
           localStorage.setItem("lastName", response.data.lastName);
           this.$store.commit("setUser", response.data);
-          console.log(response);
+          this.snackbar = true;
+          this.msg = "Successufully changed!";
         });
     },
 
