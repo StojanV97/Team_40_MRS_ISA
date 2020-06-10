@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,7 +26,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
+	CommandLineRunner runner(AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
 		return args -> {
 
 			//Date
@@ -107,6 +109,8 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
+			Date date = new Date();
+			appointmentRequestRepository.save(new AppointmentRequest(date,AppointmentType.EXAMINATION, 1,1,1));
 
 			//===========================================================================
 
