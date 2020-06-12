@@ -24,7 +24,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
+	CommandLineRunner runner(ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository, MedicineRepository medicineRepository, DiagnoseRepository diagnoseRepository){
 		return args -> {
 
 			//Date
@@ -132,6 +132,12 @@ public class SpringBootVuejsApplication {
 			clinicRoomRepository.save(clinicRoom3);
 			clinicRoomRepository.save(clinicRoom4);
 			clinicRoomRepository.save(clinicRoom5);
+
+			requestRepository.save(new RegisterRequests("p1","p1","djordjeognjenovic359@gmail.com","p1"));
+			requestRepository.save(new RegisterRequests("p2","p2","djordjeognjenovic359@gmail.com","p2"));
+
+			medicineRepository.save(new Medicine(1, "lek1", "valja"));
+			diagnoseRepository.save(new Diagnose(1, "dijagnoza", "nista strasno"));
 
 		};
 

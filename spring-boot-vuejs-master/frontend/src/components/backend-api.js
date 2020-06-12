@@ -70,6 +70,18 @@ export default {
     deleteRoom(id) {
         return AXIOS.post('room/delete/' + id);
     },
+    deleteDiagnose(id) {
+        return AXIOS.post('diagnose/delete/' + id);
+    },
+    deleteMedicine(id) {
+        return AXIOS.post('medicine/delete/' + id);
+    },
+    createDiagnose(diagnose) {
+        return AXIOS.post(`/diagnose/create/`, diagnose);
+    },
+    createMedicine(medicine) {
+        return AXIOS.post(`/medicine/create/`, medicine);
+    },
     createClinic(clinic) {
         return AXIOS.post(`/clinic/register/`, clinic);
     },
@@ -106,6 +118,12 @@ export default {
     getClinic(id) {
         return AXIOS.get(`/clinic/` + id);
     },
+    getMedicine(id) {
+        return AXIOS.get(`/medicine/` + id);
+    },
+    getDiagnose(id) {
+        return AXIOS.get(`/diagnose/` + id);
+    },
     getAllClinics() {
         return AXIOS.get(`/clinic/getall`);
     },
@@ -114,6 +132,12 @@ export default {
     },
     getAllCAs() {
         return AXIOS.get(`/clinicadmin/getall`);
+    },
+    getAllDiagnoses() {
+        return AXIOS.get(`/diagnose/getall`);
+    },
+    getAllMedicines() {
+        return AXIOS.get(`/medicine/getall`);
     },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`, {

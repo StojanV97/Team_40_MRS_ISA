@@ -171,6 +171,161 @@
             </v-dialog>
         </v-card>
 
+        <v-card v-if="this.showDiagnoses">
+            <v-card-title>
+                Diagnoses
+                <v-spacer></v-spacer>
+                <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
+                    :headers="headers3"
+                    :items="diagnoses"
+                    :search="search"
+                    height="554"
+            >
+                <template v-slot:item="row">
+                    <tr>
+                        <td>{{row.item.diagnoseId}}</td>
+                        <td>{{row.item.diagnoseName}}</td>
+                        <td>{{row.item.description}}</td>
+                        <td>
+                            <v-btn icon="true" @click="deleteThisDiagnose(row.item.diagnoseId)"><v-icon>mdi-delete</v-icon></v-btn>
+                        </td>
+                    </tr>
+                </template>
+            </v-data-table>
+            <v-btn
+                bottom
+                dark
+                fab
+                fixed
+                right
+                @click="dialogAD = !dialogAD"
+        >
+            <v-icon>mdi-plus-box</v-icon>
+        </v-btn>
+            <v-dialog
+                    v-model="dialogAD"
+                    width="1200px"
+            >
+                <v-card>
+                    <v-card-title class="grey darken-2">
+                        Create diagnose
+                    </v-card-title>
+                    <v-container>
+                        <CreateDiagnoseForm id="diagnose_dialog"/>
+                    </v-container>
+                    <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                                text
+                                @click="closeDialogAddD()"
+                        >Close</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-card>
+
+        <v-card v-if="this.showMedicines">
+            <v-card-title>
+                Medicines
+                <v-spacer></v-spacer>
+                <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
+                    :headers="headers4"
+                    :items="medicines"
+                    :search="search"
+                    height="554"
+            >
+                <template v-slot:item="row">
+                    <tr>
+                        <td>{{row.item.medicineId}}</td>
+                        <td>{{row.item.medicineName}}</td>
+                        <td>{{row.item.medicineDescription}}</td>
+                        <td>
+                            <v-btn icon="true" @click="deleteThisMedicine(row.item.medicineId)"><v-icon>mdi-delete</v-icon></v-btn>
+                        </td>
+                    </tr>
+                </template>
+            </v-data-table>
+            <v-btn
+                    bottom
+                    dark
+                    fab
+                    fixed
+                    right
+                    @click="dialogAM = !dialogAM"
+            >
+                <v-icon>mdi-plus-box</v-icon>
+            </v-btn>
+            <v-dialog
+                    v-model="dialogAM"
+                    width="1200px"
+            >
+                <v-card>
+                    <v-card-title class="grey darken-2">
+                        Create medicine
+                    </v-card-title>
+                    <v-container>
+                        <CreateMedicineForm id="medicine_dialog"/>
+                    </v-container>
+                    <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                                text
+                                @click="closeDialogAddM()"
+                        >Close</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-card>
+
+        <v-card v-if="this.showRequests">
+            <v-card-title>
+                Requests
+                <v-spacer></v-spacer>
+                <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
+                    :headers="headers"
+                    :items="requests"
+                    :search="search"
+                    height="554"
+            >
+                <template v-slot:item="row">
+                    <tr>
+                        <td>{{row.item.userName}}</td>
+                        <td>{{row.item.firstName}}</td>
+                        <td>{{row.item.lastName}}</td>
+                        <td>{{row.item.email}}</td>
+                        <td>
+                            <v-btn icon="true" @click="approveRequest(row.item.email, row.item.userName)"><v-icon>mdi-checkbox-marked-circle</v-icon></v-btn>
+                            <v-btn icon="true" @click="declineRequest(row.item.userName)"><v-icon>mdi-close-circle</v-icon></v-btn>
+                        </td>
+                    </tr>
+                </template>
+            </v-data-table>
+        </v-card>
+
         <v-navigation-drawer
                 v-model="drawer"
                 :clipped="$vuetify.breakpoint.lgAndUp"
@@ -267,6 +422,21 @@
             </v-container>
         </v-content>
 
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{msg}}
+                <v-btn
+                        @click="snackbar = false"
+                        color="pink"
+                        text
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
+
     </v-app>
 </template>
 
@@ -279,8 +449,12 @@
     import api from "../backend-api";
     import ClinicEditForm from "../Utility/ClinicEditForm";
     import ClinicAdminEditForm from "../Users/ClinicAdminEditForm";
+    import CreateDiagnoseForm from "../Utility/CreateDiagnoseForm";
+    import CreateMedicineForm from "../Utility/CreateMedicineForm";
     export default {
         components:{
+            CreateMedicineForm,
+            CreateDiagnoseForm,
             ClinicAdminEditForm,
             ClinicEditForm,
             DeleteUser,
@@ -297,17 +471,20 @@
             registerClinicAdmin: false,
             deleteC: false,
             deleteCA: false,
-            editC: false,
-            editCA: false,
             showClinics: false,
             dialog: false,
             dialogAC: false,
             dialogACA: false,
+            dialogAD: false,
+            dialogAM: false,
             dialogEditC: false,
             dialogEditCA: false,
             dialogDaysOff : false,
             drawer: null,
             showClinicsAdmin:false,
+            showRequests: false,
+            showDiagnoses: false,
+            showMedicines: false,
             items: [
                 { icon: 'mdi-contacts', text: 'List of clinic admins' },
                 { icon: 'mdi-contacts', text: 'List of clinics' },
@@ -333,6 +510,8 @@
                 },
 
                 { icon: 'mdi-account-box-outline', text: 'Requests' },
+                { icon: 'mdi-pharmacy', text: 'Diagnose codebook' },
+                { icon: 'mdi-pharmacy', text: 'Medicine codebook' },
                 {
                     icon: 'mdi-cog',
                     'icon-alt': 'mdi-cog',
@@ -346,7 +525,7 @@
             ],
             search: '',
             headers: [
-                { text: 'Username', value: 'username' },
+                { text: 'Username', value: 'userName' },
                 { text: 'First Name', value: 'firstName' },
                 { text: 'Last Name', value: 'lastName' },
                 { text: 'Email', value: 'email' },
@@ -364,27 +543,72 @@
                 { text: 'Administrator', value: 'administrator' },
                 { text: 'Actions' },
             ],
-
+            headers3: [
+                {
+                    text: 'Id Number',
+                    align: 'start',
+                    sortable: false,
+                    value: 'diagnoseId',
+                },
+                { text: 'Name', value: 'diagnoseName' },
+                { text: 'Description', value: 'description' },
+                { text: 'Actions' },
+            ],
+            headers4: [
+                {
+                    text: 'Id Number',
+                    align: 'start',
+                    sortable: false,
+                    value: 'medicineId',
+                },
+                { text: 'Name', value: 'medicineName' },
+                { text: 'Description', value: 'medicineDescription' },
+                { text: 'Actions' },
+            ],
             clinics: [
 
             ],
             cadmins: [],
+            requests: [],
+            diagnoses: [],
+            medicines: [],
+            snackbar: false,
+            msg: ''
         }),
         mounted() {
             api.getAllClinics().then(response => {
                 this.clinics = response.data;
-                console.log(this.clinics)
+
             }).catch( e => {
                     console.log(e);
                 }
             );
             api.getAllCAs().then(response => {
                 this.cadmins = response.data;
-                console.log(this.cadmins)
+
             }).catch( e => {
                     console.log(e);
                 }
             );
+            api.getAllRegistrationRequests().then(response => {
+                this.requests = response.data;
+
+            }).catch(e => {
+                console.log(e);
+            });
+            api.getAllMedicines().then(response => {
+                this.medicines = response.data;
+
+            }).catch(e => {
+                console.log(e);
+            });
+            api.getAllDiagnoses().then(response => {
+                this.diagnoses = response.data;
+                console.log("dijagnoze")
+                console.log(this.diagnoses)
+            }).catch(e => {
+                console.log(e);
+            });
         },
         methods:{
             getCAs() {
@@ -405,6 +629,32 @@
                     }
                 );
             },
+            getDiagnoses() {
+                api.getAllDiagnoses().then(response => {
+                    this.diagnoses = response.data;
+                    console.log(this.diagnoses)
+                }).catch( e => {
+                        console.log(e);
+                    }
+                );
+            },
+            getMedicines() {
+                api.getAllMedicines().then(response => {
+                    this.medicines = response.data;
+                    console.log(this.medicines)
+                }).catch( e => {
+                        console.log(e);
+                    }
+                );
+            },
+            getRequests() {
+                api.getAllRegistrationRequests().then(response => {
+                    this.requests = response.data;
+                    console.log(this.requests)
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
             deleteThisClinic(i) {
                 api.deleteClinic(i).then(response => {
                     this.getClinics();
@@ -421,6 +671,53 @@
                     }
                 );
             },
+            deleteThisMedicine(m) {
+                api.deleteMedicine(m).then(response => {
+                    this.getMedicines();
+                }).catch( e => {
+                    console.log(e);
+                });
+            },
+            deleteThisDiagnose(d) {
+                api.deleteDiagnose(d).then(response => {
+                    this.getDiagnoses();
+                }).catch( e => {
+                    console.log(e);
+                });
+            },
+            declineRequest(userName) {
+                for (let i = 0; i < this.requests.length; i++) {
+                    if (userName === this.requests[i].userName) {
+                        this.requests.splice(i, 1);
+                    }
+                }
+                api.deleteRegistrationRequest(userName).then(response => {
+                    console.log(response);
+                    this.getRequests();
+                }).catch(e => {
+                    console.log(e)
+                });
+            },
+            approveRequest(email, userName) {
+                console.log(email);
+                api.sendEmail(email).then(response => {
+                    console.log(response.data)
+                }).catch(e => {
+                    this.msg = "Activation code sent!";
+                    this.snackbar = true;
+                });
+                for (let i = 0; i < this.requests.length; i++) {
+                    if (userName === this.requests[i].userName) {
+                        this.requests.splice(i, 1);
+                    }
+                }
+                api.deleteRegistrationRequest(userName).then(response => {
+                    console.log(response);
+                    this.getRequests();
+                }).catch(e => {
+                    console.log(e)
+                });
+            },
             closeDialogAddC() {
                   this.dialogAC = false;
                   this.getClinics();
@@ -428,6 +725,14 @@
             closeDialogAddCA() {
                 this.dialogACA = false;
                 this.getCAs();
+            },
+            closeDialogAddD() {
+                this.dialogAD = false;
+                this.getDiagnoses();
+            },
+            closeDialogAddM() {
+                this.dialogAM = false;
+                this.getMedicines();
             },
             closeDialogEditC() {
                 this.dialogEditC = false;
@@ -438,7 +743,6 @@
                 this.getCAs();
             },
             editThisClinic(i, n, a, ad) {
-
                 this.dialogEditC = true;
                 this.$refs.ClinicEditForm.setClinicValues(i, n, a, ad);
             },
@@ -458,8 +762,9 @@
                     this.registerClinic = false;
                     this.deleteC = false;
                     this.deleteCA = false;
-                    this.editC = false;
-                    this.editCA = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = false;
+                    this.showMedicines = false;
                     this.getCAs()
                 }
                 else if(text === "List of clinics"){
@@ -469,8 +774,9 @@
                     this.registerClinic = false;
                     this.deleteC = false;
                     this.deleteCA = false;
-                    this.editC = false;
-                    this.editCA = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = false;
+                    this.showMedicines = false;
                     this.getClinics()
                 }else if(text === "Register clinic"){
                     this.showClinicsAdmin = false;
@@ -479,8 +785,9 @@
                     this.registerClinic = true;
                     this.deleteC = false;
                     this.deleteCA = false;
-                    this.editC = false;
-                    this.editCA = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = false;
+                    this.showMedicines = false;
                 }else if(text === "Register clinic admin"){
                     this.showClinicsAdmin = false;
                     this.showClinics = false;
@@ -488,8 +795,9 @@
                     this.registerClinic = false;
                     this.deleteC = false;
                     this.deleteCA = false;
-                    this.editC = false;
-                    this.editCA = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = false;
+                    this.showMedicines = false;
                 }else if(text === "Delete clinic") {
                     this.showClinicsAdmin = false;
                     this.showClinics = false;
@@ -497,8 +805,9 @@
                     this.registerClinic = false;
                     this.deleteC = true;
                     this.deleteCA = false;
-                    this.editC = false;
-                    this.editCA = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = false;
+                    this.showMedicines = false;
                 }
                 else if(text === "Delete clinic admin") {
                     this.showClinicsAdmin = false;
@@ -507,12 +816,49 @@
                     this.registerClinic = false;
                     this.deleteC = false;
                     this.deleteCA = true;
-                    this.editC = false;
-                    this.editCA = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = false;
+                    this.showMedicines = false;
+                }
+                else if(text === "Requests") {
+                    this.showClinicsAdmin = false;
+                    this.showClinics = false;
+                    this.registerClinicAdmin = false;
+                    this.registerClinic = false;
+                    this.deleteC = false;
+                    this.deleteCA = false;
+                    this.showRequests = true;
+                    this.showDiagnoses = false;
+                    this.showMedicines = false;
+                }
+                else if(text === "Diagnose codebook") {
+                    this.showClinicsAdmin = false;
+                    this.showClinics = false;
+                    this.registerClinicAdmin = false;
+                    this.registerClinic = false;
+                    this.deleteC = false;
+                    this.deleteCA = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = true;
+                    this.showMedicines = false;
+                }
+                else if(text === "Medicine codebook") {
+                    this.showClinicsAdmin = false;
+                    this.showClinics = false;
+                    this.registerClinicAdmin = false;
+                    this.registerClinic = false;
+                    this.deleteC = false;
+                    this.deleteCA = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = false;
+                    this.showMedicines = true;
                 }
                 else{
                     this.showClinics = false;
                     this.showClinicsAdmin = false;
+                    this.showRequests = false;
+                    this.showDiagnoses = false;
+                    this.showMedicines = false;
                 }
             },
             signOut(){
