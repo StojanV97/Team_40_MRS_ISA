@@ -6,9 +6,10 @@ import de.jonashackt.springbootvuejs.domain.RegisterRequests;
 import de.jonashackt.springbootvuejs.repository.AppointmentRequestRepository;
 import de.jonashackt.springbootvuejs.service.AppointmentRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-
+@Service
 public class AppointmentRequestServiceImpl implements AppointmentRequestService {
 
     @Autowired

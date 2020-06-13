@@ -14,6 +14,7 @@ public class AppointmentRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     String dateAndTime;
     //int duration;
     String type;
@@ -58,6 +59,19 @@ public class AppointmentRequest {
     {
 
     }
+
+    @Override
+    public String toString() {
+        return "AppointmentRequest{" +
+                "id=" + id +
+                ", dateAndTime=" + dateAndTime +
+                ", type=" + type +
+                ", patientID=" + patientID +
+                ", doctorID=" + doctorID +
+                ", clinicID=" + clinicID +
+                '}';
+    }
+
     public String getDateAndTime() {
         return dateAndTime;
     }

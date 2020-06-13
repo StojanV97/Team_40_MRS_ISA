@@ -2,6 +2,7 @@ package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.domain.Appointment;
 import de.jonashackt.springbootvuejs.repository.AppointmentRepository;
+import de.jonashackt.springbootvuejs.repository.ApointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,11 +19,12 @@ public class AppointmentController {
     @Autowired
     AppointmentRepository appointmentRepository;
 
+
     @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAppoitment(@RequestBody Appointment appointment){
         System.out.println(appointment);
         appointmentRepository.save(appointment);
-        return new ResponseEntity<String>("OK", HttpStatus.OK);
+        return new ResponseEntity<String>("asda", HttpStatus.OK);
     }
 
 

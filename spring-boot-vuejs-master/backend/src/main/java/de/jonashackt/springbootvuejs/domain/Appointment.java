@@ -77,12 +77,24 @@ public class Appointment {
         this.type = type;
     }
 
-    public Appointment(String dateAndTime, String type, long roomID, long patientID,  long doctorID,long clinicID) {
+    public Appointment(String dateAndTime, String type, long roomID, long patientID, long doctorID) {
         this.dateAndTime = dateAndTime;
         this.type = type;
         this.roomID = roomID;
         this.patientID = patientID;
         this.doctorID = doctorID;
         this.clinicID = clinicID;
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", dateAndTime='" + dateAndTime + '\'' +
+                ", type='" + type + '\'' +
+                ", roomID=" + roomID +
+                ", patientID=" + patientID +
+                ", doctorID=" + doctorID +
+                '}';
     }
 }
