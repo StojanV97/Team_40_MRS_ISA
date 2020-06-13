@@ -58,17 +58,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String createPatient(User user, String type){
+    public String createPatient(Patient patient, String type){
         //808 - korisnik vec postoji
         // 800 - korisnik upisan
         // 801 - zaobisao uslove
         String response = "801";
-        if(userRepository.findByUserName(user.getUsername()) != null){
+        if(userRepository.findByUserName(patient.getUsername()) != null){
             return "808";
         }
 
         String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
-        userRepository.save(new Patient(user.getFirstName(), user.getLastName(),user.getEmail(),user.getUsername(),s));
+        userRepository.save(new Patient(patient.getFirstName(), patient.getLastName(),patient.getEmail(),patient.getUsername(),s,patient.getCountry(),patient.getCity(),patient.getAddress(),patient.getPhoneNumber(),patient.getInsuranceNumber()));
         response = "800";
 
         return response;

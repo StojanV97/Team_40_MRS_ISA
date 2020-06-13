@@ -21,10 +21,32 @@
                       label="Last Name"
                       required
         ></v-text-field>
+        <v-text-field class="field"
+                      v-model="user.country"
+                      label="Country"
+                      required
+        ></v-text-field>
+        <v-text-field class="field"
+                      v-model="user.city"
+                      label="City"
+                      required
+        ></v-text-field>
+        <v-text-field class="field"
+                      v-model="user.address"
+                      label="Address"
+                      required
+        ></v-text-field>
+
+
+        <v-text-field class="field"
+                      v-model="user.phoneNumber"
+                      label="Phone Number"
+                      required
+        ></v-text-field>
 
         <v-text-field class="field"
                       v-model="user.email"
-                      readonly="1"
+                      readonly
                       label="E-mail"
 
         ></v-text-field>
@@ -33,7 +55,6 @@
             <label >User Name</label>
             <v-text-field
                     v-model="$store.getters.getUser.username"
-                    :rules="administratorRules"
                     outlined
                     dense
                     required
@@ -156,7 +177,12 @@
           firstName: '',
           lastName: '',
           userName: '',
-          email: ''
+          email: '',
+          country:'',
+          city:'',
+          phoneNumber:'',
+          insuranceNumber:''
+
         },
         nameRules: [
           v => !!v || 'Name is required',
@@ -175,6 +201,13 @@
         this.user.lastName = response.data.lastName;
         this.user.firstName = response.data.firstName;
         this.user.email = response.data.email;
+        this.user.country = response.data.country;
+        this.user.city = response.data.city;
+        this.user.address = response.data.address;
+        this.user.phoneNumber = response.data.phoneNumber;
+        this.user.insuranceNumber = response.data.insuranceNumber;
+
+
 
       })
     },

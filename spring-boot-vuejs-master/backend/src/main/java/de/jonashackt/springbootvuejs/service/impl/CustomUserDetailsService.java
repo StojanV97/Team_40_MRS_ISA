@@ -82,6 +82,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             n.setPassChanged(true);
             userRepository.save(n);
         }
+         else if (user instanceof Patient) {
+            Patient n = (Patient) user;
+            n.setPassChanged(true);
+            userRepository.save(n);
+        }
 
     }
 }

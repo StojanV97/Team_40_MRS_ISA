@@ -101,7 +101,7 @@ export default {
         return AXIOS.post(`/clinicadmin/regagain/` + type, user);
     },
     createRequest(request) {
-        return AXIOS.post(`/request/registration/`, request);
+        return AXIOS.post(`/auth/registration/`, request);
     },
     createClinicCenterAdmin(user, type) {
         return AXIOS.post(`/cliniccenteradmin/registration/` + type, user);
@@ -124,8 +124,21 @@ export default {
     getDiagnose(id) {
         return AXIOS.get(`/diagnose/` + id);
     },
+    getClinicForDate(date) {
+        return AXIOS.get(`/clinics/get/` + date);
+    },
+    getClinicDoctorsForDate(id,date) {
+        return AXIOS.get(`/clinics/get/doctors/` + id +"/" +date);
+    },
     getAllClinics() {
         return AXIOS.get(`/clinic/getall`);
+    },
+    createAppointmentRequest(dateAndTime,type,clinicID,patientID,doctorID,){
+        return AXIOS.post('patient/create-appointment-request/' + dateAndTime + '/' + type +  '/' + clinicID + '/'+ patientID + '/' + doctorID  );
+    },
+
+    getDoctorsForClinic(id){
+        return AXIOS.get('/patient/get-doctors/' + id);
     },
     getAllCCAs() {
         return AXIOS.get(`/cliniccenteradmin/getall`);

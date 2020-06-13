@@ -29,8 +29,13 @@ public class RequestServiceImpl implements RequestService{
         if(requestRepository.findByEmail(request.getEmail()) != null){
             return "808";
         }
+        if(requestRepository.findByInsuranceNumber(request.getInsuranceNumber()) != null){
+            return "808";
+        }
 
-        requestRepository.save(new RegisterRequests(request.getFirstName(), request.getLastName(),request.getEmail(),request.getUserName()));
+        requestRepository.save(new RegisterRequests(request.getFirstName(), request.getLastName(),request.getEmail()
+                        ,request.getUserName(),request.getCountry(),request.getCity(),request.getAddress()
+                        ,request.getPhoneNumber(),request.getInsuranceNumber()  ));
         response = "800";
 
         return response;

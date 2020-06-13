@@ -15,17 +15,35 @@ public class RegisterRequests {
     private String lastName;
     private String email;
     private String userName;
+    private String country;
+    private String city;
+    private String address;
+    private String phoneNumber;
+    private String insuranceNumber;
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     public RegisterRequests(){};
+
     public RegisterRequests( String firstName, String lastName, String email, String userName) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.userName = userName;
+    }
+
+    public RegisterRequests(String firstName, String lastName, String email, String userName, String country, String city, String address, String phoneNumber, String insuranceNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.userName = userName;
+        this.country = country;
+        this.city = city;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.insuranceNumber = insuranceNumber;
     }
 
     public void setEmail(String email) {
@@ -64,6 +82,26 @@ public class RegisterRequests {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getInsuranceNumber() {
+        return insuranceNumber;
     }
 }
 

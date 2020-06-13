@@ -33,17 +33,44 @@
                     <v-text-field class="text"
                                   v-model="user.userName"
                                   :counter="10"
-                                  label="UserName"
+                                  label="UserName *"
                                   required
+                    ></v-text-field>
+
+
+                    <v-text-field
+                            v-model="user.country"
+                            label="Country"
+                            required
+                    ></v-text-field>
+
+                    <v-text-field
+                            v-model="user.city"
+                            label="City"
+                            required
+                    ></v-text-field>
+                    <v-text-field
+                            v-model="user.address"
+                            label="Address"
+                            required
+                    ></v-text-field>
+                    <v-text-field
+                            v-model="user.insuranceNumber"
+                            label="Unique insurance number *"
+                            required
+                    ></v-text-field>
+                    <v-text-field
+                            v-model="user.phoneNumber"
+                            label="Phone number"
+                            required
                     ></v-text-field>
 
                     <v-text-field
                             v-model="user.email"
                             :rules="emailRules"
-                            label="E-mail"
+                            label="E-mail *"
                             required
                     ></v-text-field>
-
 
                     <v-checkbox
                             v-model="checkbox"
@@ -91,7 +118,7 @@
 <style>
     .forma {
         margin-right: 700px;
-        height: 580px;
+
 
     }
 
@@ -120,7 +147,12 @@
                     firstName: '',
                     lastName: '',
                     userName: '',
-                    email: ''
+                    email: '',
+                    country:'',
+                    city:'',
+                    address:'',
+                    insuranceNumber:'',
+                    phoneNumber:''
 
                 },
                 nameRules: [
@@ -147,13 +179,13 @@
                 this.$refs.form.reset()
             },
             createRequest() {
-
+                console.log(this.user);
                 api.createRequest(this.user).then(response => {
                     // JSON responses are automatically parsed.
                     this.response = response.data;
                     console.log(response.data)
                     if (response.data == "808") {
-                        this.msg = 'User with same username or email already exists!';
+                        this.msg = 'User with same username or email or insurance number already exists!';
                         this.snackbar = true;
                     } else if (response.data == "800") {
 

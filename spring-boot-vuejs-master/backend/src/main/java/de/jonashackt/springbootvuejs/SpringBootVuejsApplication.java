@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,7 +32,7 @@ public class SpringBootVuejsApplication {
 			//Date
 			Date d = new Date();
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
-			ArrayList<String> listOfDates = new ArrayList<String>();
+			ArrayList<String> listOfDates = new ArrayList<>();
 			String d2 = sp.format(d);
 			listOfDates.add("2020-12-12");
 			listOfDates.add("2020-12-14");
@@ -61,8 +63,10 @@ public class SpringBootVuejsApplication {
 			Room room3 = new Room(3,"Operation");
 			Room room4 = new Room(4,"Examination");
 			Room room5 = new Room(5,"Operation");
-			Clinic clinic = new Clinic(1, "Klinika", "Njegoseva 12");
+			Clinic clinic = new Clinic(1, "Klinika BEOGRAD", "Njegoseva 12");
+			Clinic clinic2 = new Clinic(2, "Klinicki Centar Novi sad", "Bulevar Oslobodjenja 12");
 			clinic.setAdministrator("ClinicAdmin");
+			clinic2.setAdministrator("ClinicAdmin");
 			room.setCalendar(listOfDates);
 			roomRepository.save(room);
 			roomRepository.save(room2);
@@ -70,12 +74,14 @@ public class SpringBootVuejsApplication {
 			roomRepository.save(room4);
 			roomRepository.save(room5);
 			clinicRepository.save(clinic);
+			clinicRepository.save(clinic2);
 			//===============================================================================================================================
 
 			//Users
 			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin("ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
 			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
-			Patient patient = new Patient("Patient","Patient","Patient@gmail.com","Patient",bc.encode("password"));
+			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
+			patient.setPassChanged(true);
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
 			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
 			Doctor doctor22 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor22",bc.encode("password"));
@@ -103,14 +109,25 @@ public class SpringBootVuejsApplication {
 			userRepository.save(clinincCenterAdmin);
 			userRepository.save(clinincAdmin);
 			userRepository.save(nurse);
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr1"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
+			requestRepository.save(new RegisterRequests("Milan","Milanovic","stojan.v19937@gmail.com","milan", "Srbija", "Novi Sad", "Bulevar 2", "061144111", "12388891132"));
+			requestRepository.save(new RegisterRequests("Dragan","Dragunovic","stojan.v19297@gmail.com","dragan", "Srbija", "Novi Sad", "Bulevar 3", "061132111", "1234230678"));
+			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","stojan.v19497@gmail.com","stojan", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
+
+			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07","EXAMINATION", 1,1,2));
+			appointmentRepository.save(new Appointment("2020-07-07 10-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 10-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 11-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 11-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 12-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 12-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 13-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 13-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 14-00", "EXAMINATION",1,1,2,2));
+
 
 			//===========================================================================
 
-            Clinic_Doctors cd = new Clinic_Doctors(clinic.getId(),doctor.getId());
+            Clinic_Doctors cd = new Clinic_Doctors(clinic2.getId(),doctor.getId());
 			Clinic_Doctors cd2 = new Clinic_Doctors(clinic.getId(),doctor2.getId());
 			Clinic_Doctors cd3 = new Clinic_Doctors(clinic.getId(),doctor3.getId());
 			Clinic_Doctors cd4 = new Clinic_Doctors(clinic.getId(),doctor4.getId());
