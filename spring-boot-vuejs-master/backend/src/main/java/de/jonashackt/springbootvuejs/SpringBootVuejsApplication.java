@@ -32,7 +32,7 @@ public class SpringBootVuejsApplication {
 			//Date
 			Date d = new Date();
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
-			ArrayList<String> listOfDates = new ArrayList<String>();
+			ArrayList<String> listOfDates = new ArrayList<>();
 			String d2 = sp.format(d);
 			listOfDates.add("2020-12-12");
 			listOfDates.add("2020-12-14");
@@ -63,8 +63,10 @@ public class SpringBootVuejsApplication {
 			Room room3 = new Room(3,"Operation");
 			Room room4 = new Room(4,"Examination");
 			Room room5 = new Room(5,"Operation");
-			Clinic clinic = new Clinic(1, "Klinika", "Njegoseva 12");
+			Clinic clinic = new Clinic(1, "Klinika BEOGRAD", "Njegoseva 12");
+			Clinic clinic2 = new Clinic(2, "Klinicki Centar Novi sad", "Bulevar Oslobodjenja 12");
 			clinic.setAdministrator("ClinicAdmin");
+			clinic2.setAdministrator("ClinicAdmin");
 			room.setCalendar(listOfDates);
 			roomRepository.save(room);
 			roomRepository.save(room2);
@@ -72,6 +74,7 @@ public class SpringBootVuejsApplication {
 			roomRepository.save(room4);
 			roomRepository.save(room5);
 			clinicRepository.save(clinic);
+			clinicRepository.save(clinic2);
 			//===============================================================================================================================
 
 			//Users
@@ -110,21 +113,21 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("Dragan","Dragunovic","stojan.v19297@gmail.com","dragan", "Srbija", "Novi Sad", "Bulevar 3", "061132111", "1234230678"));
 			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","stojan.v19497@gmail.com","stojan", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
 
-			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07",AppointmentType.EXAMINATION, 1,1,2));
-			appointmentRepository.save(new Appointment("2020-07-07 10-00", AppointmentType.EXAMINATION,1,1,2,1));
-			appointmentRepository.save(new Appointment("2020-07-07 10-30", AppointmentType.EXAMINATION,1,1,2,1));
-			appointmentRepository.save(new Appointment("2020-07-07 11-00", AppointmentType.EXAMINATION,1,1,2,1));
-			appointmentRepository.save(new Appointment("2020-07-07 11-30", AppointmentType.EXAMINATION,1,1,2,1));
-			appointmentRepository.save(new Appointment("2020-07-07 12-00", AppointmentType.EXAMINATION,1,1,2,1));
-			appointmentRepository.save(new Appointment("2020-07-07 12-30", AppointmentType.EXAMINATION,1,1,2,1));
-			appointmentRepository.save(new Appointment("2020-07-07 13-00", AppointmentType.EXAMINATION,1,1,2,1));
-			appointmentRepository.save(new Appointment("2020-07-07 13-30", AppointmentType.EXAMINATION,1,1,2,1));
-			appointmentRepository.save(new Appointment("2020-07-07 14-00", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07","EXAMINATION", 1,1,2));
+			appointmentRepository.save(new Appointment("2020-07-07 10-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 10-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 11-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 11-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 12-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 12-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 13-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 13-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 14-00", "EXAMINATION",1,1,2,2));
 
 
 			//===========================================================================
 
-            Clinic_Doctors cd = new Clinic_Doctors(clinic.getId(),doctor.getId());
+            Clinic_Doctors cd = new Clinic_Doctors(clinic2.getId(),doctor.getId());
 			Clinic_Doctors cd2 = new Clinic_Doctors(clinic.getId(),doctor2.getId());
 			Clinic_Doctors cd3 = new Clinic_Doctors(clinic.getId(),doctor3.getId());
 			Clinic_Doctors cd4 = new Clinic_Doctors(clinic.getId(),doctor4.getId());

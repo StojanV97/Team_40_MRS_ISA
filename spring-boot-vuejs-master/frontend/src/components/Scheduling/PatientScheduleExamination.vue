@@ -1,37 +1,7 @@
 
 <template>
     <v-div class="div">
-<!--        <v-row align="center">-->
-<!--            <v-col cols="12" sm="6">-->
-<!--                <v-subheader v-text="'Choose a clinic first'"></v-subheader>-->
-<!--            </v-col>-->
-<!--            <v-col cols="12" sm="6">-->
-<!--                <v-select-->
-<!--                    v-model="selectedClinic"-->
-<!--                    :items="clinics"-->
-<!--                    item-text="name"-->
-<!--                    item-value="id"-->
-<!--                    @change="onChange"-->
 
-
-<!--               ></v-select>-->
-<!--            </v-col>-->
-
-<!--            <v-col cols="12" sm="6">-->
-<!--                <v-subheader v-text="'Choose a doctor '"></v-subheader>-->
-<!--            </v-col>-->
-
-<!--            <v-col cols="12" sm="6">-->
-<!--                <v-select-->
-<!--                    v-model="selectedDoctor"-->
-<!--                    :items="doctors"-->
-<!--                    item-text="firstName"-->
-<!--                    item-value="id"-->
-<!--                >-->
-<!--                    <span slot="no-data"> Choose as clinic first. </span>-->
-<!--                </v-select>-->
-<!--            </v-col>-->
-            <!--        </v-row>-->
         <v-div class="div1">
         <v-row class="date" justify="center">Choose a date</v-row>
         <v-row  justify="center">
@@ -66,6 +36,10 @@
 
                         <td>{{row.item.address}}</td>
                         <td>{{row.item.grade}}</td>
+                        <td>
+                            <v-btn :icon=true @click="showDoctors(row.item.id)"><v-icon>mdi-arrow-right-bold-circle</v-icon></v-btn>
+                        </td>
+
 
                     </tr>
                 </template>
@@ -90,7 +64,7 @@
                 <v-data-table
                         disabled="true"
                         :headers="headersDoctors"
-                        :items="clinics"
+                        :items="doctors"
                         :search="search"
                         height="554"
                 >
@@ -100,18 +74,35 @@
                             <td>{{row.item.lastName}}</td>
 
                             <td>{{row.item.grade}}</td>
+                            <td>
+                                <v-btn :icon=true @click="submitRequest(row.item.id)"><v-icon> mdi-checkbox-marked-circle-outline</v-icon></v-btn>
+                            </td>
+
 
                         </tr>
                     </template>
                 </v-data-table>
             </v-card>
         </v-div>
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{msg}}
+                <v-btn
+                        @click="snackbar = false"
+                        color="pink"
+                        text
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
     </v-div>
 
 </template>
 
 <script>
-    //YYYY-mm-dd or YYYY-mm
     import api from "../backend-api";
     import AvailableClinics from "./AvailableClinics";
 
@@ -127,6 +118,8 @@
             date: new Date(),
             picker: new Date().toISOString().substr(0, 10),
             doctorsEnabled: true,
+            msg: '',
+            snackbar: false,
             clinics:[],
             doctors : [],
             selectedClinic:"",
@@ -134,23 +127,31 @@
             selectedDate:"",
             clinic:[],
             headers: [
-                { text: 'Clinic Name', value: 'name' },
+                { text: 'Clinic Name', value: 'name', align:'start'},
                 { text: 'City', value: 'city'},
                 { text: 'Address', value: 'address' },
-                { text: 'Average rating', value: 'rating'}
+                { text: 'Average rating', value: 'rating'},
+                { text: 'Select'}
             ],
             headersDoctors: [
                 { text: 'First Name', value: 'firstName' },
                 { text: 'Last Name', value: 'lastName'},
-                { text: 'Address', value: 'address' },
-                { text: 'Average rating', value: 'rating'}
+                { text: 'Average rating', value: 'rating'},
+                { text: 'Choose a doctor'}
 
             ],
+            appointmentRequest:{
+                dateAndTime:'',
+                type:'EXAMINATION',
+                clinicID:'',
+                patientID:'',
+                doctorID:'',
+
+            },
+
         }),
         mounted() {
-
-            //klinika ima listu doktora
-
+            api.setAuthentication().defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
         },
         methods:
         {
@@ -161,17 +162,42 @@
             },
             submit(){
                api.getClinicForDate(this.selectedDate).then(response =>{
-                    console.log("OVDE SEUZIMAJU KLINIKE")
-                   console.log(response.data)
-                   console.log(this.selectedDate)
-
+                   this.doctors = [];
                    this.clinics = response.data;
-
+                   this.appointmentRequest.dateAndTime=this.selectedDate;
                     }
 
                 )
 
+            },showDoctors(id){
+                this.appointmentRequest.clinicID=id;
+                api.getClinicDoctorsForDate(this.selectedDate,id).then(response =>{
+                    this.doctors = response.data;
+                }
+
+                )
+
+
             },
+            submitRequest(doctorId){
+
+                this.appointmentRequest.patientID = Number(localStorage.getItem('userID'));
+                this.appointmentRequest.doctorID = doctorId;
+                console.log(this.appointmentRequest);
+                api.createAppointmentRequest(this.appointmentRequest.dateAndTime,this.appointmentRequest.type,this.appointmentRequest.clinicID, this.appointmentRequest.patientID,this.appointmentRequest.doctorID).then(response =>{
+
+                    this.msg = 'Appointment request successfully submitted! Check your email for verification.';
+                    this.snackbar = true;
+
+                    this.clinics=[];
+                    this.doctors=[];
+                    this.selectedDate='';
+                    }
+                ).catch(e=>{
+                    console.log(e)
+                })
+            }
+
 
 
 

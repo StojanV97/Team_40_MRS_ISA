@@ -94,13 +94,15 @@ public class ClinicController {
 
         Collection<Appointment> allAppointments = appointmentService.getAllAppointments();
 
-        Collection<Appointment> appointmentsForDate = new ArrayList<Appointment>();
+        //Collection<Appointment> appointmentsForDate = new ArrayList<Appointment>();
         for(Appointment appointment : allAppointments)
         {
             //clinicID = appointment.getClinicID();
-            if (appointment.getDateAndTime().split(" ")[0] == date)
+            String[] datum = appointment.getDateAndTime().split(" ");
+            if (datum[0].equals(date))
             {
-                appointmentsForDate.add(appointment);
+
+                //appointmentsForDate.add(appointment);
                 doctorsWithAppointments.add(appointment.getDoctorID());
             }
         }
@@ -111,6 +113,7 @@ public class ClinicController {
                     continue;
 
             Set<Doctor> doctors = userController.getDoctorsForClinic(clinic.getId());
+            System.out.println(doctors);
             if(doctors.isEmpty()) {
                 continue;
             }
@@ -121,7 +124,7 @@ public class ClinicController {
                 if(doctorsWithAppointments.contains(doctor.getId()))
                 {
 
-                   if(Collections.frequency(doctorsWithAppointments,doctor.getId()) < 8)
+                   if((Collections.frequency(doctorsWithAppointments,doctor.getId())) < 9)
                    {
                        c.add(clinic);
                        continue clinics;
@@ -136,5 +139,49 @@ public class ClinicController {
 
         }
         return new ResponseEntity<Collection<Clinic>>(c, HttpStatus.OK);
+    }
+    @GetMapping(path = "/clinics/get/doctors/{date}/{id}")
+    public ResponseEntity<Collection<Doctor>> getClinicDoctorForDate(@PathVariable("id") long id, @PathVariable("date") String date) {
+
+
+
+        Clinic clinic = clinicRepository.findById(id);
+        Set<Doctor> doctors = userController.getDoctorsForClinic(clinic.getId());
+
+
+        ArrayList<Long> doctorsWithAppointments = new ArrayList<>();
+        Collection<Appointment> allAppointments = appointmentService.getAllAppointments();
+
+        //Collection<Appointment> appointmentsForDate = new ArrayList<Appointment>();
+        for(Appointment appointment : allAppointments)
+        {
+            String[] datum = appointment.getDateAndTime().split(" ");
+            if (datum[0].equals(date))
+            {
+
+                //appointmentsForDate.add(appointment);
+                doctorsWithAppointments.add(appointment.getDoctorID());
+            }
+        }
+
+        Collection<Doctor> d = new ArrayList<Doctor>();
+        for(Doctor doctor: doctors)
+        {
+            if(doctorsWithAppointments.contains(doctor.getId()))
+            {
+                if((Collections.frequency(doctorsWithAppointments,doctor.getId())) < 9)
+                {
+                    d.add(doctor);
+                }
+
+            }
+            else{
+                d.add(doctor);
+
+            }
+        }
+
+
+        return new ResponseEntity<Collection<Doctor>>(d, HttpStatus.OK);
     }
 }

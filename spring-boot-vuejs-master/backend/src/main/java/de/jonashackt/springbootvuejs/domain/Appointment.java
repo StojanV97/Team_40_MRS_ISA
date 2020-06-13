@@ -18,7 +18,7 @@ public class Appointment {
 
     String dateAndTime;
     //int duration;
-    AppointmentType type;
+    String type;
 
     long roomID;
     long patientID;
@@ -69,15 +69,15 @@ public class Appointment {
         this.dateAndTime = dateAndTime;
     }
 
-    public AppointmentType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(AppointmentType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public Appointment(String dateAndTime, AppointmentType type, long roomID, long patientID,  long doctorID,long clinicID) {
+    public Appointment(String dateAndTime, String type, long roomID, long patientID,  long doctorID,long clinicID) {
         this.dateAndTime = dateAndTime;
         this.type = type;
         this.roomID = roomID;
