@@ -8,34 +8,61 @@
             >
 
                 <v-text-field class="field"
-                              v-model="user.lastName"
-                              readonly="1"
+                              v-model="user.firstName"
+                              readonly
                               label="First Name"
                 ></v-text-field>
                 <v-text-field class="field"
                         v-model="user.lastName"
-                        readonly="1"
+                        readonly
                         label="First Name"
                 ></v-text-field>
-
-                <v-text-field class="field"
-                        v-model="user.firstName"
-                        readonly="1"
-                        label="Last Name"
-
-                ></v-text-field>
-
                 <v-text-field class="field"
                         v-model="user.userName"
-                        readonly="1"
+                        readonly
                         label="UserName"
                 ></v-text-field>
 
                 <v-text-field class="field"
                         v-model="user.email"
                         label="E-mail"
-                        readonly="1"
+                        readonly
                 ></v-text-field>
+
+                <v-text-field class="field"
+                              v-model="user.country"
+                              readonly
+                              label="Country"
+
+                ></v-text-field>
+                <v-text-field class="field"
+                              v-model="user.city"
+                              readonly
+                              label="City"
+
+                ></v-text-field>
+
+                <v-text-field class="field"
+                              v-model="user.address"
+                              readonly
+                              label="Address"
+
+                ></v-text-field>
+
+                <v-text-field class="field"
+                              v-model="user.phoneNumber"
+                              readonly
+                              label="Phone number"
+
+                ></v-text-field>
+                <v-text-field class="field"
+                              v-model="user.insuranceNumber"
+                              readonly
+                              label="Insurance number"
+
+                ></v-text-field>
+
+
 
             </v-form>
             <b-button class="button">Preview your medical record</b-button>
@@ -77,14 +104,19 @@
 
             return {
                 user: {
-                    name: '',
+                    firstName: '',
                     lastName: '',
                     userName:'',
-                    email: ''
+                    email: '',
+                    country:'',
+                    city:'',
+                    address:'',
+                    phoneNumber:'',
+                    insuranceNumber:'',
+
 
                 },
 
-                email: '',
 
             }
         },
@@ -96,6 +128,13 @@
                 this.user.lastName = response.data.lastName;
                 this.user.firstName = response.data.firstName;
                 this.user.email = response.data.email;
+                this.user.country = response.data.country;
+                this.user.city = response.data.city;
+                this.user.address = response.data.address;
+                this.user.phoneNumber = response.data.phoneNumber;
+                this.user.insuranceNumber = response.data.insuranceNumber;
+
+
             })
 
         },

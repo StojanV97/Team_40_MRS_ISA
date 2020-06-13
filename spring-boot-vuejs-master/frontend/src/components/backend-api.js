@@ -89,7 +89,7 @@ export default {
         return AXIOS.post(`/clinicadmin/regagain/` + type, user);
     },
     createRequest(request) {
-        return AXIOS.post(`/request/registration/`, request);
+        return AXIOS.post(`/auth/registration/`, request);
     },
     createClinicCenterAdmin(user, type) {
         return AXIOS.post(`/cliniccenteradmin/registration/` + type, user);
@@ -106,8 +106,14 @@ export default {
     getClinic(id) {
         return AXIOS.get(`/clinic/` + id);
     },
+    getClinicForDate(date) {
+        return AXIOS.get(`/clinics/get/` + date);
+    },
     getAllClinics() {
         return AXIOS.get(`/clinic/getall`);
+    },
+    getDoctorsForClinic(id){
+        return AXIOS.get('/patient/get-doctors/' + id);
     },
     getAllCCAs() {
         return AXIOS.get(`/cliniccenteradmin/getall`);

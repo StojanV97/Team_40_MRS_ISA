@@ -3,6 +3,7 @@
         <PatientProfile v-if="this.showProfile"></PatientProfile>
         <EditUser v-if="this.showEditProfile"></EditUser>
         <ScheduleHistory v-if="this.showExaminationHistory"></ScheduleHistory>
+        <PatientScheduleExamination v-if="this.showScheduleExamination"></PatientScheduleExamination>
         <v-card v-if="this.showClinics">
             <v-card-title>
                 Clinics
@@ -136,13 +137,15 @@
     import ScheduleHistory from "../Scheduling/ScheduleHistory";
     import EditUser from "../Users/EditUser";
     import api from "../backend-api";
+    import PatientScheduleExamination from "../Scheduling/PatientScheduleExamination";
 
 
     export default {
         components:{
+            PatientScheduleExamination,
             ScheduleHistory,
             PatientProfile,
-            EditUser
+            EditUser,
 
 
 
@@ -153,6 +156,7 @@
         data: () => ({
             showProfile : false,
             showEditProfile : false,
+            showScheduleExamination:false,
             showCalendar: false,
             dialog: false,
             showExaminationHistory : false,
@@ -160,11 +164,12 @@
             drawer: null,
             showClinics:false,
             items: [
-                { icon: 'mdi-contacts', text: 'List of clinics' },
+                { icon: 'mdi-format-list-bulleted', text: 'List of clinics' },
                 { icon: 'mdi-history', text: 'Examination History' },
+                { icon: "mdi-needle", text: 'Schedule Examination' },
                 //{ icon: 'mdi-history', text: 'Working calendar' },
                 //{ icon: 'mdi-iframe-parentheses', text: 'Request days off' },
-                { icon: 'mdi-account-cog', text: 'Profile' },
+                { icon: 'mdi-account-box-outline', text: 'Profile' },
                 { icon: 'mdi-account-cog', text: 'Edit Profile' },
                 {
                     icon: 'mdi-cog',
@@ -181,6 +186,7 @@
             search: '',
             headers: [
                 { text: 'Clinic Name', value: 'name' },
+                { text: 'City', value: 'city'},
                 { text: 'Address', value: 'address' },
                 //{ text: 'Medical History', value: 'medicalHistory' },
             ],
@@ -210,51 +216,66 @@
                 if(text === "Dark mode On/Off"){
                     this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
                     this.calendar = false;
-                }else if(text === "Working calendar"){
+                }
+
+                /*else if(text === "Working calendar"){
                     this.showCalendar = true;
                     this.showProfile = false;
                     this.showClinics = false;
                     this.showExaminationHistory = false;
                     this.showEditProfile = false;
+                    this.showScheduleExamination = false;
 
-                }else if(text === "List of clinics"){
+                }*/
+                else if(text === "List of clinics"){
                     this.showClinics = true;
                     this.showProfile = false;
-                    this.showCalendar = false;
+                    //this.showCalendar = false;
                     this.showExaminationHistory = false;
                     this.showEditProfile = false;
+                    this.showScheduleExamination = false;
 
                 }else if(text === "Profile"){
                     this.showClinics = false;
-                    this.showCalendar = false;
+                    //this.showCalendar = false;
                     this.showProfile = true;
                     this.showExaminationHistory = false;
                     this.showEditProfile = false;
+                    this.showScheduleExamination = false;
 
-                }else if(text === "Request days off"){
-                    this.dialogDaysOff = true;
                 }else if(text === "Examination History"){
                     this.showExaminationHistory = true;
                     this.showProfile = false;
-                    this.showCalendar = false;
+                    //this.showCalendar = false;
                     this.showEditProfile = false;
-
+                    this.showScheduleExamination = false;
                     this.showClinics = false;
 
                 }else if(text === "Edit Profile"){
                     this.showExaminationHistory = false;
                     this.showProfile = false;
-                    this.showCalendar = false;
+                    //this.showCalendar = false;
                     this.showClinics = false
                     this.showEditProfile = true;
+                    this.showScheduleExamination = false;
+
+                }
+                else if(text === "Schedule Examination"){
+                    this.showExaminationHistory = false;
+                    this.showProfile = false;
+                   // this.showCalendar = false;
+                    this.showClinics = false
+                    this.showEditProfile = false;
+                    this.showScheduleExamination = true;
 
                 }
                 else{
                     this.showExaminationHistory = false;
                     this.showProfile = false;
-                    this.showCalendar = false;
+                   // this.showCalendar = false;
                     this.showClinics = false;
                     this.showEditProfile = false;
+                    this.showScheduleExamination = false;
                 }
             },
             showHistoryDialog(){

@@ -16,16 +16,22 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    Date dateAndTime;
+    String dateAndTime;
     //int duration;
     AppointmentType type;
 
     long roomID;
     long patientID;
     long doctorID;
+    long clinicID;
 
+    public long getClinicID() {
+        return clinicID;
+    }
 
-
+    public void setClinicID(long clinicID) {
+        this.clinicID = clinicID;
+    }
 
     public long getRoomID() {
         return roomID;
@@ -55,11 +61,11 @@ public class Appointment {
     {
 
     }
-    public Date getDateAndTime() {
+    public String getDateAndTime() {
         return dateAndTime;
     }
 
-    public void setDateAndTime(Date dateAndTime) {
+    public void setDateAndTime(String dateAndTime) {
         this.dateAndTime = dateAndTime;
     }
 
@@ -71,11 +77,12 @@ public class Appointment {
         this.type = type;
     }
 
-    public Appointment(Date dateAndTime, AppointmentType type, long roomID, long patientID, long doctorID) {
+    public Appointment(String dateAndTime, AppointmentType type, long roomID, long patientID,  long doctorID,long clinicID) {
         this.dateAndTime = dateAndTime;
         this.type = type;
         this.roomID = roomID;
         this.patientID = patientID;
         this.doctorID = doctorID;
+        this.clinicID = clinicID;
     }
 }

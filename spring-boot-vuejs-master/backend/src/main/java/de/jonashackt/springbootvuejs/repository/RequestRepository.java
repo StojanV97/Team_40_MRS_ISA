@@ -11,4 +11,6 @@ public interface RequestRepository extends CrudRepository<RegisterRequests, Long
     RegisterRequests findByUserName(@Param("userName") String userName);
 
     RegisterRequests findByEmail(@Param("email") String email);
+    RegisterRequests findByInsuranceNumber(@Param("insuranceNumber") String insuranceNumber);
+
 }

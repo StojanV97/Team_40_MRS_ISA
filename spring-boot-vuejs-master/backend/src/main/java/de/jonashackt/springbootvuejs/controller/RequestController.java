@@ -30,11 +30,13 @@ public class RequestController {
     @Autowired
     private RequestRepository requestRepository;
 
-    @PostMapping(value = "/request/registration",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/auth/registration",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createRequest(@RequestBody RegisterRequests request) throws Exception {
         String s = requestService.createRequest(request);
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
+
+
     @GetMapping(value = "requests/getall",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<RegisterRequests>> getGreetings() {
         Collection<RegisterRequests> requests = requestService.getAllRequests();

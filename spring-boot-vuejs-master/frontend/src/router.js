@@ -15,14 +15,17 @@ import PatientHomePage from "./components/HomePage/PatientHomePage";
 import CAProfile from "./components/HomePage/ClinicAdminHomePage";
 import NurseHomePage from "./components/HomePage/NurseHomePage";
 import FirstLogIn from "./components/Users/FirstLogIn"
+import PatientScheduleExamination from "./components/Scheduling/PatientScheduleExamination";
 
 
 Vue.use(Router);
 
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
-    routes: [
-        {
+    routes: [{
+        path: '/sched',component: PatientScheduleExamination
+            }
+        ,{
             path: '/', component: Login,
             beforeEnter(to, from, next) {
                 localStorage.setItem('loggedIn', 'false');

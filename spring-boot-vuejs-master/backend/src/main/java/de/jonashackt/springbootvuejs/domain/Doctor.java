@@ -15,6 +15,7 @@ public class Doctor extends User {
     public Doctor() {
         super();
     }
+    //ArrayList<String> takenAppointments;
 
     public Doctor(String firstName, String lastName, String email, String userName, String password) {
         super(firstName, lastName, email, userName, password);

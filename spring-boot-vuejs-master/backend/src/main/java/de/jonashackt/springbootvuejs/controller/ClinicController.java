@@ -1,12 +1,12 @@
 package de.jonashackt.springbootvuejs.controller;
 
-import de.jonashackt.springbootvuejs.domain.Clinic;
-import de.jonashackt.springbootvuejs.domain.Doctor;
-import de.jonashackt.springbootvuejs.domain.Room;
-import de.jonashackt.springbootvuejs.domain.User;
+import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
+import de.jonashackt.springbootvuejs.repository.AppointmentRepository;
 import de.jonashackt.springbootvuejs.repository.ClinicRepository;
+import de.jonashackt.springbootvuejs.service.AppointmentService;
 import de.jonashackt.springbootvuejs.service.ClinicService;
+import de.jonashackt.springbootvuejs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -14,11 +14,23 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 @RestController()
 @RequestMapping("/api")
 public class ClinicController {
+
+    @Autowired
+    private AppointmentService appointmentService;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private UserController userController;
 
     @Autowired
     private ClinicRepository clinicRepository;
@@ -69,5 +81,60 @@ public class ClinicController {
     public ResponseEntity<Clinic> getClinicById(@PathVariable("id") long id) {
         Clinic c = clinicService.getClinic(id);
         return new ResponseEntity<Clinic>(c, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/clinics/get/{date}")
+    public ResponseEntity<Collection<Clinic>> getClinicsForDate(@PathVariable("date") String date) {
+        Collection<Clinic> clinics = clinicService.getAllClinics();
+
+
+        Collection<Clinic> c = new ArrayList<Clinic>();
+        ArrayList<Long> doctorsWithAppointments = new ArrayList<Long>();
+
+
+        Collection<Appointment> allAppointments = appointmentService.getAllAppointments();
+
+        Collection<Appointment> appointmentsForDate = new ArrayList<Appointment>();
+        for(Appointment appointment : allAppointments)
+        {
+            //clinicID = appointment.getClinicID();
+            if (appointment.getDateAndTime().split(" ")[0] == date)
+            {
+                appointmentsForDate.add(appointment);
+                doctorsWithAppointments.add(appointment.getDoctorID());
+            }
+        }
+
+        clinics: for(Clinic clinic :clinics){
+
+            if(c.contains(clinic))
+                    continue;
+
+            Set<Doctor> doctors = userController.getDoctorsForClinic(clinic.getId());
+            if(doctors.isEmpty()) {
+                continue;
+            }
+
+            for(Doctor doctor: doctors)
+            {
+
+                if(doctorsWithAppointments.contains(doctor.getId()))
+                {
+
+                   if(Collections.frequency(doctorsWithAppointments,doctor.getId()) < 8)
+                   {
+                       c.add(clinic);
+                       continue clinics;
+                   }
+
+                }
+                else{
+                    c.add(clinic);
+                    continue clinics;
+                }
+            }
+
+        }
+        return new ResponseEntity<Collection<Clinic>>(c, HttpStatus.OK);
     }
 }

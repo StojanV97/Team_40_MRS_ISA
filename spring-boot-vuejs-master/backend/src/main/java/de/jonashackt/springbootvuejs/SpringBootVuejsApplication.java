@@ -26,7 +26,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
+	CommandLineRunner runner(AppointmentRepository appointmentRepository,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
 		return args -> {
 
 			//Date
@@ -77,7 +77,8 @@ public class SpringBootVuejsApplication {
 			//Users
 			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin("ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
 			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
-			Patient patient = new Patient("Patient","Patient","Patient@gmail.com","Patient",bc.encode("password"));
+			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
+			patient.setPassChanged(true);
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
 			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
 			Doctor doctor22 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor22",bc.encode("password"));
@@ -105,12 +106,21 @@ public class SpringBootVuejsApplication {
 			userRepository.save(clinincCenterAdmin);
 			userRepository.save(clinincAdmin);
 			userRepository.save(nurse);
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr1"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
-			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
-			Date date = new Date();
-			appointmentRequestRepository.save(new AppointmentRequest(date,AppointmentType.EXAMINATION, 1,1,1));
+			requestRepository.save(new RegisterRequests("Milan","Milanovic","stojan.v19937@gmail.com","milan", "Srbija", "Novi Sad", "Bulevar 2", "061144111", "12388891132"));
+			requestRepository.save(new RegisterRequests("Dragan","Dragunovic","stojan.v19297@gmail.com","dragan", "Srbija", "Novi Sad", "Bulevar 3", "061132111", "1234230678"));
+			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","stojan.v19497@gmail.com","stojan", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
+
+			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07",AppointmentType.EXAMINATION, 1,1,2));
+			appointmentRepository.save(new Appointment("2020-07-07 10-00", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRepository.save(new Appointment("2020-07-07 10-30", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRepository.save(new Appointment("2020-07-07 11-00", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRepository.save(new Appointment("2020-07-07 11-30", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRepository.save(new Appointment("2020-07-07 12-00", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRepository.save(new Appointment("2020-07-07 12-30", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRepository.save(new Appointment("2020-07-07 13-00", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRepository.save(new Appointment("2020-07-07 13-30", AppointmentType.EXAMINATION,1,1,2,1));
+			appointmentRepository.save(new Appointment("2020-07-07 14-00", AppointmentType.EXAMINATION,1,1,2,1));
+
 
 			//===========================================================================
 

@@ -5,6 +5,7 @@ import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.joinedtables.Clinic_Doctors;
 import de.jonashackt.springbootvuejs.repository.ClinicDoctorRepository;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
+import de.jonashackt.springbootvuejs.service.ClinicService;
 import de.jonashackt.springbootvuejs.service.UserService;
 import de.jonashackt.springbootvuejs.service.impl.CustomUserDetailsService;
 import org.slf4j.Logger;
@@ -36,6 +37,9 @@ public class UserController {
     public static final String SECURED_TEXT = "Hello from the secured resource!";
 
     @Autowired
+    private ClinicService clinicService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -53,6 +57,9 @@ public class UserController {
         LOG.info("GET called on /hello resource");
         return HELLO_TEXT;
     }
+
+    @GetMapping
+
 
     @PostMapping(value = "/email/{email}")
     public ResponseEntity<String> sendEmail(@PathVariable String email) throws MessagingException {
@@ -114,6 +121,14 @@ public class UserController {
         }
         return returnList;
     }
+    @GetMapping("/patient/get-doctors/{id}")
+    public Set<Doctor> getDoctorsForClinic(@PathVariable long id) {
+
+        Clinic clinic = clinicService.getClinic(id);
+        Set<Doctor> doctors = clinic.getDoctors();
+        System.out.println(doctors.toString());
+        return doctors;
+    }
 
 
     @PostMapping(value = "/staff/registration/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -146,8 +161,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/patient/registration/{type}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createPatient(@RequestBody User user, @PathVariable String type) throws Exception {
-        String s = userService.createPatient(user, type);
+    public ResponseEntity<String> createPatient(@RequestBody Patient patient, @PathVariable String type) throws Exception {
+        String s = userService.createPatient(patient, type);
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
