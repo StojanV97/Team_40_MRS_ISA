@@ -54,9 +54,9 @@ public class UserController {
         return HELLO_TEXT;
     }
 
-    @PostMapping(value = "/email/{email}")
-    public ResponseEntity<String> sendEmail(@PathVariable String email) throws MessagingException {
-
+    @PostMapping(value = "/email/{message}/{email}")
+    public ResponseEntity<String> sendEmail(@PathVariable String message,@PathVariable ArrayList<String> email) throws MessagingException {
+        System.out.println(message);
         final String username = "team40mrsisa@gmail.com";
         final String password = "no0013144";
 
@@ -72,17 +72,20 @@ public class UserController {
         });
         MimeMessage msg = new MimeMessage(session);
         try {
-            msg.setFrom(new InternetAddress("team40mrsisa@gmail.com"));
-            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-            msg.setSubject("Activation Code");
-            Multipart emailContent = new MimeMultipart();
-            MimeBodyPart textBodyPart = new MimeBodyPart();
-            textBodyPart.setText("asdasdwqwekwdknk123nkawdwo");
-            emailContent.addBodyPart(textBodyPart);
-            //Attach multipart to message
-            msg.setContent(emailContent);
-            Transport.send(msg);
-            System.out.println("Sent message");
+            for(String e : email){
+                msg.setFrom(new InternetAddress("team40mrsisa@gmail.com"));
+                msg.addRecipient(Message.RecipientType.TO, new InternetAddress(e));
+                msg.setSubject("Activation Code");
+                Multipart emailContent = new MimeMultipart();
+                MimeBodyPart textBodyPart = new MimeBodyPart();
+                textBodyPart.setText(message);
+                emailContent.addBodyPart(textBodyPart);
+                //Attach multipart to message
+                msg.setContent(emailContent);
+                Transport.send(msg);
+                System.out.println("Sent message");
+            }
+
         } catch (MessagingException e) {
             System.out.println(e);
         }

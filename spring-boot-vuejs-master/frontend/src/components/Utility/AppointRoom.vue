@@ -45,7 +45,14 @@ export default {
         patientID: null,
         doctorID: null,
         type: null
-      }
+      },
+      message: {
+        msg: null,
+        email: []
+      },
+      doctor: "",
+      partient: "",
+      idAndDate: null
     };
   },
   mounted() {
@@ -73,12 +80,33 @@ export default {
       this.appointement.patientID = this.$props.appt.patientID;
       this.appointement.dateAndTime = this.date;
       this.appointement.type = "Examination";
-      console.log(this.appointement);
 
+      api.getUser(this.appointement.doctorID).then(response => {
+        this.doctor = response.data;
+      });
+      api.getUser(this.appointement.patientID).then(response => {
+        this.partient = response.data;
+      });
+      this.message.email.push("stojan.v1997@gmail.com");
+      this.message.email.push("stojan.v1997@gmail.com");
       api
         .createAppoitnment(this.appointement)
         .then(response => {
-          console.log(response);
+          this.idAndDate = response.data;
+          api
+            .deleteAppointmentRequest(this.$props.appt.id)
+            .then(response => {
+              this.message.msg =
+                "Appoitnement scheduled at " + this.idAndDate.date;
+              api
+                .sendEmail(this.message)
+                .then(response => {})
+                .catch(e => {
+                  console.log(e);
+                });
+              this.$emit("deleteRequestEvent");
+            })
+            .catch(e => {});
         })
         .catch(e => {});
     },

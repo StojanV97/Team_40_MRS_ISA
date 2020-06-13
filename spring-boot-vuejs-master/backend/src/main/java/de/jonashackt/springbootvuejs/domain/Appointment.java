@@ -79,6 +79,10 @@ public class Appointment {
         this.doctorID = doctorID;
     }
 
+    public long getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Appointment{" +

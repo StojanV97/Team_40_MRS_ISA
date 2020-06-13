@@ -73,6 +73,11 @@ public class RequestController {
         }
         return new ResponseEntity<ArrayList<AppointmentRequest>>(requestsForClinic, HttpStatus.OK);
     }
+    @PostMapping(value = "admin/delete-appoitnment-request/{id}")
+    public ResponseEntity<?> deleteRequest(@PathVariable Long id){
+        appointmentRequestService.delete(id);
+        return  new ResponseEntity<String>("OK",HttpStatus.OK);
+    };
 
     @GetMapping(value = "admin/get-first-dates/{clinicID}/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getFirstDates(@PathVariable Long clinicID, @PathVariable String date) throws ParseException {
@@ -102,18 +107,18 @@ public class RequestController {
                 Collections.sort(listOfDates);
                 Date current = new Date();
                 String currentDate = sp.format(current);
-                String []currentDateSplit = currentDate.split(" ");
+                String[] currentDateSplit = currentDate.split(" ");
                 String firstTerm = currentDateSplit[0] + " 08-00";
                 Date firstTermDate = sp.parse(firstTerm);
-                System.out.println(firstTermDate);
+
                 Date firstDate = listOfDates.get(0);
                 Date lastDate = listOfDates.get(listOfDates.size() - 1);
                 boolean noFree = true;
                 while (firstTermDate.before(lastDate)) {
                     String dateFirst = sp.format(firstTermDate);
-                    String []split = dateFirst.split(" ");
-                    System.out.println(split[1]);
-                    if(termini.contains(split[1])){
+                    String[] split = dateFirst.split(" ");
+
+                    if (termini.contains(split[1])) {
                         if (listOfDates.contains(firstTermDate)) {
                         } else {
                             r.setFirstAvailableDate(sp.format(firstTermDate));
@@ -123,14 +128,13 @@ public class RequestController {
                     }
                     firstTermDate = new Date(firstTermDate.getTime() + (30 * ONE_MINUTE_IN_MILLIS));
                 }
-                if(noFree){
+                if (noFree) {
                     lastDate = new Date(lastDate.getTime() + (1440 * ONE_MINUTE_IN_MILLIS));
                     String last = sp.format(lastDate);
                     String[] pslit = last.split(" ");
                     String newLastDate = pslit[0] + " 10-00";
                     r.setFirstAvailableDate(newLastDate);
-                    System.out.println("Prvi slobodan: ");
-                    System.out.println(r.getFirstAvailableDate());
+
                 }
             }
         }
@@ -155,22 +159,17 @@ public class RequestController {
                     }
                 }
 
-                if(busy.size() != termini.size()){
+                if (busy.size() != termini.size()) {
                     freeRoomsForDate.add(r);
-                }else{
+                } else {
                     System.out.println("Isti");
                 }
-
-
-
             }
         }
 
-        if (freeRoomsForDate.size() == 0){
+        if (freeRoomsForDate.size() == 0) {
             return new ResponseEntity<Collection<Room>>(listaSoba, HttpStatus.OK);
-
         }
         return new ResponseEntity<Collection<Room>>(freeRoomsForDate, HttpStatus.OK);
-
     }
 }

@@ -34,11 +34,11 @@ public class SpringBootVuejsApplication {
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
 			ArrayList<String> listOfDates = new ArrayList<String>();
 			String d2 = sp.format(d);
-			listOfDates.add("2020-06-13 10-00");
-			listOfDates.add("2020-06-13 10-30");
-			listOfDates.add("2020-06-13 11-00");
+			listOfDates.add("2020-06-15 10-00");
+			listOfDates.add("2020-06-15 10-30");
+			listOfDates.add("2020-06-15 11-00");
 			listOfDates.add("2020-06-13 11-30");
-			listOfDates.add("2020-06-13 12-00");
+			listOfDates.add("2020-06-15 12-00");
 			listOfDates.add("2020-06-13 12-30");
 			listOfDates.add("2020-06-13 13-00");
 			listOfDates.add("2020-06-13 13-30");
@@ -95,7 +95,7 @@ public class SpringBootVuejsApplication {
 			clinincAdmin.setPassChanged(true);
 			nurse.getAuthorities().add(nurseAuthority);
 			patient.getAuthorities().add(patientAuthority);
-			doctor.setListOfPatients(patient.getFirstName());
+			doctor.setListOfPatients(patient.getId());
 			doctor.getAuthorities().add(doctorAuthority);
 			doctor2.getAuthorities().add(doctorAuthority);
 			doctor3.getAuthorities().add(doctorAuthority);

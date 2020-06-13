@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoomService {
@@ -41,5 +42,14 @@ public class RoomService {
     public String editRoomData(Room room){
         roomRepository.save(room);
         return "code";
+    }
+
+    public Room getRoom(Long id){
+        Optional<Room> room = roomRepository.findById(id);
+        Room r = null;
+        if(room.isPresent()){
+            r = room.get();
+        }
+        return r;
     }
 }

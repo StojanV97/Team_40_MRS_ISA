@@ -58,7 +58,11 @@
       <v-card>
         <v-card-title class="grey darken-2">User</v-card-title>
         <v-container id="container">
-          <AppointRoom v-bind:appt="this.appt" v-bind:date="this.date" />
+          <AppointRoom
+            @deleteRequestEvent="this.updateAppoitements"
+            v-bind:appt="this.appt"
+            v-bind:date="this.date"
+          />
         </v-container>
         <v-card-actions>
           <v-spacer />
@@ -66,6 +70,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <div class="text-center ma-2">
+      <v-snackbar v-model="snackbar">
+        {{msg}}
+        <v-btn @click="snackbar = false" color="pink" text>Close</v-btn>
+      </v-snackbar>
+    </div>
   </v-card>
 </template>
 <script>
@@ -101,14 +111,15 @@ export default {
       previewUser: false,
       appointRoomDialog: false,
       date: "",
-      appt: ""
+      appt: "",
+      snackbar: false,
+      msg: ""
     };
   },
   mounted() {
     api
       .getAppoitementRequests(localStorage.getItem("clinicID"))
       .then(response => {
-        console.log(response);
         this.appoitements = response.data;
       })
       .catch(e => {});
@@ -117,21 +128,23 @@ export default {
     openDialog() {
       this.dialogCreateRoom = !this.dialogCreateRoom;
     },
-    createRoom() {
-      api
-        .createRoom()
-        .then(response => {})
-        .catch(e => {
-          console.log();
-        });
-    },
-
     appointRoom(item) {
       this.appointRoomDialog = true;
       this.appt = item;
       this.date = item.dateAndTime;
     },
-
+    updateAppoitements() {
+      this.appointRoomDialog = false;
+      this.snackbar = true;
+      this.msg = "Success!";
+      console.log("Event uhvacen!");
+      api
+        .getAppoitementRequests(localStorage.getItem("clinicID"))
+        .then(response => {
+          this.appoitements = response.data;
+        })
+        .catch(e => {});
+    },
     deleteItem(item) {
       console.log(item);
       api

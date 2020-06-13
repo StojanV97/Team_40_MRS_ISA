@@ -24,8 +24,8 @@ export default {
     setAuthentication(token) {
         return AXIOS;
     },
-    sendEmail(email) {
-        return AXIOS.post('/email/' + email);
+    sendEmail(message) {
+        return AXIOS.post('/email/' + message.msg + "/" + message.email);
     }
     ,
     getUser(userId) {
@@ -134,6 +134,10 @@ export default {
     },
     createAppoitnment(appointment) {
         return AXIOS.post('admin/create-appoitnment/', appointment);
+    },
+    deleteAppointmentRequest(id) {
+        return AXIOS.post('admin/delete-appoitnment-request/' + id);
+
     }
 }
 
