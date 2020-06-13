@@ -138,6 +138,9 @@ export default {
     deleteAppointmentRequest(id) {
         return AXIOS.post('admin/delete-appoitnment-request/' + id);
 
+    },
+    automaticAppointement(clinidID, date, appointmentRequest) {
+        return AXIOS.post('admin/automatic-appointment/' + clinidID + "/" + date, appointmentRequest);
     }
 }
 

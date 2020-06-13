@@ -16,6 +16,7 @@ export default new Vuex.Store({
         userName: null,
         userPass: null,
         loggedInUser: null,
+        datum: null,
     },
     plugins: [createPersistedState()],
 
@@ -31,11 +32,15 @@ export default new Vuex.Store({
         },
         setUserID(state, id) {
             state.loggedInUser.id = id;
+        },
+        setDatum(state, datum) {
+            state.datum = datum;
         }
     },
     actions: {
     },
     getters: {
+        getDatum: state => state.datum,
         getUser: state => state.loggedInUser,
         getClinic: state => state.clinic,
         getRole: state => state.loggedInUser.role,

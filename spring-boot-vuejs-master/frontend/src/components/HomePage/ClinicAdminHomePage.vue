@@ -6,11 +6,11 @@
       @editRoomsEvent="this.openEditRooms"
       @editDoctorsEvent="this.openEditDoctors"
     />
-    <ExaminationRequests v-if="examinationRequests" />
+    <ExaminationRequests @goBack="catchExamGoBack" v-if="examinationRequests" />
     <RoomConfig @goBack="this.openClinicProfile" v-if="this.roomConfig" />
     <EditDoctors @goBack="this.openClinicProfile" v-if="editDoctors" />
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
-      <v-list dense>
+      <v-list dense :disabled="disableMenu">
         <template v-for="item in items">
           <v-row v-if="item.heading" :key="item.heading" align="center">
             <v-col cols="6">
@@ -115,6 +115,7 @@ export default {
     source: String
   },
   data: () => ({
+    disableMenu: false,
     showProfile: false,
     drawer: null,
     examinationRequests: false,
@@ -198,16 +199,19 @@ export default {
   },
   methods: {
     openEditDoctors() {
+      this.disableMenu = true;
       this.editDoctors = true;
       this.roomConfig = false;
       this.editClinicProfile = false;
     },
     openClinicProfile() {
+      this.disableMenu = false;
       this.editDoctors = false;
       this.roomConfig = false;
       this.editClinicProfile = true;
     },
     openEditRooms() {
+      this.disableMenu = true;
       this.editDoctors = false;
       this.editClinicProfile = false;
       this.roomConfig = true;

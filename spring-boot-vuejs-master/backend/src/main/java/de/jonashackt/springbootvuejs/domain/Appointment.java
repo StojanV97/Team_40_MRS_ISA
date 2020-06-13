@@ -71,7 +71,7 @@ public class Appointment {
         this.type = type;
     }
 
-    public Appointment(String dateAndTime, String type, long roomID, long patientID, long doctorID) {
+    public Appointment(String dateAndTime, String type, long roomID, long patientID, long doctorID,long clinicID) {
         this.dateAndTime = dateAndTime;
         this.type = type;
         this.roomID = roomID;
@@ -82,6 +82,7 @@ public class Appointment {
     public long getId() {
         return id;
     }
+
 
     @Override
     public String toString() {

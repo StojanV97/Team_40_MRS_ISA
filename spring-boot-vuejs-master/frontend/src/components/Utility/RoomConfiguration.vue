@@ -112,7 +112,11 @@ export default {
       rooms: []
     };
   },
-  mounted() {},
+  mounted() {
+    api.getClinic(localStorage.getItem("clinicID")).then(response => {
+      console.log(response.data);
+    });
+  },
   methods: {
     openDialog() {
       this.dialogCreateRoom = !this.dialogCreateRoom;

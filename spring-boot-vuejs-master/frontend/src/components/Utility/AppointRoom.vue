@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-text-field v-model="date" label="Date" single-line hide-details></v-text-field>
+      <v-text-field v-model="$store.getters.getDatum" label="Date" single-line hide-details></v-text-field>
       <v-spacer></v-spacer>
       <v-text-field
         @change="customFilter($event)"
@@ -56,12 +56,15 @@ export default {
     };
   },
   mounted() {
+    this.rooms = [];
     api
-      .getFirstAvailableDates(localStorage.getItem("clinicID"), this.date)
+      .getFirstAvailableDates(
+        localStorage.getItem("clinicID"),
+        this.$store.getters.getDatum
+      )
       .then(response => {
+        console.log(response.data);
         this.$store.getters.getClinic.rooms = response.data;
-        console.log(this.$store.getters.getClinic.rooms);
-
         for (const index in this.$store.getters.getClinic.rooms) {
           if (
             this.$store.getters.getClinic.rooms[index].roomName ===
@@ -74,12 +77,36 @@ export default {
       .catch(e => {});
   },
   methods: {
+    getFirstDate() {
+      console.log("Datum iz metode: ");
+      this.rooms = [];
+      api
+        .getFirstAvailableDates(
+          localStorage.getItem("clinicID"),
+          this.$store.getters.getDatum
+        )
+        .then(response => {
+          this.$store.getters.getClinic.rooms = response.data;
+          //console.log(this.$store.getters.getClinic.rooms);
+
+          for (const index in this.$store.getters.getClinic.rooms) {
+            if (
+              this.$store.getters.getClinic.rooms[index].roomName ===
+              "Examination"
+            ) {
+              this.rooms.push(this.$store.getters.getClinic.rooms[index]);
+            }
+          }
+        })
+        .catch(e => {});
+    },
+
     appoint(item) {
       this.appointement.roomID = item.roomID;
       this.appointement.doctorID = this.$props.appt.doctorID;
       this.appointement.patientID = this.$props.appt.patientID;
-      this.appointement.dateAndTime = this.date;
-      this.appointement.type = "Examination";
+      this.appointement.dateAndTime = this.$store.getters.getDatum;
+      this.appointement.type = "EXAMINATION";
 
       api.getUser(this.appointement.doctorID).then(response => {
         this.doctor = response.data;
@@ -93,6 +120,7 @@ export default {
         .createAppoitnment(this.appointement)
         .then(response => {
           this.idAndDate = response.data;
+          console.log(response.data);
           api
             .deleteAppointmentRequest(this.$props.appt.id)
             .then(response => {

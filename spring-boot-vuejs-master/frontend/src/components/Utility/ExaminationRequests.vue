@@ -16,7 +16,7 @@
     <v-data-table :headers="headers" :items="appoitements" :search="search" id="tabela">
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="appointRoom(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item.roomID)">mdi-delete</v-icon>
+        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
       <template v-slot:item.doctor="{ item }">
         <v-btn
@@ -59,6 +59,7 @@
         <v-card-title class="grey darken-2">User</v-card-title>
         <v-container id="container">
           <AppointRoom
+            ref="AppointRoom"
             @deleteRequestEvent="this.updateAppoitements"
             v-bind:appt="this.appt"
             v-bind:date="this.date"
@@ -113,27 +114,91 @@ export default {
       date: "",
       appt: "",
       snackbar: false,
-      msg: ""
+      msg: "",
+      message: {
+        msg: null,
+        email: []
+      }
     };
   },
   mounted() {
+    this.message.email.push("stojan.v1997@gmail.com");
+    this.message.email.push("stojan.v1997@gmail.com");
     api
       .getAppoitementRequests(localStorage.getItem("clinicID"))
       .then(response => {
         this.appoitements = response.data;
+        for (const index in this.appoitements) {
+          var appoitementDate = "";
+          api
+            .automaticAppointement(
+              localStorage.getItem("clinicID"),
+              this.appoitements[index].dateAndTime,
+              this.appoitements[index]
+            )
+            .then(response => {
+              console.log("AUTOMATIC REQUESTS!");
+              console.log(response.data);
+              appoitementDate = response.data.dateAndTime.split(" ");
+              response.data.dateAndTime = appoitementDate[0];
+              if (response.data !== "Empty") {
+                api.createAppoitnment(response.data).then(response => {
+                  console.log("CREATE APPOINTMENT");
+                  console.log(response);
+                  api
+                    .deleteAppointmentRequest(this.appoitements[index].id)
+                    .then(response => {
+                      this.updateAppoitements();
+                      this.message.msg =
+                        "Appoitnement scheduled at " +
+                        appoitementDate[0] +
+                        " " +
+                        appoitementDate[1];
+                      api
+                        .sendEmail(this.message)
+                        .then(response => {})
+                        .catch(e => {
+                          console.log(e);
+                        });
+                    })
+                    .catch(e => {});
+                });
+              }
+            })
+            .catch(e => {});
+        }
       })
       .catch(e => {});
   },
   methods: {
+    automaticAppoint(appoitements) {
+      for (const index in appoitements) {
+        api
+          .automaticAppointement(
+            localStorage.getItem("clinicID"),
+            this.$store.getters.getDatum,
+            appoitements[index]
+          )
+          .then(response => {
+            console.log("AUTOMATIC REQUESTS!");
+            console.log(response.data);
+          })
+          .catch(e => {});
+      }
+    },
+
     openDialog() {
       this.dialogCreateRoom = !this.dialogCreateRoom;
     },
     appointRoom(item) {
       this.appointRoomDialog = true;
       this.appt = item;
-      this.date = item.dateAndTime;
+      this.$store.commit("setDatum", item.dateAndTime);
+      console.log(this.$store.getters.getDatum);
+      this.$refs.AppointRoom.getFirstDate();
     },
     updateAppoitements() {
+      console.log("UPDA>TE APPOINTEMENTS");
       this.appointRoomDialog = false;
       this.snackbar = true;
       this.msg = "Success!";
@@ -147,50 +212,29 @@ export default {
     },
     deleteItem(item) {
       console.log(item);
+      var pat = null;
+      api.getUser(item.patientID).then(response => {
+        pat = response.data;
+        this.message.msg = "Your request for examination has benn canceled!";
+        this.message.email.push("stojan.v1997@gmail.com");
+        api.sendEmail(this.message).then(response => {});
+      });
       api
-        .deleteRoom(item)
+        .deleteAppointmentRequest(item.id)
         .then(response => {
-          api.getClinic(localStorage.getItem("clinicID")).then(response => {
-            this.$store.commit("setClinic", response.data);
-            console.log(this.$store.getters.getClinic);
-          });
+          api
+            .getAppoitementRequests(localStorage.getItem("clinicID"))
+            .then(response => {
+              this.appoitements = response.data;
+            })
+            .catch(e => {});
         })
         .catch(e => {
-          console.log();
+          console.log(e);
         });
     },
 
-    deleteRooms() {
-      for (const roomIndex in this.selectedList) {
-        api
-          .deleteRoom(this.selectedList[roomIndex].roomID)
-          .then(response => {
-            api.getClinic(localStorage.getItem("clinicID")).then(response => {
-              this.$store.commit("setClinic", response.data);
-            });
-          })
-          .catch(e => {
-            console.log();
-          });
-      }
-      this.selectedMoreThanOne = false;
-    },
-    addToSelectedList(event) {
-      var index = this.selectedList.indexOf(event);
-      if (index == -1) {
-        this.selectedList.push(event);
-      } else {
-        this.selectedList.splice(index, 1);
-      }
-      //Elementi se pomeraju kada se prikaze delete dugme
-      if (this.selectedList.length > 1) {
-        this.selectedMoreThanOne = true;
-      } else {
-        this.selectedMoreThanOne = false;
-      }
-    },
     goBack() {
-      this.selectedMoreThanOne = false;
       this.$emit("goBack");
     },
     preview(event) {

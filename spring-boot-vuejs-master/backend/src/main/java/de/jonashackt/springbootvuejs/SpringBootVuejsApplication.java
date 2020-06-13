@@ -26,7 +26,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
+	CommandLineRunner runner(ApointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository){
 		return args -> {
 
 			//Date
@@ -39,10 +39,7 @@ public class SpringBootVuejsApplication {
 			listOfDates.add("2020-06-15 11-00");
 			listOfDates.add("2020-06-13 11-30");
 			listOfDates.add("2020-06-15 12-00");
-			listOfDates.add("2020-06-13 12-30");
-			listOfDates.add("2020-06-13 13-00");
-			listOfDates.add("2020-06-13 13-30");
-			listOfDates.add("2020-06-13 14-00");
+
 			//============================================================================
 
 			//Authorities
@@ -68,8 +65,10 @@ public class SpringBootVuejsApplication {
 			Room room3 = new Room(3,"Operation");
 			Room room4 = new Room(4,"Examination");
 			Room room5 = new Room(5,"Operation");
-			Clinic clinic = new Clinic(1, "Klinika", "Njegoseva 12");
+			Clinic clinic = new Clinic(1, "Klinika BEOGRAD", "Njegoseva 12");
+			Clinic clinic2 = new Clinic(2, "Klinicki Centar Novi sad", "Bulevar Oslobodjenja 12");
 			clinic.setAdministrator("ClinicAdmin");
+			clinic2.setAdministrator("ClinicAdmin");
 			room.setCalendar(listOfDates);
 			roomRepository.save(room);
 			roomRepository.save(room2);
@@ -77,12 +76,14 @@ public class SpringBootVuejsApplication {
 			roomRepository.save(room4);
 			roomRepository.save(room5);
 			clinicRepository.save(clinic);
+			clinicRepository.save(clinic2);
 			//===============================================================================================================================
 
 			//Users
 			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin("ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
 			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
-			Patient patient = new Patient("Patient","Patient","Patient@gmail.com","Patient",bc.encode("password"));
+			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"));
+			patient.setPassChanged(true);
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
 			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
 			Doctor doctor22 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor22",bc.encode("password"));
@@ -116,11 +117,26 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
 			Date date = new Date();
-			appointmentRequestRepository.save(new AppointmentRequest("2020-06-15",AppointmentType.EXAMINATION, 1,1,2));
+			appointmentRequestRepository.save(new AppointmentRequest("2020-06-15","Examination", 1,1,2));
+			requestRepository.save(new RegisterRequests("Milan","Milanovic","stojan.v19937@gmail.com","milan"));
+			requestRepository.save(new RegisterRequests("Dragan","Dragunovic","stojan.v19297@gmail.com","drag8"));
+			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","stojan.v19497@gmail.com","stoj32"));
+
+			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07","Examination", 1,1,2));
+			appointmentRepository.save(new Appointment("2020-07-07 10-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 10-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 11-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 11-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 12-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 12-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 13-00", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 13-30", "EXAMINATION",1,1,2,2));
+			appointmentRepository.save(new Appointment("2020-07-07 14-00", "EXAMINATION",1,1,2,2));
+
 
 			//===========================================================================
 
-            Clinic_Doctors cd = new Clinic_Doctors(clinic.getId(),doctor.getId());
+            Clinic_Doctors cd = new Clinic_Doctors(clinic2.getId(),doctor.getId());
 			Clinic_Doctors cd2 = new Clinic_Doctors(clinic.getId(),doctor2.getId());
 			Clinic_Doctors cd3 = new Clinic_Doctors(clinic.getId(),doctor3.getId());
 			Clinic_Doctors cd4 = new Clinic_Doctors(clinic.getId(),doctor4.getId());
@@ -142,6 +158,7 @@ public class SpringBootVuejsApplication {
 			clinicRoomRepository.save(clinicRoom3);
 			clinicRoomRepository.save(clinicRoom4);
 			clinicRoomRepository.save(clinicRoom5);
+
 
 		};
 
