@@ -6,6 +6,7 @@
       @editRoomsEvent="this.openEditRooms"
       @editDoctorsEvent="this.openEditDoctors"
     />
+    <ExaminationRequests v-if="examinationRequests" />
     <RoomConfig @goBack="this.openClinicProfile" v-if="this.roomConfig" />
     <EditDoctors @goBack="this.openClinicProfile" v-if="editDoctors" />
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
@@ -100,13 +101,15 @@ import ClinicEditForm from "../Utility/ClinicEditForm";
 import RoomConfig from "../Utility/RoomConfiguration";
 import EditDoctors from "../Utility/EditDoctors";
 import ClinicAdminProfile from "../Profiles/ClinidAdminProfile";
+import ExaminationRequests from "../Utility/ExaminationRequests";
 
 export default {
   components: {
     ClinicEditForm,
     RoomConfig,
     EditDoctors,
-    ClinicAdminProfile
+    ClinicAdminProfile,
+    ExaminationRequests
   },
   props: {
     source: String
@@ -212,12 +215,18 @@ export default {
     getOption(text) {
       if (text === "Dark mode On/Off") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      } else if (text === "Working calendar") {
+      } else if (text === "Examination requests") {
+        this.examinationRequests = true;
+        this.roomConfig = false;
+        this.editClinicProfile = false;
+        this.editAdminProfile = false;
       } else if (text === "Edit Clinic info") {
+        this.examinationRequests = false;
         this.roomConfig = false;
         this.editClinicProfile = true;
         this.editAdminProfile = false;
       } else if (text === "Profile") {
+        this.examinationRequests = false;
         this.editAdminProfile = true;
         this.editClinicProfile = false;
         this.roomConfig = false;

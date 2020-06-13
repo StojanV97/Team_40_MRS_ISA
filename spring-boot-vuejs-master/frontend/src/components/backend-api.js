@@ -149,6 +149,15 @@ export default {
     },
     getClinicForAdmin(userName) {
         return AXIOS.get('/admin/get-clinic/' + userName);
+    },
+    getAppoitementRequests(clinicID) {
+        return AXIOS.get('admin/get-appointment-requests/' + clinicID)
+    },
+    getFirstAvailableDates(clinicID, date) {
+        return AXIOS.get('admin/get-first-dates/' + clinicID + '/' + date)
+    },
+    createAppoitnment(appointment) {
+        return AXIOS.post('admin/create-appoitnment/', appointment);
     }
 }
 
