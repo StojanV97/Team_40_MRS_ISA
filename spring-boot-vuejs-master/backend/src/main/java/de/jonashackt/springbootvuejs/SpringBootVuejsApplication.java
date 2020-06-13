@@ -34,10 +34,15 @@ public class SpringBootVuejsApplication {
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
 			ArrayList<String> listOfDates = new ArrayList<String>();
 			String d2 = sp.format(d);
-			listOfDates.add("2020-12-12");
-			listOfDates.add("2020-12-14");
-			listOfDates.add("2020-12-13");
-			listOfDates.add("2020-12-11");
+			listOfDates.add("2020-06-13 10-00");
+			listOfDates.add("2020-06-13 10-30");
+			listOfDates.add("2020-06-13 11-00");
+			listOfDates.add("2020-06-13 11-30");
+			listOfDates.add("2020-06-13 12-00");
+			listOfDates.add("2020-06-13 12-30");
+			listOfDates.add("2020-06-13 13-00");
+			listOfDates.add("2020-06-13 13-30");
+			listOfDates.add("2020-06-13 14-00");
 			//============================================================================
 
 			//Authorities
@@ -87,6 +92,7 @@ public class SpringBootVuejsApplication {
 			Nurse nurse = new Nurse("Nurse","Nurse","Nurse@gmail.com","Nurse",bc.encode("password"));
 			clinincCenterAdmin.getAuthorities().add(clinicCenterAdminAuthority);
 			clinincAdmin.getAuthorities().add(clinicAdminAuthority);
+			clinincAdmin.setPassChanged(true);
 			nurse.getAuthorities().add(nurseAuthority);
 			patient.getAuthorities().add(patientAuthority);
 			doctor.setListOfPatients(patient.getFirstName());
@@ -110,7 +116,7 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
 			Date date = new Date();
-			appointmentRequestRepository.save(new AppointmentRequest(date,AppointmentType.EXAMINATION, 1,1,1));
+			appointmentRequestRepository.save(new AppointmentRequest("2020-06-15",AppointmentType.EXAMINATION, 1,1,2));
 
 			//===========================================================================
 

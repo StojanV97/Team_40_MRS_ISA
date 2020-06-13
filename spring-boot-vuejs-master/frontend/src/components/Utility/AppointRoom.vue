@@ -1,0 +1,141 @@
+<template>
+  <v-card>
+    <v-card-title>
+      <v-text-field v-model="date" label="Date" single-line hide-details></v-text-field>
+      <v-spacer></v-spacer>
+      <v-text-field
+        @change="customFilter($event)"
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+        show-select
+        :single-select="singleSelect"
+      ></v-text-field>
+    </v-card-title>
+    <v-data-table :headers="headers" :items="rooms" disable-filtering id="tabela">
+      <template v-slot:item.actions="{ item }">
+        <v-icon medium class="mr-2" @click="appoint(item)">mdi-check-circle</v-icon>
+      </template>
+    </v-data-table>
+  </v-card>
+</template>
+<script>
+import api from "../backend-api";
+import moment from "moment";
+
+export default {
+  components: {},
+  props: ["date", "appt"],
+  data() {
+    return {
+      rooms: [],
+      datumi: [],
+      headers: [
+        { text: "Action", value: "actions" },
+        { text: "Room ID", value: "roomID" },
+        { text: "Room Name", value: "roomName" },
+        { text: "Calendar", value: "calendar" },
+        { text: "First Available", value: "firstAvailableDate" }
+      ],
+      appointement: {
+        dateAndTime: null,
+        roomID: null,
+        patientID: null,
+        doctorID: null,
+        type: null
+      }
+    };
+  },
+  mounted() {
+    api
+      .getFirstAvailableDates(localStorage.getItem("clinicID"), this.date)
+      .then(response => {
+        this.$store.getters.getClinic.rooms = response.data;
+        console.log(this.$store.getters.getClinic.rooms);
+
+        for (const index in this.$store.getters.getClinic.rooms) {
+          if (
+            this.$store.getters.getClinic.rooms[index].roomName ===
+            "Examination"
+          ) {
+            this.rooms.push(this.$store.getters.getClinic.rooms[index]);
+          }
+        }
+      })
+      .catch(e => {});
+  },
+  methods: {
+    appoint(item) {
+      this.appointement.roomID = item.roomID;
+      this.appointement.doctorID = this.$props.appt.doctorID;
+      this.appointement.patientID = this.$props.appt.patientID;
+      this.appointement.dateAndTime = this.date;
+      this.appointement.type = "Examination";
+      console.log(this.appointement);
+
+      api
+        .createAppoitnment(this.appointement)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(e => {});
+    },
+    customFilter(event) {
+      if (event === "") {
+        this.rooms = [];
+        for (const index in this.$store.getters.getClinic.rooms) {
+          if (
+            this.$store.getters.getClinic.rooms[index].roomName ===
+            "Examination"
+          ) {
+            this.rooms.push(this.$store.getters.getClinic.rooms[index]);
+          }
+        }
+      }
+      for (const index in this.rooms) {
+        if (!this.rooms[index].roomID.toString().includes(event.toString())) {
+          this.rooms.splice(index, 1);
+        }
+      }
+    }
+  }
+};
+</script>
+
+<style  scoped>
+#editForm {
+  margin-right: 140px;
+}
+
+#room_dialog {
+  margin-right: 240px;
+}
+
+#tabela {
+  height: 100%;
+}
+.icon-delete {
+  padding-top: 20px;
+  margin-right: 40px;
+}
+
+#new-item {
+  color: white;
+  background-color: rgb(0, 89, 255);
+  margin-right: 40px;
+  margin-top: 18px;
+  height: 28px;
+}
+
+#icon-arrow {
+  width: 40px;
+}
+
+#backbtn {
+  padding-top: 20px;
+  width: 100px;
+  margin-left: 20px;
+}
+</style>

@@ -13,6 +13,15 @@ public class Room {
     private String roomName;
     @SuppressWarnings("JpaAttributeTypeInspection")
     private ArrayList<String> calendar;
+    private String firstAvailableDate;
+
+    public void setFirstAvailableDate(String firstAvailableDate) {
+        this.firstAvailableDate = firstAvailableDate;
+    }
+
+    public String getFirstAvailableDate() {
+        return firstAvailableDate;
+    }
 
     public Room() {
     }
