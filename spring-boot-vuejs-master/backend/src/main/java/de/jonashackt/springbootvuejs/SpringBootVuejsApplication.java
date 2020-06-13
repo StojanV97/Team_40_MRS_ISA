@@ -26,7 +26,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository, MedicineRepository medicineRepository, DiagnoseRepository diagnoseRepository){
+	CommandLineRunner runner(AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository, MedicineRepository medicineRepository, DiagnoseRepository diagnoseRepository){
 		return args -> {
 
 			//Date
