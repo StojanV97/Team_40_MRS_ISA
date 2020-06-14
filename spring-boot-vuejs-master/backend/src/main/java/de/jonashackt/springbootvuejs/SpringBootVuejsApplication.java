@@ -130,6 +130,20 @@ public class SpringBootVuejsApplication {
 			Appointment apt= new Appointment("2020-06-14 13-30", "EXAMINATION",1,1,3,2);
 			appointmentRepository.save(apt);
 			appointments.add(apt.getId());
+			Appointment apt2 =new Appointment("2020-06-20 10-30", "OPERATION",1,1,3,2);
+			appointmentRepository.save(apt2);
+			Appointment apt3 =new Appointment("2020-06-13 11-00", "EXAMINATION",1,1,3,2);
+			appointmentRepository.save(apt3);
+			Appointment apt4 =new Appointment("2020-06-16 11-30", "EXAMINATION",1,1,3,2);
+
+			appointmentRepository.save(apt4);
+
+			appointments.add(apt2.getId());
+
+			appointments.add(apt3.getId());
+			appointments.add(apt4.getId());
+
+
 
 			patient.setAppointments(appointments);
 			userRepository.save(patient);
