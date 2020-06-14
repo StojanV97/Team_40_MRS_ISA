@@ -17,4 +17,20 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
         return null;
     }
+
+    @Override
+    public String createMedicalRecord(MedicalRecord medicalRecord) {
+        medicalRecordRepository.save(medicalRecord);
+        return "upisan";
+    }
+
+    @Override
+    public String deleteMedicalRecord(long id) {
+        if(medicalRecordRepository.existsById(id)) {
+            MedicalRecord mr = medicalRecordRepository.findByMedicalRecordId(id);
+            medicalRecordRepository.delete(mr);
+            return "uspesno";
+        }
+        return "neuspesno";
+    }
 }
