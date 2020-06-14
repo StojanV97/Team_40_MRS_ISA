@@ -1,5 +1,7 @@
 package de.jonashackt.springbootvuejs.domain;
 
+
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 

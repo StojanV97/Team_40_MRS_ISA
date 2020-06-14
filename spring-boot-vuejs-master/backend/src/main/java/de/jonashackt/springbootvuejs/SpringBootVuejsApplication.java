@@ -26,23 +26,20 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, ClinicRepository clinicRepository, MedicineRepository medicineRepository, DiagnoseRepository diagnoseRepository){
+	CommandLineRunner runner(MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
 		return args -> {
 
 			//Date
 			Date d = new Date();
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
-			ArrayList<String> listOfDates = new ArrayList<>();
+			ArrayList<String> listOfDates = new ArrayList<String>();
 			String d2 = sp.format(d);
-			listOfDates.add("2020-06-13 10-00");
-			listOfDates.add("2020-06-13 10-30");
-			listOfDates.add("2020-06-13 11-00");
+			listOfDates.add("2020-06-15 10-00");
+			listOfDates.add("2020-06-15 10-30");
+			listOfDates.add("2020-06-15 11-00");
 			listOfDates.add("2020-06-13 11-30");
-			listOfDates.add("2020-06-13 12-00");
-			listOfDates.add("2020-06-13 12-30");
-			listOfDates.add("2020-06-13 13-00");
-			listOfDates.add("2020-06-13 13-30");
-			listOfDates.add("2020-06-13 14-00");
+			listOfDates.add("2020-06-15 12-00");
+
 			//============================================================================
 
 			//Authorities
@@ -99,7 +96,7 @@ public class SpringBootVuejsApplication {
 			clinincAdmin.setPassChanged(true);
 			nurse.getAuthorities().add(nurseAuthority);
 			patient.getAuthorities().add(patientAuthority);
-			doctor.setListOfPatients(patient.getFirstName());
+			doctor.setListOfPatients(patient.getId());
 			doctor.getAuthorities().add(doctorAuthority);
 			doctor2.getAuthorities().add(doctorAuthority);
 			doctor3.getAuthorities().add(doctorAuthority);
@@ -120,7 +117,7 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
 			Date date = new Date();
-			appointmentRequestRepository.save(new AppointmentRequest("2020-06-15",AppointmentType.EXAMINATION, 1,1,2));
+			appointmentRequestRepository.save(new AppointmentRequest("2020-06-15","EXAMINATION", 1,1,2));
 			requestRepository.save(new RegisterRequests("Milan","Milanovic","stojan.v19937@gmail.com","milan", "Srbija", "Novi Sad", "Bulevar 2", "061144111", "12388891132"));
 			requestRepository.save(new RegisterRequests("Dragan","Dragunovic","stojan.v19297@gmail.com","dragan", "Srbija", "Novi Sad", "Bulevar 3", "061132111", "1234230678"));
 			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","stojan.v19497@gmail.com","stojan", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));

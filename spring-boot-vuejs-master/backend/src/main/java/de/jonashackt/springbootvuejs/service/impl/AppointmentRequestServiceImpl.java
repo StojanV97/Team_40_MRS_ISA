@@ -40,7 +40,6 @@ public class AppointmentRequestServiceImpl implements AppointmentRequestService 
     public String delete(long appointmentID) {
         System.out.println(appointmentID);
         AppointmentRequest ar = appointmentRequestRepository.findById(appointmentID);
-        System.out.println(ar);
         appointmentRequestRepository.delete(ar);
         return "Deleted";
     }

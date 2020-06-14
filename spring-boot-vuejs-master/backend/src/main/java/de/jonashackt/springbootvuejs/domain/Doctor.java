@@ -11,22 +11,33 @@ import java.util.function.LongSupplier;
 @Table(name="doctors")
 public class Doctor extends User {
 
-    ArrayList<String> listOfPatients;
+    ArrayList<Long> listOfPatients;
     public Doctor() {
         super();
     }
-    //ArrayList<String> takenAppointments;
+    ArrayList<String> listOfAppoitnements;
+
+
+
+    public void setListOfAppoitnements(String listOfAppoitnements) {
+        this.listOfAppoitnements.add(listOfAppoitnements);
+    }
+
+    public ArrayList<String> getListOfAppoitnements() {
+        return listOfAppoitnements;
+    }
 
     public Doctor(String firstName, String lastName, String email, String userName, String password) {
         super(firstName, lastName, email, userName, password);
-        this.listOfPatients = new ArrayList<String>();
+        this.listOfPatients = new ArrayList<Long>();
+        this.listOfAppoitnements = new ArrayList<String>();
     }
 
-    public ArrayList<String> getListOfPatients() {
+    public ArrayList<Long> getListOfPatients() {
         return listOfPatients;
     }
 
-    public void setListOfPatients(String listOfPatients) {
+    public void setListOfPatients(Long listOfPatients) {
         this.listOfPatients .add(listOfPatients);
     }
 }
