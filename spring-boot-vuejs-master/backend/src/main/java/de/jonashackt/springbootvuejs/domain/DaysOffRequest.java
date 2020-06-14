@@ -15,18 +15,38 @@ public class DaysOffRequest {
     private String dateFrom;
     private String dateTo;
     private String type;
+    private long clinicID;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public long getClinicID() {
+        return clinicID;
+    }
+
+    public void setClinicID(long clinicID) {
+        this.clinicID = clinicID;
+    }
 
     public DaysOffRequest(){
 
     }
 
-    public DaysOffRequest(Long userID, String firstName, String lastname, String dateFrom, String dateTo,String type) {
+    public DaysOffRequest(Long userID, String firstName, String lastname, String dateFrom, String dateTo,String type,long clinicID,String email) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastname = lastname;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.type = type;
+        this.clinicID = clinicID;
+        this.email = email;
     }
 
     public long getId() {

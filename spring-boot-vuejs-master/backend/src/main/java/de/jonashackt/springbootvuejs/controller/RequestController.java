@@ -3,7 +3,6 @@ package de.jonashackt.springbootvuejs.controller;
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.*;
 import de.jonashackt.springbootvuejs.domain.AppointmentRequest;
-import de.jonashackt.springbootvuejs.domain.AppointmentRequest;
 import de.jonashackt.springbootvuejs.domain.Clinic;
 import de.jonashackt.springbootvuejs.domain.RegisterRequests;
 import de.jonashackt.springbootvuejs.domain.Room;
@@ -19,8 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.image.AreaAveragingScaleFilter;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -59,10 +56,65 @@ public class RequestController {
     @Autowired
     private RequestRepository requestRepository;
 
+
     @Autowired
     private DaysOffRequestRepository daysOffRequestRepository;
+    @Autowired
+    private DaysOffRepository daysOffRepository;
+
+    @PostMapping(value = "admin/delete-days-request/{id}")
+    public ResponseEntity<?> deleteDaysoffReq(@PathVariable long id){
+        daysOffRequestRepository.deleteById(id);
+        Collection<DaysOffRequest> col = (Collection<DaysOffRequest>) daysOffRequestRepository.findAll();
+        return new ResponseEntity<Collection<DaysOffRequest>>(col,HttpStatus.OK);
+    }
+    @PostMapping(value = "admin/create-days-off/")
+    public ResponseEntity<?> createDaysOff(@RequestBody DaysOffRequest daysOffRequest){
+        DaysOff daysOff = new DaysOff(daysOffRequest.getType(),daysOffRequest.getUserID(),daysOffRequest.getDateFrom(),daysOffRequest.getDateTo());
+        daysOffRepository.save(daysOff);
+        return new ResponseEntity<String>("ok",HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "admin/get-days-off-requests/{doctorID}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<DaysOffRequest>> getDaysOffRequests(@PathVariable long doctorID) {
+        Collection<Clinic> clinics = clinicService.getAllClinics();
+        long doctorsClinic = 999999;
+        for(Clinic c : clinics){
+            for(Doctor d : c.getDoctors()){
+                if(d.getId() == doctorID){
+                    doctorsClinic = c.getId();
+                    break;
+                }
+            }
+        }
+        Collection<DaysOffRequest> daysOffRequests  = (Collection<DaysOffRequest>) daysOffRequestRepository.findAll();
+        ArrayList<DaysOffRequest> listOfRequests = new ArrayList<DaysOffRequest>();
+        for(DaysOffRequest dr : daysOffRequests){
+            if(dr.getClinicID() == doctorsClinic){
+                listOfRequests.add(dr);
+            }
+        }
+
+
+
+        return new ResponseEntity<Collection<DaysOffRequest>>(listOfRequests, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/user/create-days-off",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createRequest (@RequestBody DaysOffRequest daysOffRequest){
+        long userID = daysOffRequest.getUserID();
+        Collection<Clinic> listOfClinics  = clinicService.getAllClinics() ;
+        long clinicID = 9999999;
+        for(Clinic c : listOfClinics){
+            for(Doctor d : c.getDoctors()){
+                if(userID == d.getId()){
+                    clinicID = c.getId();
+                    break;
+                }
+            }
+        }
+        daysOffRequest.setClinicID(clinicID);
         daysOffRequestRepository.save(daysOffRequest);
         return  new ResponseEntity<String>("OK",HttpStatus.OK);
 

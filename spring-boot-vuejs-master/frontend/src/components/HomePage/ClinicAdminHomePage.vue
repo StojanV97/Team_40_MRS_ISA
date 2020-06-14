@@ -1,6 +1,7 @@
 <template>
   <v-app id="inspire">
     <ClinicAdminProfile v-if="editAdminProfile" />
+    <DaysOffRequests v-bind:req="req" v-if="reqtrue" />
     <ClinicEditForm
       v-if="this.editClinicProfile"
       @editRoomsEvent="this.openEditRooms"
@@ -102,6 +103,7 @@ import RoomConfig from "../Utility/RoomConfiguration";
 import EditDoctors from "../Utility/EditDoctors";
 import ClinicAdminProfile from "../Profiles/ClinidAdminProfile";
 import ExaminationRequests from "../Utility/ExaminationRequests";
+import DaysOffRequests from "../Utility/DaysOffRequests";
 
 export default {
   components: {
@@ -109,7 +111,8 @@ export default {
     RoomConfig,
     EditDoctors,
     ClinicAdminProfile,
-    ExaminationRequests
+    ExaminationRequests,
+    DaysOffRequests
   },
   props: {
     source: String
@@ -133,6 +136,7 @@ export default {
         ]
       },
       { icon: "mdi-history", text: "Examination requests" },
+      { icon: "mdi-history", text: "Days off requests" },
       {
         icon: "mdi-file-chart-outline",
         "icon-alt": "mdi-file-chart-outline",
@@ -163,6 +167,8 @@ export default {
       { icon: "mdi-help-circle", text: "Help" }
     ],
     search: "",
+    req: [],
+    reqtrue: false,
     headers: [
       {
         text: "Id Number",
@@ -224,6 +230,7 @@ export default {
         this.roomConfig = false;
         this.editClinicProfile = false;
         this.editAdminProfile = false;
+        this.reqtrue = false;
       } else if (text === "Edit Clinic info") {
         this.examinationRequests = false;
         this.roomConfig = false;
@@ -234,7 +241,19 @@ export default {
         this.editAdminProfile = true;
         this.editClinicProfile = false;
         this.roomConfig = false;
-      } else if (text === "Request days off") {
+      } else if (text === "Days off requests") {
+        api
+          .getDaysoffRequests(localStorage.getItem("doctorID"))
+          .then(response => {
+            console.log(response.data);
+            this.req = response.data;
+            this.reqtrue = true;
+            this.examinationRequests = false;
+            this.editAdminProfile = false;
+            this.editClinicProfile = false;
+            this.roomConfig = false;
+          })
+          .catch(e => {});
       } else if (text === "Schedule examination") {
       } else {
       }
