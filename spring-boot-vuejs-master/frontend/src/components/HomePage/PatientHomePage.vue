@@ -4,6 +4,7 @@
         <EditUser v-if="this.showEditProfile"></EditUser>
         <ScheduleHistory v-if="this.showExaminationHistory"></ScheduleHistory>
         <PatientScheduleExamination v-if="this.showScheduleExamination"></PatientScheduleExamination>
+        <PatientPreviewAppointments v-if="this.showAppointments"></PatientPreviewAppointments>
         <v-card v-if="this.showClinics">
             <v-card-title>
                 Clinics
@@ -26,6 +27,7 @@
                 <template v-slot:item="row">
                     <tr>
                         <td>{{row.item.name}}</td>
+                        <td>{{row.item.city}}</td>
                         <td>{{row.item.address}}</td>
 
                     </tr>
@@ -138,6 +140,7 @@
     import EditUser from "../Users/EditUser";
     import api from "../backend-api";
     import PatientScheduleExamination from "../Scheduling/PatientScheduleExamination";
+    import PatientPreviewAppointments from "../Scheduling/PatientPreviewAppointments";
 
 
     export default {
@@ -148,12 +151,14 @@
             EditUser,
 
 
+            PatientPreviewAppointments
 
         },
         props: {
             source: String,
         },
         data: () => ({
+            showAppointments:false,
             showProfile : false,
             showEditProfile : false,
             showScheduleExamination:false,
@@ -165,7 +170,7 @@
             showClinics:false,
             items: [
                 { icon: 'mdi-format-list-bulleted', text: 'List of clinics' },
-                { icon: 'mdi-history', text: 'Examination History' },
+                { icon: 'mdi-history', text: 'Appointments' },
                 { icon: "mdi-needle", text: 'Schedule Examination' },
                 //{ icon: 'mdi-history', text: 'Working calendar' },
                 //{ icon: 'mdi-iframe-parentheses', text: 'Request days off' },
@@ -218,20 +223,11 @@
                     this.calendar = false;
                 }
 
-                /*else if(text === "Working calendar"){
-                    this.showCalendar = true;
-                    this.showProfile = false;
-                    this.showClinics = false;
-                    this.showExaminationHistory = false;
-                    this.showEditProfile = false;
-                    this.showScheduleExamination = false;
-
-                }*/
                 else if(text === "List of clinics"){
                     this.showClinics = true;
                     this.showProfile = false;
                     //this.showCalendar = false;
-                    this.showExaminationHistory = false;
+                    this.showAppointments = false;
                     this.showEditProfile = false;
                     this.showScheduleExamination = false;
 
@@ -239,12 +235,12 @@
                     this.showClinics = false;
                     //this.showCalendar = false;
                     this.showProfile = true;
-                    this.showExaminationHistory = false;
+                    this.showAppointments = false;
                     this.showEditProfile = false;
                     this.showScheduleExamination = false;
 
-                }else if(text === "Examination History"){
-                    this.showExaminationHistory = true;
+                }else if(text === "Appointments"){
+                    this.showAppointments = true;
                     this.showProfile = false;
                     //this.showCalendar = false;
                     this.showEditProfile = false;
@@ -252,7 +248,7 @@
                     this.showClinics = false;
 
                 }else if(text === "Edit Profile"){
-                    this.showExaminationHistory = false;
+                    this.showAppointments = false;
                     this.showProfile = false;
                     //this.showCalendar = false;
                     this.showClinics = false
@@ -261,21 +257,21 @@
 
                 }
                 else if(text === "Schedule Examination"){
-                    this.showExaminationHistory = false;
+                    this.showAppointments = false;
                     this.showProfile = false;
-                   // this.showCalendar = false;
+                    // this.showCalendar = false;
                     this.showClinics = false
                     this.showEditProfile = false;
                     this.showScheduleExamination = true;
 
                 }
+
                 else{
-                    this.showExaminationHistory = false;
+                    this.showAppointments = false;
                     this.showProfile = false;
-                   // this.showCalendar = false;
+                    // this.showCalendar = false;
                     this.showClinics = false;
                     this.showEditProfile = false;
-                    this.showScheduleExamination = false;
                 }
             },
             showHistoryDialog(){

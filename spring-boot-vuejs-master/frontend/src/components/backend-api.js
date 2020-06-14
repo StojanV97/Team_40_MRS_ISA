@@ -34,6 +34,10 @@ export default {
     createStaffMember(user, type) {
         return AXIOS.post(`/staff/registration/` + type, user);
     },
+    getAppointmentPreview(appointments)
+    {
+        return AXIOS.get('appointment-preview/'+ appointments)
+    },
     deleteUser(userName) {
         return AXIOS.post('user/delete/' + userName);
     },

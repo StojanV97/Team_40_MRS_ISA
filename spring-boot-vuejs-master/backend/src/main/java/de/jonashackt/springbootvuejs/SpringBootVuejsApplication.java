@@ -28,6 +28,7 @@ public class SpringBootVuejsApplication {
 	@Bean
 	CommandLineRunner runner(MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
 		return args -> {
+
 			//Date
 			Date d = new Date();
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
@@ -39,6 +40,7 @@ public class SpringBootVuejsApplication {
 			listOfDates.add("2020-06-13 11-30");
 			listOfDates.add("2020-06-15 12-00");
 			//============================================================================
+
 			//Authorities
 			Authority doctorAuthority = new Authority();
 			doctorAuthority.setName(String.valueOf(UserAuthorities.DOCTOR));
@@ -55,6 +57,7 @@ public class SpringBootVuejsApplication {
 			Authority clinicCenterAdminAuthority = new Authority();
 			clinicCenterAdminAuthority.setName(String.valueOf(UserAuthorities.CLINIC_CENTER_ADMIN));
 			//============================================================================
+
 			//Utilty
 			Room room = new Room(1,"Examination");
 			Room room2 = new Room(2,"Examination");
@@ -74,10 +77,13 @@ public class SpringBootVuejsApplication {
 			clinicRepository.save(clinic);
 			clinicRepository.save(clinic2);
 			//===============================================================================================================================
+
 			//Users
 			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin("ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
 			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
-			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
+			ArrayList<Long> appointments = new ArrayList<>();
+			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312",appointments);
+			//Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			patient.setPassChanged(true);
 			Patient patient2 = new Patient("Pera","Peric","mikig@gmail.com","Patient2",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
@@ -123,8 +129,15 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","stojan.v19497@gmail.com","stojan", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
 
 			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07","EXAMINATION", 1,1,3));
-			appointmentRepository.save(new Appointment("2020-06-14 13-30", "EXAMINATION",1,1,3,2));
+
+			Appointment apt= new Appointment("2020-06-14 13-30", "EXAMINATION",1,1,3,2));
+			appointmentRepository.save(apt);
+			appointments.add(apt.getId());
+
+			patient.setAppointments(appointments);
+			userRepository.save(patient);
 			//===========================================================================
+
             Clinic_Doctors cd = new Clinic_Doctors(clinic2.getId(),doctor.getId());
 			Clinic_Doctors cd2 = new Clinic_Doctors(clinic.getId(),doctor2.getId());
 			Clinic_Doctors cd3 = new Clinic_Doctors(clinic.getId(),doctor3.getId());
@@ -147,10 +160,13 @@ public class SpringBootVuejsApplication {
 			clinicRoomRepository.save(clinicRoom3);
 			clinicRoomRepository.save(clinicRoom4);
 			clinicRoomRepository.save(clinicRoom5);
+
 			requestRepository.save(new RegisterRequests("p1","p1","djordjeognjenovic359@gmail.com","p1"));
 			requestRepository.save(new RegisterRequests("p2","p2","djordjeognjenovic359@gmail.com","p2"));
+
 			medicineRepository.save(new Medicine(1, "lek1", "valja"));
 			diagnoseRepository.save(new Diagnose(1, "dijagnoza", "nista strasno"));
+
 		};
 
 	}

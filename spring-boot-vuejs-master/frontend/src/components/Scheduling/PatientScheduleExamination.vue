@@ -3,11 +3,11 @@
     <v-div class="div">
 
         <v-div class="div1">
-        <v-row class="date" justify="center">Choose a date</v-row>
-        <v-row  justify="center">
-            <v-date-picker v-model="selectedDate"   :min="nowDate" ></v-date-picker>
-            <b-button class="button" @click=submit>Submit</b-button>
-        </v-row>
+            <v-row class="date-text" justify="center">Choose a date</v-row>
+            <v-row class="calendar-container" justify="center">
+                <v-date-picker class="calendar" v-model="selectedDate"   :min="nowDate" ></v-date-picker>
+                <b-button class="submit-button" @click=submit>Submit</b-button>
+            </v-row>
         </v-div>
         <v-div>
         <v-card class="table1">
@@ -213,21 +213,51 @@
         display: flex;
 
     }
+
+
     .div1{
         width: 20%;
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
     }
+
+    .date-text{
+        text-align: center;
+        margin-bottom: -30px;
+    }
+
+    .calendar-container{
+        margin-right: 30px;
+        margin-left: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .calendar{
+
+    }
+
+    .submit-button{
+        width: 70%;
+        margin-top: 20px;
+    }
+
     .button{
         margin-top:5%;
         margin-left: 5%;
     }
-.date{
-    margin-top:30px;
-    margin-bottom:10px;
-}
-.table1{
-    margin-left: 20px;
-    margin-right: 20px
-;
-}
+    .date{
+        margin-top:30px;
+        margin-bottom:10px;
+    }
+    .table1{
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-right: 20px;
+    }
 
 </style>
