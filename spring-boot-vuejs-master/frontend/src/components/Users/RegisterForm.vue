@@ -160,6 +160,7 @@
                     phoneNumber:''
 
                 },
+                message:'',
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 10) || 'Name must be less than 10 characters',
@@ -172,6 +173,7 @@
                 select: null,
                 checkbox: false,
                 flag: false,
+                link: "http://localhost:8080/api/account-verify/"
 
             }
         },
@@ -184,6 +186,7 @@
                 this.$refs.form.reset()
             },
             createRequest() {
+
                 console.log(this.user);
                 api.createRequest(this.user).then(response => {
                     // JSON responses are automatically parsed.
@@ -196,6 +199,10 @@
 
                         this.msg = 'Request successfully submitted!';
                         this.snackbar = true;
+                        this.message="http://localhost:8080/api/account-verify/"+this.user.username;
+                        console.log(this.message);
+                        console.log(this.user.email);
+                        api.sendEmail(this.message, this.user.email)
 
                     }
 

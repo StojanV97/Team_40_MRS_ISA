@@ -4,6 +4,7 @@ import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.AppointmentRepository;
 import de.jonashackt.springbootvuejs.repository.ClinicRepository;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
+import de.jonashackt.springbootvuejs.repository.*;
 import de.jonashackt.springbootvuejs.service.AppointmentService;
 import de.jonashackt.springbootvuejs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class AppointmentPreviewerController {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DaysOffRepository daysOffRepository;
 
     @Autowired
     private ClinicRepository clinicRepository;
@@ -69,6 +73,7 @@ public class AppointmentPreviewerController {
             {
                 doctor = (Doctor) dc.get();
             }
+
 
 
             boolean cancelable = true;

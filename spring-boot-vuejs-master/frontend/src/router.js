@@ -17,6 +17,7 @@ import NurseHomePage from "./components/HomePage/NurseHomePage";
 import FirstLogIn from "./components/Users/FirstLogIn"
 import PatientScheduleExamination from "./components/Scheduling/PatientScheduleExamination";
 import PProfilePreview from "./components/Profiles/PProfilePreview"
+import ScheduleHistory from "./components/Scheduling/ScheduleHistory";
 
 
 Vue.use(Router);
@@ -24,7 +25,7 @@ Vue.use(Router);
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [{
-        path: '/sched', component: PatientScheduleExamination
+        path: '/account-verify/77777777', component: ScheduleHistory
     }
         , {
         path: '/', component: Login,

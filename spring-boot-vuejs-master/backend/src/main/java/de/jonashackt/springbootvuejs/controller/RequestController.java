@@ -137,7 +137,7 @@ public class RequestController {
 
     @PostMapping(value = "request/delete/{userName}")
     private ResponseEntity<String> deleteRoom(@PathVariable String userName) {
-        String s = requestService.delete(userName);
+        String s = "s";
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 

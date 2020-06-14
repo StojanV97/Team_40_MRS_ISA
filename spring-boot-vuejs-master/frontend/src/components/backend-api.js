@@ -24,10 +24,9 @@ export default {
     setAuthentication(token) {
         return AXIOS;
     },
-    sendEmail(message) {
-        return AXIOS.post('/email/' + message.msg + "/" + message.email);
-    }
-    ,
+    sendEmail(messages) {
+        return AXIOS.post('/email/' + messages.message + '/'  + messages.email);
+    },
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
     },
@@ -173,6 +172,10 @@ export default {
     getClinicForAdmin(userName) {
         return AXIOS.get('/admin/get-clinic/' + userName);
     },
+    verifyAccount(username){
+        return AXIOS.get('/account-verify/'+username)
+    },
+
     getAppoitementRequests(clinicID) {
         return AXIOS.get('admin/get-appointment-requests/' + clinicID)
     },

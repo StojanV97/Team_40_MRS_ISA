@@ -4,6 +4,7 @@ import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.repository.AppointmentRepository;
 import de.jonashackt.springbootvuejs.repository.ClinicRepository;
+import de.jonashackt.springbootvuejs.repository.DaysOffRepository;
 import de.jonashackt.springbootvuejs.service.AppointmentService;
 import de.jonashackt.springbootvuejs.service.ClinicService;
 import de.jonashackt.springbootvuejs.service.UserService;
@@ -14,14 +15,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController()
 @RequestMapping("/api")
 public class ClinicController {
+
+    @Autowired
+    private DaysOffRepository daysOffRepository;
 
     @Autowired
     private AppointmentService appointmentService;
@@ -83,9 +86,10 @@ public class ClinicController {
     }
 
     @GetMapping(path = "/clinics/get/{date}")
-    public ResponseEntity<Collection<Clinic>> getClinicsForDate(@PathVariable("date") String date) {
+    public ResponseEntity<Collection<Clinic>> getClinicsForDate(@PathVariable("date") String date) throws ParseException {
         Collection<Clinic> clinics = clinicService.getAllClinics();
-
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+        sp.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         Collection<Clinic> c = new ArrayList<Clinic>();
         ArrayList<Long> doctorsWithAppointments = new ArrayList<Long>();
@@ -119,29 +123,32 @@ public class ClinicController {
 
             for(Doctor doctor: doctors)
             {
+                //DaysOff  daysOff = daysOffRepository.findByUserID(doctor.getId());
+                //if(!(sp.parse(date).after(sp.parse(daysOff.getDateFrom())) && sp.parse(date).before(sp.parse(daysOff.getDateTo())))) {
+                    if (doctorsWithAppointments.contains(doctor.getId())) {
 
-                if(doctorsWithAppointments.contains(doctor.getId()))
-                {
+                        if ((Collections.frequency(doctorsWithAppointments, doctor.getId())) < 9) {
+                            c.add(clinic);
+                            continue clinics;
+                        }
 
-                   if((Collections.frequency(doctorsWithAppointments,doctor.getId())) < 9)
-                   {
-                       c.add(clinic);
-                       continue clinics;
-                   }
+                    }
+                    else {
+                        c.add(clinic);
+                        continue clinics;
+                    }
+               // }
 
-                }
-                else{
-                    c.add(clinic);
-                    continue clinics;
-                }
             }
 
         }
         return new ResponseEntity<Collection<Clinic>>(c, HttpStatus.OK);
     }
     @GetMapping(path = "/clinics/get/doctors/{date}/{id}")
-    public ResponseEntity<Collection<Doctor>> getClinicDoctorForDate(@PathVariable("id") long id, @PathVariable("date") String date) {
+    public ResponseEntity<Collection<Doctor>> getClinicDoctorForDate(@PathVariable("id") long id, @PathVariable("date") String date) throws ParseException {
 
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+        sp.setTimeZone(TimeZone.getTimeZone("GMT"));
 
 
         Clinic clinic = clinicRepository.findById(id);
@@ -166,18 +173,18 @@ public class ClinicController {
         Collection<Doctor> d = new ArrayList<Doctor>();
         for(Doctor doctor: doctors)
         {
-            if(doctorsWithAppointments.contains(doctor.getId()))
-            {
-                if((Collections.frequency(doctorsWithAppointments,doctor.getId())) < 9)
-                {
+            //DaysOff  daysOff = daysOffRepository.findByUserID(doctor.getId());
+           // if(!(sp.parse(date).after(sp.parse(daysOff.getDateFrom())) && sp.parse(date).before(sp.parse(daysOff.getDateTo())))) {
+                if (doctorsWithAppointments.contains(doctor.getId())) {
+                    if ((Collections.frequency(doctorsWithAppointments, doctor.getId())) < 9) {
+                        d.add(doctor);
+                    }
+
+                } else {
                     d.add(doctor);
+
                 }
-
-            }
-            else{
-                d.add(doctor);
-
-            }
+           // }
         }
 
 

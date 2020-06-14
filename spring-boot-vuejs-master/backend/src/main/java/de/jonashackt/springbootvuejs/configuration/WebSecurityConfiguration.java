@@ -72,7 +72,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // za neautorizovane zahteve posalji 401 gresku
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
                 // svim korisnicima dopusti da pristupe putanjama /auth/**, /h2-console/** i /api/foo
-                .authorizeRequests().antMatchers("/auth/**").permitAll().antMatchers("/h2/**").permitAll().antMatchers("/api/foo").permitAll()
+                .authorizeRequests().antMatchers("/auth/**").permitAll().antMatchers("/api/account-verify/**").permitAll().antMatchers("/h2/**").permitAll().antMatchers("/api/foo").permitAll()
                 // svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()
                 .cors().and()
@@ -90,6 +90,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/auth/login");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/auth/registration/");
+        //web.ignoring().antMatchers(HttpMethod.GET, "/api/account-verify/*");
     }
 
 
