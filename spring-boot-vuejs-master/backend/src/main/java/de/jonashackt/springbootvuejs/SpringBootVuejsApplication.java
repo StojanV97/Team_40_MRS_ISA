@@ -26,7 +26,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
+	CommandLineRunner runner(MedicalRecordRepository medicalRecordRepository,MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
 		return args -> {
 
 			//Date
@@ -64,8 +64,8 @@ public class SpringBootVuejsApplication {
 			Room room3 = new Room(3,"Operation");
 			Room room4 = new Room(4,"Examination");
 			Room room5 = new Room(5,"Operation");
-			Clinic clinic = new Clinic(1, "Klinika BEOGRAD", "Njegoseva 12");
-			Clinic clinic2 = new Clinic(2, "Klinicki Centar Novi sad", "Bulevar Oslobodjenja 12");
+			Clinic clinic = new Clinic(1, "Dom zdravlja", "Njegoseva 12","Beograd");
+			Clinic clinic2 = new Clinic(2, "Klinicki Centar ", "Bulevar Oslobodjenja 12", "Novi sad");
 			room.setCalendar(listOfDates);
 			roomRepository.save(room);
 			roomRepository.save(room2);
@@ -83,6 +83,7 @@ public class SpringBootVuejsApplication {
 			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312",appointments);
 			//Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			patient.setPassChanged(true);
+
 			Patient patient2 = new Patient("Pera","Peric","mikig@gmail.com","Patient2",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
 			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
@@ -147,6 +148,19 @@ public class SpringBootVuejsApplication {
 
 			patient.setAppointments(appointments);
 			userRepository.save(patient);
+
+
+			MedicalRecord m =new MedicalRecord();
+			m.setMedicalRecordId(1l);
+			m.setBloodType("B");
+			m.setHeight(180);
+			m.setWeight(80);
+			m.setAllergies("Polen");
+			m.setPatient(patient);
+			medicalRecordRepository.save(m);
+
+
+
 			//===========================================================================
 
             Clinic_Doctors cd = new Clinic_Doctors(clinic2.getId(),doctor.getId());
@@ -177,6 +191,7 @@ public class SpringBootVuejsApplication {
 
 			medicineRepository.save(new Medicine(1, "lek1", "valja"));
 			diagnoseRepository.save(new Diagnose(1, "dijagnoza", "nista strasno"));
+
 
 		};
 

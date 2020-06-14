@@ -2,6 +2,8 @@ package de.jonashackt.springbootvuejs.domain;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 
@@ -20,7 +22,8 @@ public class Patient extends User{
     //public MedicalRecord;
     ArrayList<Long> appointments;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "patient")
     private MedicalRecord medicalRecord;
 
 
