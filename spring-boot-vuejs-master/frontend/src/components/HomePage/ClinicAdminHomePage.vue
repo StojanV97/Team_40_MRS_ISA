@@ -8,6 +8,7 @@
       @editDoctorsEvent="this.openEditDoctors"
     />
     <ExaminationRequests @goBack="catchExamGoBack" v-if="examinationRequests" />
+    <OperationRequests @goBack="catchExamGoBack" v-if="operationRequests"/>
     <RoomConfig @goBack="this.openClinicProfile" v-if="this.roomConfig" />
     <EditDoctors @goBack="this.openClinicProfile" v-if="editDoctors" />
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
@@ -103,10 +104,12 @@ import RoomConfig from "../Utility/RoomConfiguration";
 import EditDoctors from "../Utility/EditDoctors";
 import ClinicAdminProfile from "../Profiles/ClinidAdminProfile";
 import ExaminationRequests from "../Utility/ExaminationRequests";
+import OperationRequests from "../Utility/OperationRequests";
 import DaysOffRequests from "../Utility/DaysOffRequests";
 
 export default {
   components: {
+    OperationRequests,
     ClinicEditForm,
     RoomConfig,
     EditDoctors,
@@ -122,6 +125,7 @@ export default {
     showProfile: false,
     drawer: null,
     examinationRequests: false,
+    operationRequests: false,
     editClinicProfile: false,
     items: [
       {
@@ -136,6 +140,7 @@ export default {
         ]
       },
       { icon: "mdi-history", text: "Examination requests" },
+      { icon: "mdi-history", text: "Operation requests" },
       { icon: "mdi-history", text: "Days off requests" },
       {
         icon: "mdi-file-chart-outline",
@@ -144,8 +149,8 @@ export default {
         model: false,
         children: [
           { icon: "mdi-alpha-i", text: "Average clinic rating" },
-          { icon: "mdi-roman-numeral-2", text: "Average rating for doctors" },
-          { icon: "mdi-roman-numeral-3", text: "Examination graph" },
+          { icon: "mdi-roman-numeral-2", text: "Average ratingfor doctors" },
+          { icon: "mdi-roman-numeral-3", text: "Examination gra ph" },
           { icon: "mdi-roman-numeral-4", text: "Income" }
         ]
       },
@@ -227,17 +232,26 @@ export default {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       } else if (text === "Examination requests") {
         this.examinationRequests = true;
+        this.operationRequests = false;
+        this.roomConfig = false;
+        this.editClinicProfile = false;
+        this.editAdminProfile = false;
+      } else if (text === "Operation requests") {
+        this.examinationRequests = false;
+        this.operationRequests = true;
         this.roomConfig = false;
         this.editClinicProfile = false;
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Edit Clinic info") {
         this.examinationRequests = false;
+        this.operationRequests = false;
         this.roomConfig = false;
         this.editClinicProfile = true;
         this.editAdminProfile = false;
       } else if (text === "Profile") {
         this.examinationRequests = false;
+        this.operationRequests = false;
         this.editAdminProfile = true;
         this.editClinicProfile = false;
         this.roomConfig = false;
