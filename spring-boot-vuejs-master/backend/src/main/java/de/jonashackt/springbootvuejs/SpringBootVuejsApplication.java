@@ -128,7 +128,7 @@ public class SpringBootVuejsApplication {
 			appointmentRequestRepository.save(new AppointmentRequest("2020-06-15","EXAMINATION", 1,2,3));
 			requestRepository.save(new RegisterRequests("Milan","Milanovic","stojan.v19937@gmail.com","milan", "Srbija", "Novi Sad", "Bulevar 2", "061144111", "12388891132"));
 			requestRepository.save(new RegisterRequests("Dragan","Dragunovic","stojan.v19297@gmail.com","dragan", "Srbija", "Novi Sad", "Bulevar 3", "061132111", "1234230678"));
-			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","stojan.v19497@gmail.com","stojan", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
+			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","noteventryingyo@gmail.com","77777777", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
 
 			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07","EXAMINATION", 1,1,3));
 

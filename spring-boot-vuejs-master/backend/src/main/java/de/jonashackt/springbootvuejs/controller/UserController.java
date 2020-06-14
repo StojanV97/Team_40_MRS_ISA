@@ -4,8 +4,10 @@ import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.joinedtables.Clinic_Doctors;
 import de.jonashackt.springbootvuejs.repository.ClinicDoctorRepository;
+import de.jonashackt.springbootvuejs.repository.RequestRepository;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
 import de.jonashackt.springbootvuejs.service.ClinicService;
+import de.jonashackt.springbootvuejs.service.RequestService;
 import de.jonashackt.springbootvuejs.service.UserService;
 import de.jonashackt.springbootvuejs.service.impl.CustomUserDetailsService;
 import org.slf4j.Logger;
@@ -42,6 +44,9 @@ public class UserController {
     private ClinicService clinicService;
 
     @Autowired
+    private RequestRepository requestRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -52,6 +57,9 @@ public class UserController {
     @Autowired
     private ClinicDoctorRepository clinicDoctorRepository;
 
+    @Autowired
+    private RequestService  requestService;
+
     Random r = new Random();
 
     @RequestMapping(path = "/hello")
@@ -60,9 +68,24 @@ public class UserController {
         return HELLO_TEXT;
     }
 
-    @PostMapping(value = "/email/{message}/{email}")
+    @GetMapping(value = "/account-verify/{username}")
+    public ResponseEntity<String> verifyAccount(@PathVariable String username) throws MessagingException {
+
+        System.out.println("tu smoooo");
+        System.out.println(username);
+        RegisterRequests patient =  requestRepository.findByUserName(username);
+
+        userRepository.save(new Patient(patient.getFirstName(),patient.getLastName(),patient.getEmail(),patient.getUserName(),"123123",patient.getCountry(),patient.getCity(),patient.getAddress(),patient.getPhoneNumber(),patient.getInsuranceNumber()));
+        requestService.delete(username);
+
+        return new ResponseEntity<String>("Verified", HttpStatus.OK);
+    }
+
+        @PostMapping(value = "/email/{message}/{email}")
     public ResponseEntity<String> sendEmail(@PathVariable String message,@PathVariable ArrayList<String> email) throws MessagingException {
-        System.out.println(message);
+
+
+
         final String username = "team40mrsisa@gmail.com";
         final String password = "no0013144";
 
@@ -272,7 +295,10 @@ public class UserController {
                 user.setEmail(patient.getEmail());
                 user.setFirstName(patient.getFirstName());
                 user.setLastName(patient.getLastName());
-                user.setUserName(patient.getUsername());
+                user.setUserName(patient.getAddress());
+                user.setUserName(patient.getCity());
+                user.setUserName(patient.getCountry());
+                user.setUserName(patient.getPhoneNumber());
                 userRepository.save(user);
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             }else{

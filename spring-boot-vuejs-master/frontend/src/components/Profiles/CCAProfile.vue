@@ -573,7 +573,11 @@
             diagnoses: [],
             medicines: [],
             snackbar: false,
-            msg: ''
+            msg: '',
+            messages:{
+                message:'',
+                email:''
+            }
         }),
         mounted() {
             api.getAllClinics().then(response => {
@@ -700,7 +704,13 @@
             },
             approveRequest(email, userName) {
                 console.log(email);
-                api.sendEmail(email).then(response => {
+
+                this.messages.email = email;
+                this.messages.message = "(instead of .slash. put slashes)  link :  localhost:8080    .slash.  account-verify   .slash.  " + userName;
+                localStorage.setItem("regUsername", userName);
+
+                console.log(this.messages.message);
+                api.sendEmail(this.messages).then(response => {
                     console.log(response.data)
                 }).catch(e => {
                     this.msg = "Activation code sent!";
@@ -711,12 +721,7 @@
                         this.requests.splice(i, 1);
                     }
                 }
-                api.deleteRegistrationRequest(userName).then(response => {
-                    console.log(response);
-                    this.getRequests();
-                }).catch(e => {
-                    console.log(e)
-                });
+
             },
             closeDialogAddC() {
                   this.dialogAC = false;
