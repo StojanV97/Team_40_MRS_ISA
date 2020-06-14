@@ -96,9 +96,8 @@ public class SpringBootVuejsApplication {
 			clinincAdmin.setPassChanged(true);
 			nurse.getAuthorities().add(nurseAuthority);
 			patient.getAuthorities().add(patientAuthority);
-			doctor.setListOfPatients(patient.getId());
+			doctor.setListOfPatients((long) 1);
 			patient2.getAuthorities().add(patientAuthority);
-			doctor.setListOfPatients(patient2.getId());
 			doctor.getAuthorities().add(doctorAuthority);
 			doctor2.getAuthorities().add(doctorAuthority);
 			doctor3.getAuthorities().add(doctorAuthority);

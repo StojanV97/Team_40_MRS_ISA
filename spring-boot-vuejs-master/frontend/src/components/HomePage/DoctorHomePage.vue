@@ -26,7 +26,12 @@
             <td>{{row.item.lastName}}</td>
             <td>{{row.item.email}}</td>
             <td>
-              <v-btn @click="showHistoryDialog(row.item.id)" class="my-2" color="blue">Show</v-btn>
+              <v-btn
+                v-if="$store.getters.getUser.listOfPatients.indexOf(row.item.id) != -1"
+                @click="showHistoryDialog(row.item.id)"
+                class="my-2"
+                color="blue"
+              >Show</v-btn>
             </td>
           </tr>
         </template>
@@ -110,10 +115,10 @@
     <v-dialog id="daysOffDialog" v-model="dialogDaysOff" width="800px">
       <v-card>
         <v-card-actions>
-          <v-btn text color="primary">More</v-btn>
+          <v-content>
+            <RequestDaysOff id="dysof" />
+          </v-content>
           <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="dialogDaysOff = false">Cancel</v-btn>
-          <v-btn text @click="dialogDaysOff = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -126,13 +131,15 @@ import Calendar from "./Calendar";
 import DoctorProfile from "../Profiles/MedicalStaffProfile";
 import ScheduleExemination from "../Scheduling/ScheduleExemination";
 import PatientProfile from "../Profiles/PProfilePreview";
+import RequestDaysOff from "../Utility/RequestDaysOff";
 
 export default {
   components: {
     Calendar,
     DoctorProfile,
     ScheduleExemination,
-    PatientProfile
+    PatientProfile,
+    RequestDaysOff
   },
   props: {
     source: String
@@ -147,7 +154,7 @@ export default {
     showPatients: false,
     items: [
       { icon: "mdi-contacts", text: "List of patients" },
-      { icon: "mdi-history", text: "Schedule examination" },
+      { icon: "mdi-history", text: "Scheduled examination" },
       { icon: "mdi-history", text: "Working calendar" },
       { icon: "mdi-iframe-parentheses", text: "Request days off" },
       { icon: "mdi-account-cog", text: "Profile" },
@@ -185,7 +192,7 @@ export default {
     this.name = localStorage.getItem("firstName");
     this.lastName = localStorage.getItem("lastName");
     api
-      .getPatientsForDoctor(localStorage.getItem("userName"))
+      .getPatients()
       .then(response => {
         this.patients = response.data;
       })
@@ -215,7 +222,7 @@ export default {
         this.showExaminationScheduling = false;
       } else if (text === "Request days off") {
         this.dialogDaysOff = true;
-      } else if (text === "Schedule examination") {
+      } else if (text === "Scheduled examination") {
         api
           .getCurretExaminations(localStorage.getItem("userID"))
           .then(response => {
@@ -259,5 +266,10 @@ body {
 
 #calendar {
   margin-top: -10px;
+}
+#dysof {
+  margin-right: 10%;
+  margin-left: -30%;
+  margin-bottom: 10%;
 }
 </style>

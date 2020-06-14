@@ -1,17 +1,12 @@
 package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.domain.*;
-import de.jonashackt.springbootvuejs.repository.ApointmentRepository;
+import de.jonashackt.springbootvuejs.repository.*;
 import de.jonashackt.springbootvuejs.domain.AppointmentRequest;
 import de.jonashackt.springbootvuejs.domain.AppointmentRequest;
 import de.jonashackt.springbootvuejs.domain.Clinic;
 import de.jonashackt.springbootvuejs.domain.RegisterRequests;
 import de.jonashackt.springbootvuejs.domain.Room;
-import de.jonashackt.springbootvuejs.repository.AppointmentRepository;
-import de.jonashackt.springbootvuejs.repository.AppointmentRequestRepository;
-import de.jonashackt.springbootvuejs.repository.RequestRepository;
-import de.jonashackt.springbootvuejs.repository.RoomRepository;
-import de.jonashackt.springbootvuejs.repository.UserRepository;
 import de.jonashackt.springbootvuejs.service.AppointmentRequestService;
 import de.jonashackt.springbootvuejs.service.ClinicService;
 import de.jonashackt.springbootvuejs.service.RequestService;
@@ -63,6 +58,16 @@ public class RequestController {
 
     @Autowired
     private RequestRepository requestRepository;
+
+    @Autowired
+    private DaysOffRequestRepository daysOffRequestRepository;
+    @PostMapping(value = "/user/create-days-off",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createRequest (@RequestBody DaysOffRequest daysOffRequest){
+        daysOffRequestRepository.save(daysOffRequest);
+        return  new ResponseEntity<String>("OK",HttpStatus.OK);
+
+    };
+
 
     @PostMapping(value = "/auth/registration",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createRequest(@RequestBody RegisterRequests request) throws Exception {
