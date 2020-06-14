@@ -23,7 +23,7 @@
             <td>{{row.item.lastName}}</td>
             <td>{{row.item.email}}</td>
             <td>
-              <v-btn @click="showHistoryDialog" class="my-2" color="blue">Show</v-btn>
+              <v-btn @click="showHistoryDialog(row.item.id)" class="my-2" color="blue">Show</v-btn>
             </td>
           </tr>
         </template>
@@ -95,11 +95,12 @@
 
     <v-dialog id="medicalChartDialog" v-model="dialog" width="800px">
       <v-card>
+        <v-container>
+          <PatientProfile v-bind:patientProfile="patientProfile" />
+        </v-container>
         <v-card-actions>
-          <v-btn text color="primary">More</v-btn>
           <v-spacer></v-spacer>
           <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-          <v-btn text @click="dialog = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -121,12 +122,14 @@ import api from "../backend-api";
 import Calendar from "./Calendar";
 import DoctorProfile from "../Profiles/MedicalStaffProfile";
 import ScheduleExemination from "../Scheduling/ScheduleExemination";
+import PatientProfile from "../Profiles/PProfilePreview";
 
 export default {
   components: {
     Calendar,
     DoctorProfile,
-    ScheduleExemination
+    ScheduleExemination,
+    PatientProfile
   },
   props: {
     source: String
@@ -169,7 +172,8 @@ export default {
     ],
     patients: [],
     name: "",
-    lastName: ""
+    lastName: "",
+    patientProfile: null
   }),
   mounted() {
     api.setAuthentication().defaults.headers["Authorization"] =
@@ -219,7 +223,11 @@ export default {
         this.showPatients = false;
       }
     },
-    showHistoryDialog() {
+    showHistoryDialog(id) {
+      api.getUser(id).then(response => {
+        this.patientProfile = response.data;
+      });
+      console.log(this.patientProfile);
       this.dialog = true;
     },
     signOut() {
