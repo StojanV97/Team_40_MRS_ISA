@@ -26,7 +26,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(MedicalRecordRepository medicalRecordRepository,MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
+	CommandLineRunner runner(MedicalRecordRepository  medicalRecordRepository,DaysOffRepository daysOffRepository,MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
 		return args -> {
 
 			//Date
@@ -37,8 +37,6 @@ public class SpringBootVuejsApplication {
 			listOfDates.add("2020-06-15 10-00");
 			listOfDates.add("2020-06-15 10-30");
 			listOfDates.add("2020-06-15 11-00");
-			listOfDates.add("2020-06-13 11-30");
-			listOfDates.add("2020-06-15 12-00");
 			//============================================================================
 
 			//Authorities
@@ -64,8 +62,9 @@ public class SpringBootVuejsApplication {
 			Room room3 = new Room(3,"Operation");
 			Room room4 = new Room(4,"Examination");
 			Room room5 = new Room(5,"Operation");
-			Clinic clinic = new Clinic(1, "Dom zdravlja", "Njegoseva 12","Beograd");
-			Clinic clinic2 = new Clinic(2, "Klinicki Centar ", "Bulevar Oslobodjenja 12", "Novi sad");
+			room5.setCalendar(listOfDates);
+			Clinic clinic = new Clinic(1, "Klinika BEOGRAD", "Njegoseva 12");
+			Clinic clinic2 = new Clinic(2, "Klinicki Centar Novi sad", "Bulevar Oslobodjenja 12");
 			room.setCalendar(listOfDates);
 			roomRepository.save(room);
 			roomRepository.save(room2);
@@ -83,7 +82,6 @@ public class SpringBootVuejsApplication {
 			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312",appointments);
 			//Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			patient.setPassChanged(true);
-
 			Patient patient2 = new Patient("Pera","Peric","mikig@gmail.com","Patient2",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
 			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
@@ -103,8 +101,14 @@ public class SpringBootVuejsApplication {
 			doctor2.getAuthorities().add(doctorAuthority);
 			doctor3.getAuthorities().add(doctorAuthority);
 			doctor4.getAuthorities().add(doctorAuthority);
+			doctor.setListOfAppoitnements("2020-06-14 13-30");
+			doctor.setListOfAppoitnements("2020-07-20 10-30");
+			doctor.setListOfAppoitnements("2020-07-13 11-00");
+			doctor.setListOfAppoitnements("2020-08-16 11-30");
 			doctor.setPassChanged(true);
 			clinincAdmin.setClinicName((long) 1);
+			DaysOffRequest daysOffRequest = new DaysOffRequest((long) 3,"Doctor","Doctor","2020-06-14","2020-07-00","Vacation",2,"stojan.v1997@gmail.com");
+			//daysOffRepository.save(daysOffRequest); Nmg da sacuvam request, moze se kreairati u DoctorHomePage -> Request Days off
 			userRepository.save(patient);
 			userRepository.save(patient2);
 			userRepository.save(doctor);
@@ -131,11 +135,11 @@ public class SpringBootVuejsApplication {
 			Appointment apt= new Appointment("2020-06-14 13-30", "EXAMINATION",1,1,3,2);
 			appointmentRepository.save(apt);
 			appointments.add(apt.getId());
-			Appointment apt2 =new Appointment("2020-06-20 10-30", "OPERATION",1,1,3,2);
+			Appointment apt2 =new Appointment("2020-07-20 10-30", "OPERATION",1,1,3,2);
 			appointmentRepository.save(apt2);
-			Appointment apt3 =new Appointment("2020-06-13 11-00", "EXAMINATION",1,1,3,2);
+			Appointment apt3 =new Appointment("2020-07-13 11-00", "EXAMINATION",1,1,3,2);
 			appointmentRepository.save(apt3);
-			Appointment apt4 =new Appointment("2020-06-16 11-30", "EXAMINATION",1,1,3,2);
+			Appointment apt4 =new Appointment("2020-08-16 11-30", "EXAMINATION",1,1,3,2);
 
 			appointmentRepository.save(apt4);
 
@@ -163,9 +167,9 @@ public class SpringBootVuejsApplication {
 
 			//===========================================================================
 
-            Clinic_Doctors cd = new Clinic_Doctors(clinic2.getId(),doctor.getId());
+            Clinic_Doctors cd = new Clinic_Doctors(clinic.getId(),doctor.getId());
 			Clinic_Doctors cd2 = new Clinic_Doctors(clinic.getId(),doctor2.getId());
-			Clinic_Doctors cd3 = new Clinic_Doctors(clinic.getId(),doctor3.getId());
+			Clinic_Doctors cd3 = new Clinic_Doctors(clinic2.getId(),doctor3.getId());
 			Clinic_Doctors cd4 = new Clinic_Doctors(clinic.getId(),doctor4.getId());
 			Clinic_Doctors cd32 = new Clinic_Doctors(clinic.getId(),doctor22.getId());
 			Clinic_Doctors cd43 = new Clinic_Doctors(clinic.getId(),doctor23.getId());

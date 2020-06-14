@@ -46,6 +46,7 @@ public class ClinicController {
 
     @PostMapping(path = "/clinic/edit/{oldID}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> editClinic(@RequestBody Clinic clinic,@PathVariable long oldID) throws Exception {
+        System.out.println(clinic);
         Clinic clinic2 = clinicService.getClinic(oldID);
         Clinic clinicNew = new Clinic();
         clinicNew.setId(clinic2.getId());

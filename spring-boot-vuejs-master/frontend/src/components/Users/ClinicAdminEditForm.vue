@@ -26,8 +26,6 @@
           ></v-checkbox>
 
           <v-btn :disabled="!valid" class="mr-4" @click="editClinicAdmin()">Submit</v-btn>
-
-          <v-btn class="mr-4" @click="reset">Reset Form</v-btn>
         </v-form>
       </v-row>
       <div class="text-center ma-2">

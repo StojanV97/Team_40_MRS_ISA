@@ -15,7 +15,25 @@ public class Doctor extends User {
     public Doctor() {
         super();
     }
+
+    public void setListOfPatients(ArrayList<Long> listOfPatients) {
+        this.listOfPatients = listOfPatients;
+    }
+
+    public void setListOfAppoitnements(ArrayList<String> listOfAppoitnements) {
+        this.listOfAppoitnements = listOfAppoitnements;
+    }
+
+    public ArrayList<String> getListOfTerms() {
+        return listOfTerms;
+    }
+
+    public void setListOfTerms(ArrayList<String> listOfTerms) {
+        this.listOfTerms = listOfTerms;
+    }
+
     ArrayList<String> listOfAppoitnements;
+    ArrayList<String> listOfTerms;
 
 
 
