@@ -43,15 +43,6 @@ public class Patient extends User{
 
     }
 
-    public Patient(String firstName, String lastName, String email, String userName, String password, String country, String city, String address, String phoneNumber, String insuranceNumber) {
-        super(firstName, lastName, email, userName, password);
-        this.country = country;
-        this.city = city;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.insuranceNumber = insuranceNumber;
-
-    }
 
     public ArrayList<Long> getAppointments() {
         return appointments;
