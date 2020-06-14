@@ -84,6 +84,8 @@ public class SpringBootVuejsApplication {
 			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
 			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			patient.setPassChanged(true);
+			Patient patient2 = new Patient("Pera","Peric","mikig@gmail.com","Patient2",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
+
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
 			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
 			Doctor doctor22 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor22",bc.encode("password"));
@@ -97,12 +99,16 @@ public class SpringBootVuejsApplication {
 			nurse.getAuthorities().add(nurseAuthority);
 			patient.getAuthorities().add(patientAuthority);
 			doctor.setListOfPatients(patient.getId());
+			patient2.getAuthorities().add(patientAuthority);
+			doctor.setListOfPatients(patient2.getId());
 			doctor.getAuthorities().add(doctorAuthority);
 			doctor2.getAuthorities().add(doctorAuthority);
 			doctor3.getAuthorities().add(doctorAuthority);
 			doctor4.getAuthorities().add(doctorAuthority);
+			doctor.setPassChanged(true);
 			clinincAdmin.setClinicName((long) 1);
 			userRepository.save(patient);
+			userRepository.save(patient2);
 			userRepository.save(doctor);
 			userRepository.save(doctor2);
 			userRepository.save(doctor3);

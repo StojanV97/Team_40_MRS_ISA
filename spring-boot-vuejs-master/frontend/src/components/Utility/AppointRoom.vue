@@ -87,8 +87,6 @@ export default {
         )
         .then(response => {
           this.$store.getters.getClinic.rooms = response.data;
-          //console.log(this.$store.getters.getClinic.rooms);
-
           for (const index in this.$store.getters.getClinic.rooms) {
             if (
               this.$store.getters.getClinic.rooms[index].roomName ===

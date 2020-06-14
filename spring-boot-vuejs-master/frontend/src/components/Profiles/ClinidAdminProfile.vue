@@ -120,7 +120,6 @@
 #editbtn {
   margin-top: 100px;
 }
-
 #userNameBtn {
   width: 300px;
   display: flex;
@@ -131,11 +130,9 @@
 #password-btn {
   margin-left: 40px;
 }
-
 #exampleInputEmail1 {
   padding-top: 10px;
 }
-
 .form-block {
   margin-top: 40px;
   margin-left: 50%;
@@ -213,7 +210,6 @@ export default {
     api.setAuthentication().defaults.headers["Authorization"] =
       "Bearer " + localStorage.getItem("token");
   },
-
   methods: {
     closeDialogEvent(event) {
       this.msg = event;
@@ -249,7 +245,6 @@ export default {
       this.changePasswordDialog = !this.changePasswordDialog;
     }
   },
-
   computed: {
     state() {
       return Boolean(this.form.quantityOption);
@@ -257,4 +252,3 @@ export default {
   }
 };
 </script>
-

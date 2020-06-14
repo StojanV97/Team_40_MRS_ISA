@@ -210,6 +210,7 @@ export default {
         })
         .catch(e => {});
     },
+
     deleteItem(item) {
       console.log(item);
       var pat = null;
