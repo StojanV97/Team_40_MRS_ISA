@@ -40,6 +40,10 @@ export default {
     getAppointmentPreview(appointments) {
         return AXIOS.get('appointment-preview/' + appointments)
     },
+    getMedicalRecordForPatient(id){
+        return AXIOS.get('/patient/medicalrecord/' + id)
+    },
+
     deleteUser(userName) {
         return AXIOS.post('user/delete/' + userName);
     },
