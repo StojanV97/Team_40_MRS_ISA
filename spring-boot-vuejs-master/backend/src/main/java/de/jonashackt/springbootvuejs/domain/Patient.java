@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.ArrayList;
 @SuppressWarnings("JpaAttributeTypeInspection")
+import javax.persistence.*;
+
 @Entity
 @Table(name="patients")
 public class Patient extends User{
@@ -17,6 +19,9 @@ public class Patient extends User{
     private String insuranceNumber;
     //public MedicalRecord;
     ArrayList<Long> appointments = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
+    private MedicalRecord medicalRecord;
 
 
     public Patient(String firstName, String lastName, String email, String userName, String password, String country, String city, String address, String phoneNumber, String insuranceNumber, ArrayList<Long> appointmentse) {
@@ -80,4 +85,13 @@ public class Patient extends User{
     public void setInsuranceNumber(String insuranceNumber) {
         this.insuranceNumber = insuranceNumber;
     }
+
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
+    }
+
 }
