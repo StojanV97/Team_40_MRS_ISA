@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService{
         }
 
         String s = Long.toHexString(Double.doubleToLongBits(Math.random()));
-        userRepository.save(new Patient(patient.getFirstName(), patient.getLastName(),patient.getEmail(),patient.getUsername(),s,patient.getCountry(),patient.getCity(),patient.getAddress(),patient.getPhoneNumber(),patient.getInsuranceNumber()));
+        userRepository.save(new Patient(patient.getFirstName(), patient.getLastName(),patient.getEmail(),patient.getUsername(),s,patient.getCountry(),patient.getCity(),patient.getAddress(),patient.getPhoneNumber(),patient.getInsuranceNumber(),patient.getAppointments()));
         response = "800";
 
         return response;

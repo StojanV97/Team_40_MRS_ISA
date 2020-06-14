@@ -80,7 +80,9 @@ public class SpringBootVuejsApplication {
 			//Users
 			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin("ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
 			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
-			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
+			ArrayList<Long> appointments = new ArrayList<>();
+			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312",appointments);
+			//Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			patient.setPassChanged(true);
 			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
 			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
@@ -114,16 +116,39 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","stojan.v19497@gmail.com","stojan", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
 
 			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07","EXAMINATION", 1,1,2));
-			appointmentRepository.save(new Appointment("2020-07-07 10-00", "EXAMINATION",1,1,2,2));
-			appointmentRepository.save(new Appointment("2020-07-07 10-30", "EXAMINATION",1,1,2,2));
-			appointmentRepository.save(new Appointment("2020-07-07 11-00", "EXAMINATION",1,1,2,2));
-			appointmentRepository.save(new Appointment("2020-07-07 11-30", "EXAMINATION",1,1,2,2));
-			appointmentRepository.save(new Appointment("2020-07-07 12-00", "EXAMINATION",1,1,2,2));
-			appointmentRepository.save(new Appointment("2020-07-07 12-30", "EXAMINATION",1,1,2,2));
-			appointmentRepository.save(new Appointment("2020-07-07 13-00", "EXAMINATION",1,1,2,2));
-			appointmentRepository.save(new Appointment("2020-07-07 13-30", "EXAMINATION",1,1,2,2));
-			appointmentRepository.save(new Appointment("2020-07-07 14-00", "EXAMINATION",1,1,2,2));
+			Appointment apt1 =new Appointment("2020-07-07 10-00", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt1);
 
+			Appointment apt2 =new Appointment("2020-07-07 10-30", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt2);
+			Appointment apt3 =new Appointment("2020-07-07 11-00", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt3);
+			Appointment apt4 =new Appointment("2020-07-07 11-30", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt4);
+			Appointment apt5 =new Appointment("2020-07-07 12-00", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt5);
+			Appointment apt6 =new Appointment("2020-07-07 12-30", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt6);
+			Appointment apt7 =new Appointment("2020-07-07 13-00", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt7);
+			Appointment apt8 =new Appointment("2020-07-07 13-30", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt8);
+			Appointment apt9 =new Appointment("2020-07-07 14-00", "EXAMINATION",1,1,2,2);
+			appointmentRepository.save(apt9);
+
+			appointments.add(apt2.getId());
+
+			appointments.add(apt2.getId());
+			appointments.add(apt3.getId());
+			appointments.add(apt4.getId());
+			appointments.add(apt5.getId());
+			appointments.add(apt6.getId());
+			appointments.add(apt7.getId());
+			appointments.add(apt8.getId());
+			appointments.add(apt9.getId());
+
+			patient.setAppointments(appointments);
+			userRepository.save(patient);
 
 			//===========================================================================
 

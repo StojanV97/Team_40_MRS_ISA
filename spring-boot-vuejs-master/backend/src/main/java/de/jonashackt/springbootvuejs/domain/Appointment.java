@@ -85,4 +85,12 @@ public class Appointment {
         this.doctorID = doctorID;
         this.clinicID = clinicID;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
