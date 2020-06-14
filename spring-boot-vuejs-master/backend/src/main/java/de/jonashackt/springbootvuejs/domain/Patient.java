@@ -2,11 +2,11 @@ package de.jonashackt.springbootvuejs.domain;
 
 
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.ArrayList;
-@SuppressWarnings("JpaAttributeTypeInspection")
 import javax.persistence.*;
+import java.util.ArrayList;
+
+@SuppressWarnings("JpaAttributeTypeInspection")
+
 
 @Entity
 @Table(name="patients")
