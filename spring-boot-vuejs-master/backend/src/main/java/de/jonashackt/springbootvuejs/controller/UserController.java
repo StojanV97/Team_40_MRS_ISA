@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.*;
@@ -35,6 +36,7 @@ public class UserController {
     private static Properties properties = new Properties();
     public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
     public static final String SECURED_TEXT = "Hello from the secured resource!";
+    BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
 
     @Autowired
     private ClinicService clinicService;
@@ -236,6 +238,29 @@ public class UserController {
         return new ResponseEntity<String>("ok", HttpStatus.OK);
     }
 
+    @PostMapping(value = "/user/doctor-edit/{oldUserName}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> editDoctor(@RequestBody User clinicAdmin,@PathVariable String oldUserName){
+        Optional<User> u  = userRepository.findById(clinicAdmin.getId());
+        String s = null;
+        if(u.isPresent()){
+            User user = u.get();
+            User u2 = userService.findByUsername(clinicAdmin.getUsername());
+            if(u2 == null){
+                return new ResponseEntity<User>(user, HttpStatus.NOT_ACCEPTABLE);
+            }else{
+                user.setEmail(clinicAdmin.getEmail());
+                user.setFirstName(clinicAdmin.getFirstName());
+                user.setLastName(clinicAdmin.getLastName());
+                user.setUserName(clinicAdmin.getUsername());
+                if(!clinicAdmin.getPassword().equals("")){
+                    user.setPassword(clinicAdmin.getPassword());
+                }
+                userRepository.save(user);
+                return new ResponseEntity<User>(user, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<String>("ok", HttpStatus.OK);
+    }
     @PostMapping(value = "/user/patient-edit/{oldUserName}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> editPatient(@RequestBody Patient patient,@PathVariable String oldUserName){
         Optional<User> u  = userRepository.findById(patient.getId());
@@ -281,6 +306,34 @@ public class UserController {
             userRepository.save(user2);
         }
         return new ResponseEntity<String>("OK", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/user/create-doctor/{clinicID}")
+    public ResponseEntity<?> createDoctor(@RequestBody User doctor,@PathVariable Long clinicID){
+       User u = (userService.findByUsername(doctor.getUsername()));
+
+        if(u != null){
+            return new ResponseEntity<String>("Exists!", HttpStatus.OK);
+        }
+        Authority doctorAuthority = new Authority();
+        doctorAuthority.setName(String.valueOf(UserAuthorities.DOCTOR));
+        Doctor d2 = new Doctor();
+
+        d2.setPassChanged(false);
+        d2.setPassword(bc.encode(doctor.getPassword()));
+        d2.setEmail(doctor.getEmail());
+        d2.setUserName(doctor.getUsername());
+        d2.setFirstName(doctor.getFirstName());
+        d2.setLastName(doctor.getLastName());
+        d2.setListOfAppoitnements(new ArrayList<String>());
+        d2.setListOfPatients(new ArrayList<Long>());
+        d2.setListOfTerms(new ArrayList<String>());
+        d2.getAuthorities().add(doctorAuthority);
+        userRepository.save(d2);
+        User getNew = userService.findByUsername(d2.getUsername());
+        Clinic_Doctors cd = new Clinic_Doctors(clinicID,getNew.getId());
+        clinicDoctorRepository.save(cd);
+        return new ResponseEntity<User>(getNew, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/secured", method = RequestMethod.GET)

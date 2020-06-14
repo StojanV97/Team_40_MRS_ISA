@@ -41,7 +41,11 @@ public class User implements UserDetails {
     private ArrayList<Authority> authorities;
 
 
-    protected User() {}
+    protected User(
+
+    ) {
+        this.authorities = new ArrayList<Authority>();
+    }
 
     public User(String firstName, String lastName,String email, String userName, String password) {
         this.firstName = firstName;

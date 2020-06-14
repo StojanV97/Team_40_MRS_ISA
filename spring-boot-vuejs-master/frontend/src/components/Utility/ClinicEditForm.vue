@@ -20,6 +20,7 @@
             required
             outlined
             dense
+            disabled
           />
         </div>
         <div class="form-group">
@@ -35,7 +36,7 @@
         <div class="form-group">
           <label for="exampleInputEmail1">Clinic administrator</label>
           <v-text-field
-            v-model="$store.getters.getClinic.administrator"
+            v-model="$store.getters.getUser.firstName"
             :rules="administratorRules"
             outlined
             dense
@@ -43,8 +44,8 @@
           />
         </div>
         <div>
-          <v-btn class="btn btn-primary" :disabled="!valid" @click="editClinic()">Submit</v-btn>
-          <v-btn class="ma-2" outlined color="indigo" @click="reset">Reset</v-btn>
+          <v-btn disabled class="btn btn-primary" @click="editClinic()">Submit</v-btn>
+          <v-btn disabled class="ma-2" outlined color="indigo" @click="reset">Reset</v-btn>
         </div>
       </v-form>
     </div>

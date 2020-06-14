@@ -10,6 +10,11 @@ export default {
 
 
     // USERS ====================================================================================
+    createDoctor(doctor, clinicID) {
+        return AXIOS.post('/user/create-doctor/' + clinicID, doctor)
+
+    },
+
     login(jwtAuthenticationRequest) {
         return AXIOS.post('/auth/login', jwtAuthenticationRequest)
     },
@@ -45,6 +50,9 @@ export default {
     },
     editAdmin(admin, oldUserName) {
         return AXIOS.post('user/admin-edit/' + oldUserName, admin)
+    },
+    editDoctor(admin, oldUserName) {
+        return AXIOS.post('user/doctor-edit/' + oldUserName, admin)
     },
     editPatient(patient, oldUserName) {
         return AXIOS.post('user/patient-edit/' + oldUserName, patient)

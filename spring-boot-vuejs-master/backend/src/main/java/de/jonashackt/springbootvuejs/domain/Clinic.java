@@ -9,15 +9,13 @@ import java.util.Set;
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "clinics")
-public class Clinic {
+public class Clinic
+{
     @Id
     private long id;
     private String name;
     private String address;
-    private String city;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
-    private Set<ClinicAdmin> administrators;
+    private String administrator; // ovo treba biti admin klinike, kad se napravi
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "Clinic_Doctors", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
     private Set<Doctor> doctors = new HashSet<Doctor>();
@@ -44,13 +42,6 @@ public class Clinic {
         this.address = address;
     }
 
-    public Clinic(long id, String name, String address, String city) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.city = city;
-    }
-
     public long getId() {
         return id;
     }
@@ -61,6 +52,10 @@ public class Clinic {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getAdministrator() {
+        return administrator;
     }
 
     public void setId(long id) {
@@ -81,5 +76,9 @@ public class Clinic {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public void setAdministrator(String administrator) {
+        this.administrator = administrator;
     }
 }
