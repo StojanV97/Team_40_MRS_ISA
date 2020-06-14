@@ -10,9 +10,11 @@ public class AppointmentPreviewer {
     private String clinicAddress;
     private String appointmentType;
     private String diagnosis;
+    private long appointmentID;
+    private boolean cancelable;
 
 
-    public AppointmentPreviewer(String dateAndTime,String doctorFirstName, String doctorLastName, String clinicName, String clinicAddress, String appointmentType, String diagnosis) {
+    public AppointmentPreviewer(String dateAndTime,String doctorFirstName, String doctorLastName, String clinicName, String clinicAddress, String appointmentType, String diagnosis, long appointmentID) {
         this.dateAndTime = dateAndTime;
         this.doctorFirstName = doctorFirstName;
         this.doctorLastName = doctorLastName;
@@ -20,6 +22,15 @@ public class AppointmentPreviewer {
         this.clinicAddress = clinicAddress;
         this.appointmentType = appointmentType;
         this.diagnosis = diagnosis;
+        this.appointmentID = appointmentID;
+    }
+
+    public boolean isCancelable() {
+        return cancelable;
+    }
+
+    public void setCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
     }
 
     public AppointmentPreviewer() {
@@ -79,5 +90,13 @@ public class AppointmentPreviewer {
 
     public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
+    }
+
+    public long getAppointmentID() {
+        return appointmentID;
+    }
+
+    public void setAppointmentID(long appointmentID) {
+        this.appointmentID = appointmentID;
     }
 }

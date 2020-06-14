@@ -12,9 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,7 +35,10 @@ public class AppointmentPreviewerController {
     private ClinicRepository clinicRepository;
 
     @GetMapping(value = "/appointment-preview/{id}")
-    public ResponseEntity<Collection<AppointmentPreviewer>> getAppointmentPreview(@PathVariable long id) {
+    public ResponseEntity<Collection<AppointmentPreviewer>> getAppointmentPreview(@PathVariable long id) throws ParseException {
+
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+        sp.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         Collection<AppointmentPreviewer> previewer = new ArrayList<AppointmentPreviewer>();
         Patient patient = new Patient();
@@ -53,6 +56,9 @@ public class AppointmentPreviewerController {
 
         for(Long ids : appointments){
             AppointmentPreviewer appointmentPreviewer = new AppointmentPreviewer();
+            appointmentPreviewer.setAppointmentID(ids);
+
+
             Optional<Appointment> ap = appointmentRepository.findById(ids);
             if(ap.isPresent())
             {
@@ -63,6 +69,20 @@ public class AppointmentPreviewerController {
             {
                 doctor = (Doctor) dc.get();
             }
+
+
+            boolean cancelable = true;
+            Date appointmentDate = sp.parse(appointment.getDateAndTime());
+            Date minus24 = new Date(System.currentTimeMillis() - 24*3600 * 1000);
+            if(appointmentDate.after(minus24))
+            {
+                cancelable = false;
+            }
+
+
+            appointmentPreviewer.setCancelable(cancelable);
+
+
 
             Clinic clinic = clinicRepository.findById(appointment.getClinicID());
 
@@ -77,8 +97,6 @@ public class AppointmentPreviewerController {
             appointmentPreviewer.setClinicName(clinic.getName());
 
             previewer.add(appointmentPreviewer);
-
-
 
 
         }
