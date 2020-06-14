@@ -128,7 +128,7 @@ public class SpringBootVuejsApplication {
 
 			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07","EXAMINATION", 1,1,3));
 
-			Appointment apt= new Appointment("2020-06-14 13-30", "EXAMINATION",1,1,3,2));
+			Appointment apt= new Appointment("2020-06-14 13-30", "EXAMINATION",1,1,3,2);
 			appointmentRepository.save(apt);
 			appointments.add(apt.getId());
 
