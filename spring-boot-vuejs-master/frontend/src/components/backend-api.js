@@ -183,6 +183,10 @@ export default {
         return AXIOS.post('admin/automatic-appointment/' + clinidID + "/" + date, appointmentRequest);
     }
     ,
+    automaticAppointementOperation(clinidID, date, appointmentRequest) {
+        return AXIOS.post('admin/automatic-appointment-operation/' + clinidID + "/" + date, appointmentRequest);
+    }
+    ,
     getCurretExaminations(userID) {
         return AXIOS.get('user/get-current-examinations/' + userID,);
     },
