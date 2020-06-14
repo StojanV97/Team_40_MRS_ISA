@@ -127,17 +127,17 @@ export default {
     getClinicForDate(date) {
         return AXIOS.get(`/clinics/get/` + date);
     },
-    getClinicDoctorsForDate(id,date) {
-        return AXIOS.get(`/clinics/get/doctors/` + id +"/" +date);
+    getClinicDoctorsForDate(id, date) {
+        return AXIOS.get(`/clinics/get/doctors/` + id + "/" + date);
     },
     getAllClinics() {
         return AXIOS.get(`/clinic/getall`);
     },
-    createAppointmentRequest(dateAndTime,type,clinicID,patientID,doctorID,){
-        return AXIOS.post('patient/create-appointment-request/' + dateAndTime + '/' + type +  '/' + clinicID + '/'+ patientID + '/' + doctorID  );
+    createAppointmentRequest(dateAndTime, type, clinicID, patientID, doctorID,) {
+        return AXIOS.post('patient/create-appointment-request/' + dateAndTime + '/' + type + '/' + clinicID + '/' + patientID + '/' + doctorID);
     },
 
-    getDoctorsForClinic(id){
+    getDoctorsForClinic(id) {
         return AXIOS.get('/patient/get-doctors/' + id);
     },
     getAllCCAs() {
@@ -178,6 +178,10 @@ export default {
     },
     automaticAppointement(clinidID, date, appointmentRequest) {
         return AXIOS.post('admin/automatic-appointment/' + clinidID + "/" + date, appointmentRequest);
+    }
+    ,
+    getCurretExaminations(userID) {
+        return AXIOS.get('user/get-current-examinations/' + userID,);
     }
 }
 

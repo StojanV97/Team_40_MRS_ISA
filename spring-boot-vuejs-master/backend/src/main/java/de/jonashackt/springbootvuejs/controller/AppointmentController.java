@@ -13,13 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,7 +25,6 @@ public class AppointmentController {
 
     @Autowired
     ApointmentRepository apointmentRepository;
-
     @Autowired
     RoomService roomService;
     @Autowired
@@ -35,6 +32,43 @@ public class AppointmentController {
 
     @Autowired
     UserRepository userRepository;
+
+
+    @GetMapping(value = "user/get-current-examinations/{userID}")
+    public ResponseEntity<?> getExaminations(@PathVariable Long userID) throws ParseException {
+        Date now = new Date();
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+        sp.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Collection<Appointment> listOfAppointments = (Collection<Appointment>) apointmentRepository.findAll();
+        ArrayList<Appointment> doctorsListOfAppointments = new ArrayList<Appointment>();
+        ArrayList<Appointment> currentAppointments = new ArrayList<Appointment>();
+        for(Appointment appointment : listOfAppointments){
+            if(appointment.getDoctorID() == userID){
+                doctorsListOfAppointments.add(appointment);
+            }
+        }
+        if(!doctorsListOfAppointments.isEmpty()){
+            for(Appointment appointment : doctorsListOfAppointments){
+                Date examinationTerm = sp.parse(appointment.getDateAndTime());
+                examinationTerm.setTime(examinationTerm.getTime() - (120  * 60000));
+                Date endTerm = new Date(examinationTerm.getTime() + (30  * 60000));
+                System.out.println(now);
+                System.out.println(examinationTerm);
+                System.out.println(endTerm);
+                if(now.after(examinationTerm) && now.before(endTerm)){
+                   currentAppointments.add(appointment);
+                }
+            }
+        }
+
+        return new ResponseEntity<ArrayList<Appointment>>(currentAppointments,HttpStatus.ACCEPTED);
+    }
+
+
+
+
+
+
     @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAppoitment(@RequestBody Appointment appointment){
         ArrayList<String> termini = new ArrayList<String>();

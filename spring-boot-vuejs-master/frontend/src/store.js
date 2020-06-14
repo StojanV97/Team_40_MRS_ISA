@@ -17,6 +17,7 @@ export default new Vuex.Store({
         userPass: null,
         loggedInUser: null,
         datum: null,
+        appointment: null,
     },
     plugins: [createPersistedState()],
 
@@ -35,11 +36,15 @@ export default new Vuex.Store({
         },
         setDatum(state, datum) {
             state.datum = datum;
-        }
+        },
+        setAppointment(state, appt) {
+            state.appointment = appt;
+        },
     },
     actions: {
     },
     getters: {
+        getAppt: state => state.appointment,
         getDatum: state => state.datum,
         getUser: state => state.loggedInUser,
         getClinic: state => state.clinic,

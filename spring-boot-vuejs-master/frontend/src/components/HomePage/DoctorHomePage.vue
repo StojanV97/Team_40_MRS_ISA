@@ -2,7 +2,10 @@
   <v-app id="inspire">
     <calendar id="calendar" v-if="this.showCalendar"></calendar>
     <DoctorProfile v-if="this.showProfile"></DoctorProfile>
-    <ScheduleExemination v-if="this.showExaminationScheduling"></ScheduleExemination>
+    <ScheduleExemination
+      v-bind:appoitements="currentAppointements"
+      v-if="this.showExaminationScheduling"
+    ></ScheduleExemination>
     <v-card v-if="this.showPatients">
       <v-card-title>
         Patients
@@ -173,7 +176,8 @@ export default {
     patients: [],
     name: "",
     lastName: "",
-    patientProfile: null
+    patientProfile: null,
+    currentAppointements: null
   }),
   mounted() {
     api.setAuthentication().defaults.headers["Authorization"] =
@@ -212,6 +216,13 @@ export default {
       } else if (text === "Request days off") {
         this.dialogDaysOff = true;
       } else if (text === "Schedule examination") {
+        api
+          .getCurretExaminations(localStorage.getItem("userID"))
+          .then(response => {
+            this.currentAppointements = response.data;
+          })
+          .catch(e => {});
+
         this.showExaminationScheduling = true;
         this.showProfile = false;
         this.showCalendar = false;
