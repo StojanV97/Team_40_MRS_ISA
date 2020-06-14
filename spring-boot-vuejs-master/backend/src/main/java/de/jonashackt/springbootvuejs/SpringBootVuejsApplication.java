@@ -67,8 +67,6 @@ public class SpringBootVuejsApplication {
 			Room room5 = new Room(5,"Operation");
 			Clinic clinic = new Clinic(1, "Klinika BEOGRAD", "Njegoseva 12");
 			Clinic clinic2 = new Clinic(2, "Klinicki Centar Novi sad", "Bulevar Oslobodjenja 12");
-			clinic.setAdministrator("ClinicAdmin");
-			clinic2.setAdministrator("ClinicAdmin");
 			room.setCalendar(listOfDates);
 			roomRepository.save(room);
 			roomRepository.save(room2);

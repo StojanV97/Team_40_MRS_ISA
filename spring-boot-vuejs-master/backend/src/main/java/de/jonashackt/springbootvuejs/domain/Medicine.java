@@ -1,8 +1,6 @@
 package de.jonashackt.springbootvuejs.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "medicines")
@@ -11,6 +9,10 @@ public class Medicine {
     private long medicineId;
     private String medicineName;
     private String medicineDescription;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prescription_id")
+    private Prescription prescription;
 
     public Medicine() {
     }

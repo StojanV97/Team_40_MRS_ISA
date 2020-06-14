@@ -49,7 +49,6 @@ public class ClinicController {
         Clinic clinic2 = clinicService.getClinic(oldID);
         Clinic clinicNew = new Clinic();
         clinicNew.setId(clinic2.getId());
-        clinicNew.setAdministrator(clinic2.getAdministrator());
         clinicNew.setName(clinic2.getName());
         clinicNew.setAddress(clinic2.getAddress());
         clinicNew.setId(clinic.getId());
