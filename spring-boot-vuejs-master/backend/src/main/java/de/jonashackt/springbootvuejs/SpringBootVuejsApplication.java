@@ -26,7 +26,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
+	CommandLineRunner runner(DaysOffRepository daysOffRepository,MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
 		return args -> {
 
 			//Date
@@ -107,6 +107,8 @@ public class SpringBootVuejsApplication {
 			doctor.setListOfAppoitnements("2020-08-16 11-30");
 			doctor.setPassChanged(true);
 			clinincAdmin.setClinicName((long) 1);
+			DaysOffRequest daysOffRequest = new DaysOffRequest((long) 3,"Doctor","Doctor","2020-06-14","2020-07-00","Vacation",2,"stojan.v1997@gmail.com");
+			//daysOffRepository.save(daysOffRequest); Nmg da sacuvam request, moze se kreairati u DoctorHomePage -> Request Days off
 			userRepository.save(patient);
 			userRepository.save(patient2);
 			userRepository.save(doctor);
