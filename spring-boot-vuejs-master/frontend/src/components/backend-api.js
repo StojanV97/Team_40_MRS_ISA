@@ -109,6 +109,12 @@ export default {
     deleteClinic(clinicId) {
         return AXIOS.post(`/clinic/delete/` + clinicId);
     },
+    deleteMedicalRecord(medicalRecordId) {
+        return AXIOS.post(`/medicalrecord/delete/{id}` + medicalRecordId);
+    },
+    createMedicalRecord(medicalRecord) {
+        return AXIOS.post(`/medicalrecord/create`, medicalRecord);
+    },
     createPatient(user, type) {
         return AXIOS.post(`/patient/registration/` + type, user);
     },
