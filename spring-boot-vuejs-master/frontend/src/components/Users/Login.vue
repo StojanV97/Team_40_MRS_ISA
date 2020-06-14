@@ -103,6 +103,7 @@ export default {
           //console.log(response)
           if (response.data.role === "DOCTOR") {
             this.$store.commit("setUser", response.data.userID);
+            localStorage.setItem("doctorID", response.data.userID.id);
             console.log(this.$store.getters.getUser);
             if (response.data.userID.passChanged) {
               this.$router.push("/doctor-homepage");

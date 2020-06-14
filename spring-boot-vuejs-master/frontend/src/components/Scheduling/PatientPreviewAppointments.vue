@@ -26,11 +26,28 @@
                     <td>{{row.item.clinicName}}</td>
                     <td>{{row.item.clinicAddress}}</td>
                     <td>{{row.item.appointmentType}}</td>
-                    <td>{{row.item.diagnosis}}</td>
+                    <td>
+                        <v-btn  @click="cancelAppointment(row.item.appointmentID)"><v-icon> mdi-close</v-icon></v-btn>
+                    </td>
+
 
                 </tr>
             </template>
         </v-data-table>
+        <div class="text-center ma-2">
+        <v-snackbar
+                v-model="snackbar"
+        >
+            {{msg}}
+            <v-btn
+                    @click="snackbar = false"
+                    color="pink"
+                    text
+            >
+                Close
+            </v-btn>
+        </v-snackbar>
+    </div>
     </v-grid>
 </template>
 
@@ -40,6 +57,9 @@
     export default {
         name: "PatientPreviewAppointments",
         data:() =>({
+            snackbar: false,
+            msg: "",
+            cancelable: false,
             search:'',
             headers: [
                 { text: 'Date ', value: 'dateAndTime'},
@@ -48,7 +68,8 @@
                 { text: 'Clinic Name', value: 'clinicName' },
                 { text: 'Clinic Address', value: 'clinicAddress' },
                 { text: 'Appointment type', value: 'appointmentType' },
-                { text: 'Diagnosis', value: 'diagnosis' },
+                { text: 'Cancel an appointment'}
+               // { text: 'Diagnosis', value: 'diagnosis' },
 
                 //{ text: 'Medical History', value: 'medicalHistory' },
             ],
@@ -61,8 +82,29 @@
                 this.appointments = response.data;
             })
 
+        },
+        methods:{
+            cancelAppointment(id){
+                api.cancelAppointment(id).then(response=>{
+                    console.log(response.data)
+                    if(response.data == true)
+                    {
+                        this.msg = 'Successfully canceled an appointment!';
+                        this.snackbar = true;
+
+
+
+                    }else {
+                        this.msg = 'Can only cancel 24 hours before the appointment!';
+                        this.snackbar = true;
+                    }
+
+                })
+            },
+
 
         }
+
     }
 </script>
 

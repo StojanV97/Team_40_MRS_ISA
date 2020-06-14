@@ -34,9 +34,16 @@ export default {
     createStaffMember(user, type) {
         return AXIOS.post(`/staff/registration/` + type, user);
     },
+    cancelAppointment(id) {
+        return AXIOS.post('/appointment/cancel/' + id)
+    },
     getAppointmentPreview(appointments) {
         return AXIOS.get('appointment-preview/' + appointments)
     },
+    getMedicalRecordForPatient(id){
+        return AXIOS.get('/patient/medicalrecord/' + id)
+    },
+
     deleteUser(userName) {
         return AXIOS.post('user/delete/' + userName);
     },
@@ -192,6 +199,15 @@ export default {
     },
     createDaysOffRequest(requestDaysOff) {
         return AXIOS.post("user/create-days-off", requestDaysOff)
+    },
+    getDaysoffRequests(doctorID) {
+        return AXIOS.get('admin/get-days-off-requests/' + doctorID);
+    },
+    deleteReqDaysOF(id) {
+        return AXIOS.post('admin/delete-days-request/' + id);
+    },
+    createDaysOff(req) {
+        return AXIOS.post('admin/create-days-off/', req);
     }
 }
 

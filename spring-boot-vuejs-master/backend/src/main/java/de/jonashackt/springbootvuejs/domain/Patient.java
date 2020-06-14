@@ -2,6 +2,8 @@ package de.jonashackt.springbootvuejs.domain;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 
@@ -18,9 +20,10 @@ public class Patient extends User{
     private String phoneNumber;
     private String insuranceNumber;
     //public MedicalRecord;
-    ArrayList<Long> appointments = new ArrayList<>();
+    ArrayList<Long> appointments;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "patient")
     private MedicalRecord medicalRecord;
 
 
@@ -33,7 +36,6 @@ public class Patient extends User{
         this.insuranceNumber = insuranceNumber;
         this.appointments = appointmentse;
     }
-
     public Patient(String firstName, String lastName, String email, String userName, String password, String country, String city, String address, String phoneNumber, String insuranceNumber) {
         super(firstName, lastName, email, userName, password);
         this.country = country;
@@ -43,6 +45,7 @@ public class Patient extends User{
         this.insuranceNumber = insuranceNumber;
 
     }
+
 
     public ArrayList<Long> getAppointments() {
         return appointments;

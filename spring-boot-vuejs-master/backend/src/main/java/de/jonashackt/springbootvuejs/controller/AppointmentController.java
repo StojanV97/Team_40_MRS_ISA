@@ -67,6 +67,46 @@ public class AppointmentController {
 
 
 
+    @PostMapping(value = "appointment/cancel/{id}")
+    public ResponseEntity<Boolean> cancelAppointment(@PathVariable long id) throws ParseException {
+        Date now = new Date();
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+        sp.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        Optional<Appointment> ap = apointmentRepository.findById(id);
+        Appointment appointment = new Appointment();
+        if(ap.isPresent())
+        {
+            appointment = ap.get();
+        }
+
+        Patient patient = new Patient();
+        Optional<User> p = userRepository.findById(appointment.getPatientID());
+        if(p.isPresent())
+        {
+             patient = (Patient) p.get();
+        }
+
+
+
+        boolean cancelable = true;
+        Date appointmentDate = sp.parse(appointment.getDateAndTime());
+        Date current = new Date(System.currentTimeMillis());
+        Date minus24 = new Date(appointmentDate.getTime() - 26*3600 * 1000);
+
+        if(current.after(minus24))
+        {
+
+            cancelable = false;
+
+        }else{
+            apointmentRepository.delete(appointment);
+            patient.getAppointments().remove(id);
+            userRepository.save(patient);
+
+        }
+        return new ResponseEntity<>(cancelable,HttpStatus.ACCEPTED);
+    }
 
 
     @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

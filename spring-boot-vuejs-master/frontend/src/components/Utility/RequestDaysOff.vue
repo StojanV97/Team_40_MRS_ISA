@@ -83,10 +83,11 @@ export default {
     daysOffRequest: {
       userID: "",
       firstName: "",
-      lastName: "",
+      lastname: "",
       dateFrom: "",
       dateTo: "",
-      type: ""
+      type: "",
+      email: ""
     }
   }),
   mounted() {
@@ -95,13 +96,14 @@ export default {
 
   methods: {
     validate() {
+      this.daysOffRequest.email = this.$store.getters.getUser.email;
       this.daysOffRequest.type = this.select;
       this.daysOffRequest.firstName = this.$store.getters.getUser.firstName;
-      this.daysOffRequest.lastName = this.$store.getters.getUser.lastName;
+      this.daysOffRequest.lastname = this.$store.getters.getUser.lastName;
       this.daysOffRequest.userID = this.$store.getters.getUser.id;
-      console.log(this.daysOffRequest);
-      if (this.dateFrom == "" || this.dateTo == "") {
-        this.text = "Date must be entered!";
+      console.log(this.select);
+      if (this.dateFrom == "undefined" || this.dateTo == "undefined") {
+        this.text = "All fields must be entered!";
         this.snackbar = true;
       } else {
         api
