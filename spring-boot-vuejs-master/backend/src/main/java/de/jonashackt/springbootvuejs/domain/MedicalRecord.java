@@ -8,7 +8,7 @@ import java.util.Set;
 public class MedicalRecord {
     @Id
     private Long medicalRecordId;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
     private Patient patient;
     private int height;

@@ -134,12 +134,6 @@ export default {
       })
 
     },
-
-    computed: {
-      state() {
-        return Boolean(this.form.quantityOption);
-      }
-    }
   }
 }
 </script>
