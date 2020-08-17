@@ -85,7 +85,7 @@ import AppointRoom from "../Utility/AppointRoom";
 
 export default {
   components: {
-    AppointRoom
+    AppointRoom,
   },
   data() {
     return {
@@ -96,18 +96,18 @@ export default {
         { text: "Date", value: "dateAndTime" },
         { text: "Doctor", value: "doctor" },
         { text: "Patient", value: "patient" },
-        { text: "Actions", value: "actions" }
+        { text: "Actions", value: "actions" },
       ],
       room: {
         calendar: null,
         roomID: null,
-        roomName: ""
+        roomName: "",
       },
       appoitements: [],
       user: {
         firstName: "",
         lastBane: "",
-        id: ""
+        id: "",
       },
       previewUser: false,
       appointRoomDialog: false,
@@ -117,16 +117,15 @@ export default {
       msg: "",
       message: {
         msg: null,
-        email: []
-      }
+        email: [],
+      },
     };
   },
   mounted() {
     this.message.email.push("stojan.v1997@gmail.com");
-    this.message.email.push("stojan.v1997@gmail.com");
     api
       .getAppoitementRequests(localStorage.getItem("clinicID"))
-      .then(response => {
+      .then((response) => {
         this.appoitements = response.data;
         for (const index in this.appoitements) {
           var appoitementDate = "";
@@ -136,18 +135,20 @@ export default {
               this.appoitements[index].dateAndTime,
               this.appoitements[index]
             )
-            .then(response => {
-              console.log("AUTOMATIC REQUESTS!");
-              console.log(response.data);
+            .then((response) => {
+              //console.log("AUTOMATIC REQUESTS!");
+              //console.log(response.data);
               appoitementDate = response.data.dateAndTime.split(" ");
               response.data.dateAndTime = appoitementDate[0];
               if (response.data !== "Empty") {
-                api.createAppoitnment(response.data).then(response => {
-                  console.log("CREATE APPOINTMENT");
-                  console.log(response);
+                console.log("Appoitement : ");
+                console.log(response.data);
+                api.createAppoitnment(response.data).then((response) => {
+                  // console.log("CREATE APPOINTMENT");
+                  //console.log(response);
                   api
                     .deleteAppointmentRequest(this.appoitements[index].id)
-                    .then(response => {
+                    .then((response) => {
                       this.updateAppoitements();
                       this.message.msg =
                         "Appoitnement scheduled at " +
@@ -156,19 +157,19 @@ export default {
                         appoitementDate[1];
                       api
                         .sendEmail(this.message)
-                        .then(response => {})
-                        .catch(e => {
+                        .then((response) => {})
+                        .catch((e) => {
                           console.log(e);
                         });
                     })
-                    .catch(e => {});
+                    .catch((e) => {});
                 });
               }
             })
-            .catch(e => {});
+            .catch((e) => {});
         }
       })
-      .catch(e => {});
+      .catch((e) => {});
   },
   methods: {
     automaticAppoint(appoitements) {
@@ -179,11 +180,11 @@ export default {
             this.$store.getters.getDatum,
             appoitements[index]
           )
-          .then(response => {
+          .then((response) => {
             console.log("AUTOMATIC REQUESTS!");
             console.log(response.data);
           })
-          .catch(e => {});
+          .catch((e) => {});
       }
     },
 
@@ -205,32 +206,32 @@ export default {
       console.log("Event uhvacen!");
       api
         .getAppoitementRequests(localStorage.getItem("clinicID"))
-        .then(response => {
+        .then((response) => {
           this.appoitements = response.data;
         })
-        .catch(e => {});
+        .catch((e) => {});
     },
 
     deleteItem(item) {
       console.log(item);
       var pat = null;
-      api.getUser(item.patientID).then(response => {
+      api.getUser(item.patientID).then((response) => {
         pat = response.data;
         this.message.msg = "Your request for examination has benn canceled!";
         this.message.email.push("stojan.v1997@gmail.com");
-        api.sendEmail(this.message).then(response => {});
+        api.sendEmail(this.message).then((response) => {});
       });
       api
         .deleteAppointmentRequest(item.id)
-        .then(response => {
+        .then((response) => {
           api
             .getAppoitementRequests(localStorage.getItem("clinicID"))
-            .then(response => {
+            .then((response) => {
               this.appoitements = response.data;
             })
-            .catch(e => {});
+            .catch((e) => {});
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -241,12 +242,12 @@ export default {
     preview(event) {
       console.log("asdasd");
       console.log(event);
-      api.getUser(event).then(response => {
+      api.getUser(event).then((response) => {
         this.user = response.data;
         this.previewUser = true;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

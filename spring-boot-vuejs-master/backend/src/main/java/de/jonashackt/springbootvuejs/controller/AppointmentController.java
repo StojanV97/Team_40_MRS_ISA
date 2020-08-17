@@ -150,13 +150,13 @@ public class AppointmentController {
                 }
            }
        }
-        System.out.println(room.getCalendar());
         ArrayList<String> appt = new ArrayList<>(room.getCalendar());
         appt.add(newTerm);
         room.setCalendar(appt);
         roomRepository.save(room);
         Room newRoom  =  roomService.getRoom(room.getRoomID());
-        System.out.println(newRoom.getCalendar());
+        System.out.println("Doktor ID : ");
+       System.out.println(appointment.getDoctorID());
 
       Optional<User> d = userRepository.findById(appointment.getDoctorID());
       Doctor doctor = (Doctor) d.get();

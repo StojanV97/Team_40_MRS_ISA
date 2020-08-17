@@ -34,9 +34,9 @@ public class SpringBootVuejsApplication {
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
 			ArrayList<String> listOfDates = new ArrayList<String>();
 			String d2 = sp.format(d);
-			listOfDates.add("2020-06-15 10-00");
-			listOfDates.add("2020-06-15 10-30");
-			listOfDates.add("2020-06-15 11-00");
+			listOfDates.add("2020-08-20 10-00");
+			listOfDates.add("2020-08-19 10-30");
+			listOfDates.add("2020-08-19 11-00");
 			//============================================================================
 
 			//Authorities
@@ -101,13 +101,10 @@ public class SpringBootVuejsApplication {
 			doctor2.getAuthorities().add(doctorAuthority);
 			doctor3.getAuthorities().add(doctorAuthority);
 			doctor4.getAuthorities().add(doctorAuthority);
-			doctor.setListOfAppoitnements("2020-06-14 13-30");
-			doctor.setListOfAppoitnements("2020-07-20 10-30");
-			doctor.setListOfAppoitnements("2020-07-13 11-00");
-			doctor.setListOfAppoitnements("2020-08-16 11-30");
+			doctor.setListOfAppoitnements("2020-08-20 15-30");
 			doctor.setPassChanged(true);
 			clinincAdmin.setClinicName((long) 1);
-			DaysOffRequest daysOffRequest = new DaysOffRequest((long) 3,"Doctor","Doctor","2020-06-14","2020-07-00","Vacation",2,"stojan.v1997@gmail.com");
+			//DaysOffRequest daysOffRequest = new DaysOffRequest((long) 3,"Doctor","Doctor","2020-06-14","2020-07-00","Vacation",2,"stojan.v1997@gmail.com");
 			//daysOffRepository.save(daysOffRequest); Nmg da sacuvam request, moze se kreairati u DoctorHomePage -> Request Days off
 			userRepository.save(patient);
 			userRepository.save(patient2);
@@ -125,34 +122,28 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr3"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr4"));
 			Date date = new Date();
-			appointmentRequestRepository.save(new AppointmentRequest("2020-06-15","EXAMINATION", 1,2,3));
+			appointmentRequestRepository.save(new AppointmentRequest("2020-09-07","EXAMINATION", 1,2,3));
 			requestRepository.save(new RegisterRequests("Milan","Milanovic","stojan.v19937@gmail.com","milan", "Srbija", "Novi Sad", "Bulevar 2", "061144111", "12388891132"));
 			requestRepository.save(new RegisterRequests("Dragan","Dragunovic","stojan.v19297@gmail.com","dragan", "Srbija", "Novi Sad", "Bulevar 3", "061132111", "1234230678"));
 			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","noteventryingyo@gmail.com","77777777", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
 
-			appointmentRequestRepository.save(new AppointmentRequest("2020-07-07","EXAMINATION", 1,1,3));
+			appointmentRequestRepository.save(new AppointmentRequest("2020-09-07","EXAMINATION", 1,1,3));
 
-			Appointment apt= new Appointment("2020-06-14 13-30", "EXAMINATION",1,1,3,2);
-			appointmentRepository.save(apt);
-			appointments.add(apt.getId());
-			Appointment apt2 =new Appointment("2020-07-20 10-30", "OPERATION",1,1,3,2);
-			appointmentRepository.save(apt2);
-			Appointment apt3 =new Appointment("2020-07-13 11-00", "EXAMINATION",1,1,3,2);
-			appointmentRepository.save(apt3);
-			Appointment apt4 =new Appointment("2020-08-16 11-30", "EXAMINATION",1,1,3,2);
+			Appointment apt= new Appointment("2020-08-20 15-30", "EXAMINATION",1,1,3,2);
+			//appointmentRepository.save(apt);
+			//appointments.add(apt.getId());
+			//Appointment apt2 =new Appointment("2020-08-20 10-30", "OPERATION",1,1,3,2);
+			//appointmentRepository.save(apt2);
+			//Appointment apt3 =new Appointment("2020-08-13 11-00", "EXAMINATION",1,1,3,2);
+			//appointmentRepository.save(apt3);
+			//Appointment apt4 =new Appointment("2020-08-16 11-30", "EXAMINATION",1,1,3,2);
+			//appointmentRepository.save(apt4);
+			//appointments.add(apt2.getId());
+			//appointments.add(apt3.getId());
+			//appointments.add(apt4.getId());
 
-			appointmentRepository.save(apt4);
-
-			appointments.add(apt2.getId());
-
-			appointments.add(apt3.getId());
-			appointments.add(apt4.getId());
-
-
-
-			appointmentRequestRepository.save(new AppointmentRequest("2020-06-16","OPERATION", 1,1,2));
-
-			patient.setAppointments(appointments);
+			//appointmentRequestRepository.save(new AppointmentRequest("2020-06-16","OPERATION", 1,1,3));
+			//patient.setAppointments(appointments);
 			userRepository.save(patient);
 
 

@@ -15,7 +15,10 @@ public class Clinic
     private long id;
     private String name;
     private String address;
-    private String administrator; // ovo treba biti admin klinike, kad se napravi
+
+   // @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private Set<ClinicAdmin> administrator = new HashSet<ClinicAdmin>();
+    private String administrator;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "Clinic_Doctors", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
     private Set<Doctor> doctors = new HashSet<Doctor>();
@@ -61,9 +64,6 @@ public class Clinic
         return address;
     }
 
-    public String getAdministrator() {
-        return administrator;
-    }
 
     public void setId(long id) {
         this.id = id;
@@ -83,6 +83,10 @@ public class Clinic
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public String getAdministrator() {
+        return administrator;
     }
 
     public void setAdministrator(String administrator) {

@@ -169,7 +169,6 @@ public class RequestController {
         Date startDate =  sp.parse(appointmentRequest.getDateCreated());
         Date endDate = sp.parse(appointmentRequest.getDeletionDate());
         if(now.after(endDate)){
-            System.out.println("Datum sa fronta: " +date);
             Collection<Room> listas = roomService.gettAllRooms();
             for(Room r : listas){
                 System.out.println(r.getCalendar());
@@ -186,9 +185,6 @@ public class RequestController {
             termini.add("14-00");
             final long ONE_MINUTE_IN_MILLIS = 60000;
             Clinic c = clinicService.getClinic(clinicID);
-            for(Room room : c.getRooms()){
-                System.out.println(room.getCalendar());
-            }
             for (Room r : c.getRooms()) {
                 if (!r.getCalendar().isEmpty()) {
                     ArrayList<Date> listOfDates = new ArrayList<Date>();
@@ -262,6 +258,7 @@ public class RequestController {
             Appointment appointment = new Appointment();
             appointment.setDoctorID(appointmentRequest.getDoctorID());
             appointment.setPatientID(appointmentRequest.getPatientID());
+            appointment.setClinicID(clinicID);
             appointment.setType("EXAMINATION");
             Random random = new Random();
             if (freeRoomsForDate.size() == 0) {
