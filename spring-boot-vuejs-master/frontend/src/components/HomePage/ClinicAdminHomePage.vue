@@ -8,7 +8,7 @@
       @editDoctorsEvent="this.openEditDoctors"
     />
     <ExaminationRequests @goBack="catchExamGoBack" v-if="examinationRequests" />
-    <OperationRequests @goBack="catchExamGoBack" v-if="operationRequests"/>
+    <OperationRequests @goBack="catchExamGoBack" v-if="operationRequests" />
     <RoomConfig @goBack="this.openClinicProfile" v-if="this.roomConfig" />
     <EditDoctors @goBack="this.openClinicProfile" v-if="editDoctors" />
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
@@ -115,10 +115,10 @@ export default {
     EditDoctors,
     ClinicAdminProfile,
     ExaminationRequests,
-    DaysOffRequests
+    DaysOffRequests,
   },
   props: {
-    source: String
+    source: String,
   },
   data: () => ({
     disableMenu: false,
@@ -136,8 +136,8 @@ export default {
         model: false,
         children: [
           { icon: "mdi-alpha-i", text: "Edit Clinic info" },
-          { icon: "mdi-roman-numeral-2", text: "Price Book" }
-        ]
+          { icon: "mdi-roman-numeral-2", text: "Price Book" },
+        ],
       },
       { icon: "mdi-history", text: "Examination requests" },
       { icon: "mdi-history", text: "Operation requests" },
@@ -151,15 +151,15 @@ export default {
           { icon: "mdi-alpha-i", text: "Average clinic rating" },
           { icon: "mdi-roman-numeral-2", text: "Average ratingfor doctors" },
           { icon: "mdi-roman-numeral-3", text: "Examination gra ph" },
-          { icon: "mdi-roman-numeral-4", text: "Income" }
-        ]
+          { icon: "mdi-roman-numeral-4", text: "Income" },
+        ],
       },
       {
         icon: "mdi-arrow-down",
         "icon-alt": "mdi-pencil-box-multiple",
         text: "Edits",
         model: false,
-        children: [{ icon: "mdi-roman-numeral-1", text: "Edit examinations" }]
+        children: [{ icon: "mdi-roman-numeral-1", text: "Edit examinations" }],
       },
       { icon: "mdi-account-cog", text: "Profile" },
       {
@@ -167,9 +167,9 @@ export default {
         "icon-alt": "mdi-cog",
         text: "Settings",
         model: false,
-        children: [{ icon: "mdi-alpha-i", text: "Dark mode On/Off" }]
+        children: [{ icon: "mdi-alpha-i", text: "Dark mode On/Off" }],
       },
-      { icon: "mdi-help-circle", text: "Help" }
+      { icon: "mdi-help-circle", text: "Help" },
     ],
     search: "",
     req: [],
@@ -179,19 +179,19 @@ export default {
         text: "Id Number",
         align: "start",
         sortable: false,
-        value: "id"
+        value: "id",
       },
       { text: "First Name", value: "firstName" },
       { text: "Last Name", value: "lastName" },
       { text: "Email", value: "email" },
-      { text: "Medical History", value: "medicalHistory" }
+      { text: "Medical History", value: "medicalHistory" },
     ],
     patients: [],
     name: "",
     lastName: "",
     roomConfig: false,
     editDoctors: false,
-    editAdminProfile: false
+    editAdminProfile: false,
   }),
   mounted() {
     api.setAuthentication().defaults.headers["Authorization"] =
@@ -201,10 +201,10 @@ export default {
     console.log(localStorage.getItem("clinicID"));
     api
       .getClinic(localStorage.getItem("clinicID"))
-      .then(response => {
+      .then((response) => {
         this.$store.commit("setClinic", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log();
       });
   },
@@ -236,6 +236,7 @@ export default {
         this.roomConfig = false;
         this.editClinicProfile = false;
         this.editAdminProfile = false;
+        this.reqtrue = false;
       } else if (text === "Operation requests") {
         this.examinationRequests = false;
         this.operationRequests = true;
@@ -249,25 +250,28 @@ export default {
         this.roomConfig = false;
         this.editClinicProfile = true;
         this.editAdminProfile = false;
+        this.reqtrue = false;
       } else if (text === "Profile") {
         this.examinationRequests = false;
         this.operationRequests = false;
         this.editAdminProfile = true;
         this.editClinicProfile = false;
+        this.reqtrue = false;
         this.roomConfig = false;
       } else if (text === "Days off requests") {
+        this.examinationRequests = false;
+        this.editAdminProfile = false;
+        this.editClinicProfile = false;
+        this.roomConfig = false;
+        this.operationRequests = false;
         api
           .getDaysoffRequests(localStorage.getItem("doctorID"))
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             this.req = response.data;
             this.reqtrue = true;
-            this.examinationRequests = false;
-            this.editAdminProfile = false;
-            this.editClinicProfile = false;
-            this.roomConfig = false;
           })
-          .catch(e => {});
+          .catch((e) => {});
       } else if (text === "Schedule examination") {
       } else {
       }
@@ -277,11 +281,11 @@ export default {
     },
     signOut() {
       this.$router.push("/");
-    }
+    },
   },
   created() {
     this.$vuetify.theme.dark = false;
-  }
+  },
 };
 </script>
 

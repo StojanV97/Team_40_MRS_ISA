@@ -16,8 +16,8 @@ public class ClinicAdmin extends User {
         super();
     }
 
-    public ClinicAdmin(String firstName, String lastName,String email, String userName, String password) {
-        super(firstName,lastName,email,userName,password);
+    public ClinicAdmin(long ID,String firstName, String lastName,String email, String userName, String password) {
+        super(ID,firstName,lastName,email,userName,password);
         this.clinicID = null;
     }
 

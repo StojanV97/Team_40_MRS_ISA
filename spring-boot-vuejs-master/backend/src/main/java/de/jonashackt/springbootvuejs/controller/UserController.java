@@ -75,7 +75,7 @@ public class UserController {
         System.out.println(username);
         RegisterRequests patient =  requestRepository.findByUserName(username);
 
-        userRepository.save(new Patient(patient.getFirstName(),patient.getLastName(),patient.getEmail(),patient.getUserName(),"123123",patient.getCountry(),patient.getCity(),patient.getAddress(),patient.getPhoneNumber(),patient.getInsuranceNumber()));
+        userRepository.save(new Patient(patient.getId(),patient.getFirstName(),patient.getLastName(),patient.getEmail(),patient.getUserName(),"123123",patient.getCountry(),patient.getCity(),patient.getAddress(),patient.getPhoneNumber(),patient.getInsuranceNumber()));
         requestService.delete(username);
 
         return new ResponseEntity<String>("Verified", HttpStatus.OK);
@@ -230,7 +230,7 @@ public class UserController {
     @PostMapping(value = "/admin/change-clinic-id/{userName}/{newID}")
     public ResponseEntity<String> createClinicCenterAdminAgain(@PathVariable String userName,@PathVariable Long newID) throws Exception {
         ClinicAdmin s = (ClinicAdmin) userService.findByUsername(userName);
-        ClinicAdmin cl = new ClinicAdmin(s.getFirstName(),s.getLastName(),s.getEmail(),s.getUsername(),s.getPassword());
+        ClinicAdmin cl = new ClinicAdmin(s.getId(),s.getFirstName(),s.getLastName(),s.getEmail(),s.getUsername(),s.getPassword());
         cl.setClinicName(newID);
         for(Authority a : s.getAuthorities()){
             cl.setAuthorities(a);

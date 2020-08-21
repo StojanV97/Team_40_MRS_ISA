@@ -27,8 +27,8 @@ public class Patient extends User{
     private MedicalRecord medicalRecord;
 
 
-    public Patient(String firstName, String lastName, String email, String userName, String password, String country, String city, String address, String phoneNumber, String insuranceNumber, ArrayList<Long> appointmentse) {
-        super(firstName, lastName, email, userName, password);
+    public Patient(long ID,String firstName, String lastName, String email, String userName, String password, String country, String city, String address, String phoneNumber, String insuranceNumber, ArrayList<Long> appointmentse) {
+        super(ID,firstName, lastName, email, userName, password);
         this.country = country;
         this.city = city;
         this.address = address;
@@ -36,8 +36,8 @@ public class Patient extends User{
         this.insuranceNumber = insuranceNumber;
         this.appointments = appointmentse;
     }
-    public Patient(String firstName, String lastName, String email, String userName, String password, String country, String city, String address, String phoneNumber, String insuranceNumber) {
-        super(firstName, lastName, email, userName, password);
+    public Patient(long ID,String firstName, String lastName, String email, String userName, String password, String country, String city, String address, String phoneNumber, String insuranceNumber) {
+        super(ID,firstName, lastName, email, userName, password);
         this.country = country;
         this.city = city;
         this.address = address;

@@ -45,8 +45,8 @@ public class Doctor extends User {
         return listOfAppoitnements;
     }
 
-    public Doctor(String firstName, String lastName, String email, String userName, String password) {
-        super(firstName, lastName, email, userName, password);
+    public Doctor(long ID,String firstName, String lastName, String email, String userName, String password) {
+        super(ID,firstName, lastName, email, userName, password);
         this.listOfPatients = new ArrayList<Long>();
         this.listOfAppoitnements = new ArrayList<String>();
     }

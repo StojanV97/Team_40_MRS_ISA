@@ -18,7 +18,7 @@ public class User implements UserDetails {
         public static String USER_TABLE = "";
     // PrimaryKey
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+   //@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String firstName;
     private String lastName;
@@ -47,7 +47,8 @@ public class User implements UserDetails {
         this.authorities = new ArrayList<Authority>();
     }
 
-    public User(String firstName, String lastName,String email, String userName, String password) {
+    public User(long ID,String firstName, String lastName,String email, String userName, String password) {
+        this.id = ID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

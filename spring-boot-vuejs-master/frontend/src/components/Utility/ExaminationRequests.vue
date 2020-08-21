@@ -1,9 +1,6 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-btn id="backbtn" icon @click="this.goBack">
-        <v-icon id="icon-arrow">mdi-arrow-left</v-icon>Go Back
-      </v-btn>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -199,7 +196,7 @@ export default {
       this.$refs.AppointRoom.getFirstDate();
     },
     updateAppoitements() {
-      console.log("UPDA>TE APPOINTEMENTS");
+      console.log("UPDADTE APPOINTEMENTS");
       this.appointRoomDialog = false;
       this.snackbar = true;
       this.msg = "Success!";

@@ -11,7 +11,7 @@ public class Nurse extends  User {
         super();
     }
 
-    public Nurse(String firstName, String lastName, String email, String userName, String password) {
-        super(firstName, lastName, email, userName, password);
+    public Nurse(long ID,String firstName, String lastName, String email, String userName, String password) {
+        super(ID,firstName, lastName, email, userName, password);
     }
 }

@@ -76,20 +76,20 @@ public class SpringBootVuejsApplication {
 			//===============================================================================================================================
 
 			//Users
-			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin("ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
-			ClinicAdmin clinincAdmin = new ClinicAdmin("ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
+			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin(10,"ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
+			ClinicAdmin clinincAdmin = new ClinicAdmin(11,"ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
 			ArrayList<Long> appointments = new ArrayList<>();
-			Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312",appointments);
+			Patient patient = new Patient(1,"Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312",appointments);
 			//Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			patient.setPassChanged(true);
-			Patient patient2 = new Patient("Pera","Peric","mikig@gmail.com","Patient2",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
-			Doctor doctor = new Doctor("Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
-			Doctor doctor2 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
-			Doctor doctor22 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor22",bc.encode("password"));
-			Doctor doctor23 = new Doctor("Doctor2","Doctor2","Doctor2@gmail.com","Doctor23",bc.encode("password"));
-			Doctor doctor3 = new Doctor("Doctor3","Doctor3","Doctor3@gmail.com","Doctor3",bc.encode("password"));
-			Doctor doctor4 = new Doctor("Doctor4","Doctor4","Doctor4@gmail.com","Doctor4",bc.encode("password"));
-			Nurse nurse = new Nurse("Nurse","Nurse","Nurse@gmail.com","Nurse",bc.encode("password"));
+			Patient patient2 = new Patient(2,"Pera","Peric","mikig@gmail.com","Patient2",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
+			Doctor doctor = new Doctor(3,"Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
+			Doctor doctor2 = new Doctor(4,"Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
+			Doctor doctor22 = new Doctor(5,"Doctor2","Doctor2","Doctor2@gmail.com","Doctor22",bc.encode("password"));
+			Doctor doctor23 = new Doctor(6,"Doctor2","Doctor2","Doctor2@gmail.com","Doctor23",bc.encode("password"));
+			Doctor doctor3 = new Doctor(7,"Doctor3","Doctor3","Doctor3@gmail.com","Doctor3",bc.encode("password"));
+			Doctor doctor4 = new Doctor(8,"Doctor4","Doctor4","Doctor4@gmail.com","Doctor4",bc.encode("password"));
+			Nurse nurse = new Nurse(9,"Nurse","Nurse","Nurse@gmail.com","Nurse",bc.encode("password"));
 			clinincCenterAdmin.getAuthorities().add(clinicCenterAdminAuthority);
 			clinincAdmin.getAuthorities().add(clinicAdminAuthority);
 			clinincAdmin.setPassChanged(true);
