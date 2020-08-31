@@ -106,6 +106,7 @@ public class SpringBootVuejsApplication {
 			doctor.setListOfAppoitnements("2020-08-20 15-30");
 			doctor.setPassChanged(true);
 			clinincAdmin.setClinicName((long) 1);
+			nurse.setPassChanged(true);
 			//DaysOffRequest daysOffRequest = new DaysOffRequest((long) 3,"Doctor","Doctor","2020-06-14","2020-07-00","Vacation",2,"stojan.v1997@gmail.com");
 			//daysOffRepository.save(daysOffRequest); Nmg da sacuvam request, moze se kreairati u DoctorHomePage -> Request Days off
 			userRepository.save(patient);

@@ -165,6 +165,7 @@ public class AppointmentController {
       userRepository.save(doctor);
       apointmentRepository.save(appointment);
       AptIDandDate aptd = new AptIDandDate(newTerm,appointment.getId());
+      appointment.setClinicID(appointment.getClinicID());
       //Treba dodati u listu kod pacijenta datum
 
         return new ResponseEntity<AptIDandDate>(aptd, HttpStatus.OK);

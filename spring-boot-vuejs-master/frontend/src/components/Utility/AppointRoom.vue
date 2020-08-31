@@ -105,6 +105,7 @@ export default {
       this.appointement.patientID = this.$props.appt.patientID;
       this.appointement.dateAndTime = this.$store.getters.getDatum;
       this.appointement.type = "EXAMINATION";
+      this.appointement.clinicID = localStorage.getItem("clinicID");
 
       api.getUser(this.appointement.doctorID).then(response => {
         this.doctor = response.data;

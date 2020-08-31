@@ -129,7 +129,14 @@ export default {
               this.$router.push("/change-password");
             }
           } else if (response.data.role === "NURSE") {
-            this.$router.push("/nurse-homepage");
+            this.$store.commit("setUser", response.data.userID);
+            localStorage.setItem("doctorID", response.data.userID.id);
+            console.log(this.$store.getters.getUser);
+            if (response.data.userID.passChanged) {
+              this.$router.push("/nurse-homepage");
+            } else {
+              this.$router.push("/change-password");
+            }
           }
         })
         .catch(e => {
