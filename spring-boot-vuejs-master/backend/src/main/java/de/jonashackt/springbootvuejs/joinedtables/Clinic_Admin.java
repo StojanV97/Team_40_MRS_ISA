@@ -22,10 +22,7 @@ public class Clinic_Admin {
         this.Clinic_ID = cId;
         this.Admin_ID = aId;
     }
-    public Clinic_Admin()
-    {
 
-    }
     public Long getClinic_ID() {
         return Clinic_ID;
     }

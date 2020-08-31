@@ -47,12 +47,13 @@ public class ClinicController {
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/clinic/edit/{oldID}/{name}/{address}")
-    public ResponseEntity<String> editClinic(@PathVariable String address,@PathVariable String name,@PathVariable long oldID) throws Exception {
+    @PostMapping(path = "/clinic/edit/{oldID}/{name}/{address}/{desc}")
+    public ResponseEntity<String> editClinic(@PathVariable String address,@PathVariable String name,@PathVariable long oldID,@PathVariable String desc) throws Exception {
         System.out.println(address);
         Clinic clinic2 = clinicService.getClinic(oldID);
         clinic2.setName(name);
         clinic2.setAddress(address);
+        clinic2.setDescription(desc);
         clinicRepository.save(clinic2);
         return new ResponseEntity<String>("sadas", HttpStatus.OK);
     }

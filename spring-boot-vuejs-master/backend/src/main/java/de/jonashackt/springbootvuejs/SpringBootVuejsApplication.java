@@ -66,6 +66,7 @@ public class SpringBootVuejsApplication {
 			Room room5 = new Room(5,"Operation");
 			room5.setCalendar(listOfDates);
 			Clinic clinic = new Clinic(1, "Klinika BEOGRAD", "Njegoseva 12");
+			clinic.setDescription("The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through.");
 			Clinic clinic2 = new Clinic(2, "Klinicki Centar Novi sad", "Bulevar Oslobodjenja 12");
 			room.setCalendar(listOfDates);
 			roomRepository.save(room);

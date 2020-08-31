@@ -9,8 +9,7 @@ import java.util.Set;
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "clinics")
-public class Clinic
-{
+public class Clinic {
     @Id
     private long id;
 
@@ -20,10 +19,6 @@ public class Clinic
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Set<ClinicAdmin> getAdministrators() {
-        return administrators;
     }
 
     public void setAdministrators(Set<ClinicAdmin> administrators) {
@@ -110,8 +105,9 @@ public class Clinic
     public Set<ClinicAdmin> getAdministrator() {
         return administrators;
 
-
-    public void setDescription(String description) {
-        this.description = description;
     }
+
+
+
+
 }

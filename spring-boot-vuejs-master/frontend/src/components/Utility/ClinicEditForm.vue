@@ -24,6 +24,16 @@
           />
         </div>
         <div class="form-group">
+          <label for="exampleInputEmail1">Clinic Description</label>
+          <v-textarea
+            v-model="$store.getters.getClinic.description"
+            required
+            outlined
+            dense
+            height="100px"
+          />
+        </div>
+        <div class="form-group">
           <label for="exampleInputEmail1">Clinic address</label>
           <v-text-field
             v-model="$store.getters.getClinic.address"
@@ -236,7 +246,12 @@ export default {
       console.log(this.clinic.id);
 
       api
-        .editClinicInfo(this.clinic.name, this.clinic.address, this.oldID)
+        .editClinicInfo(
+          this.$store.getters.getClinic.description,
+          this.clinic.name,
+          this.clinic.address,
+          this.oldID
+        )
         .then((response) => {})
         .catch((e) => {
           console.log(e);

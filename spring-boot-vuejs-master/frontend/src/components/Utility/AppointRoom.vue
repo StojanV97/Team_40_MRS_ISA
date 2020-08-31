@@ -37,22 +37,23 @@ export default {
         { text: "Room ID", value: "roomID" },
         { text: "Room Name", value: "roomName" },
         { text: "Calendar", value: "calendar" },
-        { text: "First Available", value: "firstAvailableDate" }
+        { text: "First Available", value: "firstAvailableDate" },
       ],
       appointement: {
         dateAndTime: null,
         roomID: null,
         patientID: null,
         doctorID: null,
-        type: null
+        type: null,
+        clinicID: null,
       },
       message: {
         msg: null,
-        email: []
+        email: [],
       },
       doctor: "",
       partient: "",
-      idAndDate: null
+      idAndDate: null,
     };
   },
   mounted() {
@@ -62,7 +63,7 @@ export default {
         localStorage.getItem("clinicID"),
         this.$store.getters.getDatum
       )
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         this.$store.getters.getClinic.rooms = response.data;
         for (const index in this.$store.getters.getClinic.rooms) {
@@ -74,7 +75,7 @@ export default {
           }
         }
       })
-      .catch(e => {});
+      .catch((e) => {});
   },
   methods: {
     getFirstDate() {
@@ -85,7 +86,7 @@ export default {
           localStorage.getItem("clinicID"),
           this.$store.getters.getDatum
         )
-        .then(response => {
+        .then((response) => {
           this.$store.getters.getClinic.rooms = response.data;
           for (const index in this.$store.getters.getClinic.rooms) {
             if (
@@ -96,7 +97,7 @@ export default {
             }
           }
         })
-        .catch(e => {});
+        .catch((e) => {});
     },
 
     appoint(item) {
@@ -105,36 +106,36 @@ export default {
       this.appointement.patientID = this.$props.appt.patientID;
       this.appointement.dateAndTime = this.$store.getters.getDatum;
       this.appointement.type = "EXAMINATION";
-
-      api.getUser(this.appointement.doctorID).then(response => {
+      this.appointement.clinicID = localStorage.getItem("clinicID");
+      api.getUser(this.appointement.doctorID).then((response) => {
         this.doctor = response.data;
       });
-      api.getUser(this.appointement.patientID).then(response => {
+      api.getUser(this.appointement.patientID).then((response) => {
         this.partient = response.data;
       });
       this.message.email.push("stojan.v1997@gmail.com");
       this.message.email.push("stojan.v1997@gmail.com");
       api
         .createAppoitnment(this.appointement)
-        .then(response => {
+        .then((response) => {
           this.idAndDate = response.data;
           console.log(response.data);
           api
             .deleteAppointmentRequest(this.$props.appt.id)
-            .then(response => {
+            .then((response) => {
               this.message.msg =
                 "Appoitnement scheduled at " + this.idAndDate.date;
               api
                 .sendEmail(this.message)
-                .then(response => {})
-                .catch(e => {
+                .then((response) => {})
+                .catch((e) => {
                   console.log(e);
                 });
               this.$emit("deleteRequestEvent");
             })
-            .catch(e => {});
+            .catch((e) => {});
         })
-        .catch(e => {});
+        .catch((e) => {});
     },
     customFilter(event) {
       if (event === "") {
@@ -153,8 +154,8 @@ export default {
           this.rooms.splice(index, 1);
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

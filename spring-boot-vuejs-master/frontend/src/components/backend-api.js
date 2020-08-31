@@ -102,8 +102,8 @@ export default {
     createClinic(clinic) {
         return AXIOS.post(`/clinic/register/`, clinic);
     },
-    editClinicInfo(name, addres, oldID) {
-        return AXIOS.post(`/clinic/edit/` + oldID + '/' + name + '/' + addres);
+    editClinicInfo(desc, name, addres, oldID) {
+        return AXIOS.post(`/clinic/edit/` + oldID + '/' + name + '/' + addres + '/' + desc);
     },
     deleteClinic(clinicId) {
         return AXIOS.post(`/clinic/delete/` + clinicId);
