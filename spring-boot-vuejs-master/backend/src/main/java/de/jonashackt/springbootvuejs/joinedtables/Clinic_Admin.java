@@ -14,6 +14,9 @@ public class Clinic_Admin {
     @Column(updatable = false)
     private Long Admin_ID;
 
+    public Clinic_Admin() {
+    }
+
     public Clinic_Admin(Long cId, Long aId)
     {
         this.Clinic_ID = cId;

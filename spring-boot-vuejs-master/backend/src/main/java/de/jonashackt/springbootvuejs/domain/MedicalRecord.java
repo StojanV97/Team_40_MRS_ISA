@@ -1,6 +1,7 @@
 package de.jonashackt.springbootvuejs.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,8 +17,9 @@ public class MedicalRecord {
     private String bloodType;
     private String allergies;
 
-    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicalrecord")
-    //private Set<AppointmentReport> appointmentReports;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable
+    private Set<AppointmentReport> appointmentReports = new HashSet<AppointmentReport>();
 
     public MedicalRecord() {
     }
@@ -70,11 +72,11 @@ public class MedicalRecord {
         this.allergies = allergies;
     }
 
-    /*public Set<AppointmentReport> getAppointmentReports() {
+    public Set<AppointmentReport> getAppointmentReports() {
         return appointmentReports;
     }
 
     public void setAppointmentReports(Set<AppointmentReport> appointmentReports) {
         this.appointmentReports = appointmentReports;
-    }*/
+    }
 }

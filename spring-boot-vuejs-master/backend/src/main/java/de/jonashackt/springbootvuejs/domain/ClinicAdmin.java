@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class ClinicAdmin extends User {
 
     public Long clinicID;
+
     public ClinicAdmin() {
         super();
     }

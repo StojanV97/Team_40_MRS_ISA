@@ -1,6 +1,8 @@
 package de.jonashackt.springbootvuejs.domain;
 
 import javax.persistence.*;
+import javax.print.Doc;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,12 +34,9 @@ public class Clinic
     private String address;
     private String description;
 
-   // @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //private Set<ClinicAdmin> administrator = new HashSet<ClinicAdmin>();
-   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-   @JoinTable(name = "Clinic_Admins", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "id"))
-   private Set<ClinicAdmin> administrators = new HashSet<>();
-
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Clinic_Admins", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "id"))
+    private Set<ClinicAdmin> administrators = new HashSet<ClinicAdmin>();
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "Clinic_Doctors", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
     private Set<Doctor> doctors = new HashSet<Doctor>();
@@ -58,17 +57,21 @@ public class Clinic
         return doctors;
     }
 
+    public Set<ClinicAdmin> getAdministrators() {
+        return administrators;
+    }
+
     public Clinic(long id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
     }
 
-    public Clinic(long id, String name, String address, String city) {
+    public Clinic(long id, String name, String address, String description) {
         this.id = id;
         this.name = name;
         this.address = address;
-
+        this.description = description;
     }
 
     public long getId() {
@@ -106,7 +109,9 @@ public class Clinic
 
     public Set<ClinicAdmin> getAdministrator() {
         return administrators;
+
+
+    public void setDescription(String description) {
+        this.description = description;
     }
-
-
 }
