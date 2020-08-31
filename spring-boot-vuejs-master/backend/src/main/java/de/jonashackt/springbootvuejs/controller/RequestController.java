@@ -150,6 +150,7 @@ public class RequestController {
                 requestsForClinic.add(ap);
             }
         }
+
         return new ResponseEntity<ArrayList<AppointmentRequest>>(requestsForClinic, HttpStatus.OK);
     }
 
@@ -523,7 +524,7 @@ public class RequestController {
 
     @PostMapping(value = "patient/create-appointment-request/{dateAndTime}/{type}/{patientID}/{doctorID}/{clinicID}")
     public ResponseEntity<String> createAppointmentRequest(@PathVariable String dateAndTime,@PathVariable String type, @PathVariable long clinicID, @PathVariable long patientID, @PathVariable long doctorID ){
-
+        System.out.println(clinicID);
         AppointmentRequest ar = new AppointmentRequest(dateAndTime,type,clinicID,patientID,doctorID);
         appointmentRequestRepository.save(ar);
         return new ResponseEntity<String>("OK", HttpStatus.OK);

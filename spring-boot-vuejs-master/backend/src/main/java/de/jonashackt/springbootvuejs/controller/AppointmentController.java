@@ -36,6 +36,7 @@ public class AppointmentController {
 
     @GetMapping(value = "user/get-current-examinations/{userID}")
     public ResponseEntity<?> getExaminations(@PathVariable Long userID) throws ParseException {
+        System.out.println("Current Apoitements");
         Date now = new Date();
         SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH-mm");
         sp.setTimeZone(TimeZone.getTimeZone("GMT"));

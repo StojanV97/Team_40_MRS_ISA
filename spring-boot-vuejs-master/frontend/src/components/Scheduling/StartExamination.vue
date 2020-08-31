@@ -24,7 +24,7 @@ export default {
       msg: "",
       date: "",
       select: "",
-      items: ["OPERATION", "EXAMINATION"]
+      items: ["OPERATION", "EXAMINATION"],
     };
   },
   props: ["appointment"],
@@ -34,6 +34,7 @@ export default {
   },
   methods: {
     schedule() {
+      console.log(this.$store.getters.getAppt.clinicID);
       if (this.date === "" || this.select === "") {
         console.log("Empty date or Type");
       } else {
@@ -41,19 +42,19 @@ export default {
           .createAppointmentRequest(
             this.date,
             this.select,
-            this.$store.getters.getAppt.clinicID,
+            this.$store.getters.getAppt.doctorID,
             this.$store.getters.getAppt.patientID,
-            this.$store.getters.getAppt.doctorID
+            this.$store.getters.getAppt.clinicID
           )
-          .then(response => {
+          .then((response) => {
             this.msg = "Scheduled!";
             console.log(this.msg);
             this.snackbar = true;
           })
-          .catch(e => {});
+          .catch((e) => {});
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

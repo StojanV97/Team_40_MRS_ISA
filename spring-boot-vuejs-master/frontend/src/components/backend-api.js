@@ -30,7 +30,7 @@ export default {
         return AXIOS;
     },
     sendEmail(messages) {
-        return AXIOS.post('/email/' + messages.message + '/'  + messages.email);
+        return AXIOS.post('/email/' + messages.message + '/' + messages.email);
     },
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
@@ -44,7 +44,7 @@ export default {
     getAppointmentPreview(appointments) {
         return AXIOS.get('appointment-preview/' + appointments)
     },
-    getMedicalRecordForPatient(id){
+    getMedicalRecordForPatient(id) {
         return AXIOS.get('/patient/medicalrecord/' + id)
     },
 
@@ -102,8 +102,8 @@ export default {
     createClinic(clinic) {
         return AXIOS.post(`/clinic/register/`, clinic);
     },
-    editClinicInfo(clinic, oldID) {
-        return AXIOS.post(`clinic/edit/` + oldID, clinic);
+    editClinicInfo(name, addres, oldID) {
+        return AXIOS.post(`/clinic/edit/` + oldID + '/' + name + '/' + addres);
     },
     deleteClinic(clinicId) {
         return AXIOS.post(`/clinic/delete/` + clinicId);
@@ -186,8 +186,8 @@ export default {
     getClinicForAdmin(userName) {
         return AXIOS.get('/admin/get-clinic/' + userName);
     },
-    verifyAccount(username){
-        return AXIOS.get('/account-verify/'+username)
+    verifyAccount(username) {
+        return AXIOS.get('/account-verify/' + username)
     },
 
     getAppoitementRequests(clinicID) {
@@ -212,7 +212,7 @@ export default {
     }
     ,
     getCurretExaminations(userID) {
-        return AXIOS.get('user/get-current-examinations/' + userID,);
+        return AXIOS.get('user/get-current-examinations/' + userID);
     },
     createDaysOffRequest(requestDaysOff) {
         return AXIOS.post("user/create-days-off", requestDaysOff)

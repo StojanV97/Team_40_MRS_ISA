@@ -1,8 +1,6 @@
 package de.jonashackt.springbootvuejs.domain;
 
 import javax.persistence.*;
-import javax.print.Doc;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,12 +11,33 @@ public class Clinic
 {
     @Id
     private long id;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<ClinicAdmin> getAdministrators() {
+        return administrators;
+    }
+
+    public void setAdministrators(Set<ClinicAdmin> administrators) {
+        this.administrators = administrators;
+    }
+
     private String name;
     private String address;
+    private String description;
 
    // @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private Set<ClinicAdmin> administrator = new HashSet<ClinicAdmin>();
-    private String administrator;
+   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   @JoinTable(name = "Clinic_Admins", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "id"))
+   private Set<ClinicAdmin> administrators = new HashSet<>();
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "Clinic_Doctors", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
     private Set<Doctor> doctors = new HashSet<Doctor>();
@@ -85,11 +104,9 @@ public class Clinic
         this.rooms = rooms;
     }
 
-    public String getAdministrator() {
-        return administrator;
+    public Set<ClinicAdmin> getAdministrator() {
+        return administrators;
     }
 
-    public void setAdministrator(String administrator) {
-        this.administrator = administrator;
-    }
+
 }

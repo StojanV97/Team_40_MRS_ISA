@@ -47,19 +47,13 @@ public class ClinicController {
         return new ResponseEntity<String>(s, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/clinic/edit/{oldID}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> editClinic(@RequestBody Clinic clinic,@PathVariable long oldID) throws Exception {
-        System.out.println(clinic);
+    @PostMapping(path = "/clinic/edit/{oldID}/{name}/{address}")
+    public ResponseEntity<String> editClinic(@PathVariable String address,@PathVariable String name,@PathVariable long oldID) throws Exception {
+        System.out.println(address);
         Clinic clinic2 = clinicService.getClinic(oldID);
-        Clinic clinicNew = new Clinic();
-        clinicNew.setId(clinic2.getId());
-        clinicNew.setName(clinic2.getName());
-        clinicNew.setAddress(clinic2.getAddress());
-        clinicNew.setId(clinic.getId());
-        clinicNew.setDoctors(clinic2.getDoctors());
-        clinicNew.setRooms(clinic2.getRooms());
-        clinicService.deleteClinic(clinic2.getId());
-        clinicService.createClinic(clinicNew);
+        clinic2.setName(name);
+        clinic2.setAddress(address);
+        clinicRepository.save(clinic2);
         return new ResponseEntity<String>("sadas", HttpStatus.OK);
     }
 
