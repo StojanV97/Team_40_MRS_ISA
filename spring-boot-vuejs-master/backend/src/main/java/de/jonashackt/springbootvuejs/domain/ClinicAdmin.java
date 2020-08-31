@@ -9,9 +9,8 @@ import javax.persistence.*;
 @Table(name="clinicAdministrators")
 public class ClinicAdmin extends User {
 
-
-
     public Long clinicID;
+
     public ClinicAdmin() {
         super();
     }

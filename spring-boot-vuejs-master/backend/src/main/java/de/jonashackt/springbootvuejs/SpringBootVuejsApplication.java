@@ -2,7 +2,9 @@ package de.jonashackt.springbootvuejs;
 
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.joinedtables.ClinicRooms;
+import de.jonashackt.springbootvuejs.joinedtables.Clinic_Admin;
 import de.jonashackt.springbootvuejs.joinedtables.Clinic_Doctors;
+import de.jonashackt.springbootvuejs.joinedtables.Record_Reports;
 import de.jonashackt.springbootvuejs.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,7 +28,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(MedicalRecordRepository  medicalRecordRepository,DaysOffRepository daysOffRepository,MedicineRepository medicineRepository,AppointmentRepository appointmentRepository ,AppointmentRequestRepository appointmentRequestRepository,ClinicRoomRepository clinicRoomRepository,ClinicDoctorRepository clinicDoctorRepository,UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository ,ClinicRepository clinicRepository){
+	CommandLineRunner runner(MedicalRecordRepository  medicalRecordRepository, DaysOffRepository daysOffRepository, MedicineRepository medicineRepository, AppointmentRepository appointmentRepository , AppointmentRequestRepository appointmentRequestRepository, ClinicRoomRepository clinicRoomRepository, ClinicDoctorRepository clinicDoctorRepository, UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository , ClinicRepository clinicRepository, ClinicAdminRepository clinicAdminRepository, RecordReportsRepository recordReportsRepository){
 		return args -> {
 
 			//Date
@@ -189,6 +191,11 @@ public class SpringBootVuejsApplication {
 			medicineRepository.save(new Medicine(1, "lek1", "valja"));
 			diagnoseRepository.save(new Diagnose(1, "dijagnoza", "nista strasno"));
 
+			Clinic_Admin ca = new Clinic_Admin(clinic.getId(), clinincAdmin.getId());
+			clinicAdminRepository.save(ca);
+			AppointmentReport ar = new AppointmentReport((long) 20);
+			Record_Reports rr = new Record_Reports(m.getMedicalRecordId(), ar.getAppointmentReportId());
+			recordReportsRepository.save(rr);
 
 		};
 

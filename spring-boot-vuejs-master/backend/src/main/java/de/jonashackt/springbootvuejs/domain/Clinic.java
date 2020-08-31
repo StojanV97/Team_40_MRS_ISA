@@ -15,10 +15,11 @@ public class Clinic
     private long id;
     private String name;
     private String address;
+    private String description;
 
-   // @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //private Set<ClinicAdmin> administrator = new HashSet<ClinicAdmin>();
-    private String administrator;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Clinic_Admins", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "id"))
+    private Set<ClinicAdmin> administrators = new HashSet<ClinicAdmin>();
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "Clinic_Doctors", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
     private Set<Doctor> doctors = new HashSet<Doctor>();
@@ -39,17 +40,21 @@ public class Clinic
         return doctors;
     }
 
+    public Set<ClinicAdmin> getAdministrators() {
+        return administrators;
+    }
+
     public Clinic(long id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
     }
 
-    public Clinic(long id, String name, String address, String city) {
+    public Clinic(long id, String name, String address, String description) {
         this.id = id;
         this.name = name;
         this.address = address;
-
+        this.description = description;
     }
 
     public long getId() {
@@ -85,11 +90,15 @@ public class Clinic
         this.rooms = rooms;
     }
 
-    public String getAdministrator() {
-        return administrator;
+    public void setAdministrators(Set<ClinicAdmin> administrators) {
+        this.administrators = administrators;
     }
 
-    public void setAdministrator(String administrator) {
-        this.administrator = administrator;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

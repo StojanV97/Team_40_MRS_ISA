@@ -7,10 +7,12 @@ import javax.persistence.*;
 public class AppointmentReport {
     @Id
     private Long appointmentReportId;
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "medicalRecord_id")
-    //private MedicalRecord medicalRecord;
+
     public AppointmentReport() {
+    }
+
+    public AppointmentReport(Long arId) {
+        this.appointmentReportId = arId;
     }
 
     public Long getAppointmentReportId() {
@@ -20,12 +22,4 @@ public class AppointmentReport {
     public void setAppointmentReportId(Long appointmentReportId) {
         this.appointmentReportId = appointmentReportId;
     }
-
-    /*public MedicalRecord getMedicalRecord() {
-        return medicalRecord;
-    }
-
-    public void setMedicalRecord(MedicalRecord medicalRecord) {
-        this.medicalRecord = medicalRecord;
-    }*/
 }
