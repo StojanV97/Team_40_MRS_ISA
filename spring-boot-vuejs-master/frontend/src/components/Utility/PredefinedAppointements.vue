@@ -6,15 +6,19 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field v-model="date" label="Pick a date" readonly v-bind="attrs" v-on="on"></v-text-field>
           </template>
-          <v-date-picker v-model="date" scrollable>
+          <v-date-picker v-model="appointement.dateAndTime" scrollable>
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(date);getRooms()">OK</v-btn>
+            <v-btn
+              text
+              color="primary"
+              @click="$refs.dialog.save(appointement.dateAndTime);getRooms()"
+            >OK</v-btn>
           </v-date-picker>
         </v-dialog>
 
         <v-select
-          v-model="selectRoom"
+          v-model="appointement.roomID"
           :items="itemsRooms"
           :rules="[v => !!v || 'Room is required']"
           label="Room"
@@ -22,7 +26,7 @@
         ></v-select>
 
         <v-select
-          v-model="selectDoctors"
+          v-model="appointement.doctorID"
           :items="itemsDoctors"
           :rules="[v => !!v || 'Doctor is required']"
           label="Doctor"
@@ -38,19 +42,26 @@
         ></v-select>
 
         <v-select
-          v-model="selectType"
+          v-model="appointement.type"
           :items="itemsType"
           :rules="[v => !!v || 'Type is required']"
           label="Type"
           required
         ></v-select>
+
+        <v-text-field label="Price" readonly v-bind="attrs" value="$50"></v-text-field>
+
         <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
 
         <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
-
-        <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
       </v-form>
     </v-row>
+    <div class="text-center ma-2">
+      <v-snackbar v-model="snackbar">
+        {{text}}
+        <v-btn @click="snackbar = false" color="pink" text>Close</v-btn>
+      </v-snackbar>
+    </div>
   </div>
 </template>
 
@@ -59,6 +70,8 @@ import api from "../backend-api";
 
 export default {
   data: () => ({
+    snackbar: false,
+    text: "",
     date: new Date().toISOString().substr(0, 10),
     modal: false,
     menu2: false,
@@ -81,13 +94,36 @@ export default {
     lazy: false,
     selectDoctors: false,
     itemsDoctors: [],
+    appointement: {
+      dateAndTime: false,
+      type: null,
+      roomID: null,
+      doctorID: null,
+      clinicID: null,
+      patientID: 0,
+    },
   }),
   mounted() {
     this.selectType = "Examination";
   },
   methods: {
     validate() {
-      this.$refs.form.validate();
+      this.appointement.clinicID = parseInt(localStorage.getItem("clinicID"));
+      const array = this.appointement.doctorID.split("-");
+      this.appointement.doctorID = parseInt(array[1]);
+      api
+        .createPredefinedAppointement(
+          this.appointement.clinicID,
+          this.appointement.roomID,
+          this.appointement.doctorID,
+          this.appointement.patientID,
+          this.appointement.type,
+          this.appointement.dateAndTime
+        )
+        .then((response) => {
+          this.text = "Predefined appointement created!";
+          this.snackbar = true;
+        });
     },
     reset() {
       this.$refs.form.reset();
@@ -117,7 +153,9 @@ export default {
             this.itemsDoctors.push(
               response.data[index].lastName +
                 " " +
-                response.data[index].firstName
+                response.data[index].firstName +
+                " - " +
+                response.data[index].id
             );
           }
         });

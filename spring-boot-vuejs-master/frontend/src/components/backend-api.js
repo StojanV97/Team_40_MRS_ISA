@@ -159,6 +159,9 @@ export default {
     createAppointmentRequest(dateAndTime, type, clinicID, patientID, doctorID,) {
         return AXIOS.post('patient/create-appointment-request/' + dateAndTime + '/' + type + '/' + clinicID + '/' + patientID + '/' + doctorID);
     },
+    createPredefinedAppointement(clinicID, roomID, doctorID, patientID, type, dateAndTime) {
+        return AXIOS.post('admin/predefined-appointements/' + dateAndTime + '/' + type + '/' + clinicID + '/' + patientID + '/' + doctorID + '/' + roomID)
+    },
 
     getDoctorsForClinic(id) {
         return AXIOS.get('/patient/get-doctors/' + id);

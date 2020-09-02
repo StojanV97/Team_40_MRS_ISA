@@ -23,6 +23,20 @@ public class FreeAppointements{
     {
 
     }
+
+    @Override
+    public String toString() {
+        return "FreeAppointements{" +
+                "id=" + id +
+                ", dateAndTime='" + dateAndTime + '\'' +
+                ", type='" + type + '\'' +
+                ", roomID=" + roomID +
+                ", patientID=" + patientID +
+                ", doctorID=" + doctorID +
+                ", clinicID=" + clinicID +
+                '}';
+    }
+
     public String getDateAndTime() {
         return dateAndTime;
     }
@@ -50,19 +64,6 @@ public class FreeAppointements{
 
     public long getId() {
         return id;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Appointment{" +
-                "id=" + id +
-                ", dateAndTime='" + dateAndTime + '\'' +
-                ", type='" + type + '\'' +
-                ", roomID=" + roomID +
-                ", patientID=" + patientID +
-                ", doctorID=" + doctorID +
-                '}';
     }
 
 

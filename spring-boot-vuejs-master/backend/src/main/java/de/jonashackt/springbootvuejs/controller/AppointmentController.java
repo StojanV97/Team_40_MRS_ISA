@@ -1,11 +1,8 @@
 package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.domain.Appointment;
-import de.jonashackt.springbootvuejs.repository.AppointmentRepository;
+import de.jonashackt.springbootvuejs.repository.*;
 import de.jonashackt.springbootvuejs.domain.*;
-import de.jonashackt.springbootvuejs.repository.ApointmentRepository;
-import de.jonashackt.springbootvuejs.repository.RoomRepository;
-import de.jonashackt.springbootvuejs.repository.UserRepository;
 import de.jonashackt.springbootvuejs.service.RoomService;
 
 import de.jonashackt.springbootvuejs.service.UserService;
@@ -32,11 +29,12 @@ public class AppointmentController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    FreeAppointementsRepository freeAppointementsRepository;
 
 
     @GetMapping(value = "user/get-current-examinations/{userID}")
     public ResponseEntity<?> getExaminations(@PathVariable Long userID) throws ParseException {
-        System.out.println("Current Apoitements");
         Date now = new Date();
         SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH-mm");
         sp.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -108,12 +106,16 @@ public class AppointmentController {
         }
         return new ResponseEntity<>(cancelable,HttpStatus.ACCEPTED);
     }
+    @PostMapping(value = "admin/predefined-appointements/{date}/{type}/{clinicID}/{patientID}/{doctorID}/{roomID}")
+    public ResponseEntity<?> createPredefinedAppointment(@PathVariable String date,@PathVariable String type, @PathVariable Long clinicID,@PathVariable Long patientID,@PathVariable Long doctorID,@PathVariable Long roomID){
+        FreeAppointements fr = new FreeAppointements(date,type,roomID,patientID,doctorID,clinicID);
+        freeAppointementsRepository.save(fr);
+        return new ResponseEntity<String>("OK", HttpStatus.OK);
 
+    }
 
     @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAppoitment(@RequestBody Appointment appointment){
-        System.out.println(appointment);
-
         ArrayList<String> termini = new ArrayList<String>();
         termini.add("10-00");
         termini.add("10-30");

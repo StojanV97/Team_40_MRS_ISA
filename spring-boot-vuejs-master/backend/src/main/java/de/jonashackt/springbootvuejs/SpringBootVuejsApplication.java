@@ -28,7 +28,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(MedicalRecordRepository  medicalRecordRepository, DaysOffRepository daysOffRepository, MedicineRepository medicineRepository, AppointmentRepository appointmentRepository , AppointmentRequestRepository appointmentRequestRepository, ClinicRoomRepository clinicRoomRepository, ClinicDoctorRepository clinicDoctorRepository, UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository , ClinicRepository clinicRepository, ClinicAdminRepository clinicAdminRepository, RecordReportsRepository recordReportsRepository){
+	CommandLineRunner runner(PriceBookRepository priceBookRepository,MedicalRecordRepository  medicalRecordRepository, DaysOffRepository daysOffRepository, MedicineRepository medicineRepository, AppointmentRepository appointmentRepository , AppointmentRequestRepository appointmentRequestRepository, ClinicRoomRepository clinicRoomRepository, ClinicDoctorRepository clinicDoctorRepository, UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository , ClinicRepository clinicRepository, ClinicAdminRepository clinicAdminRepository, RecordReportsRepository recordReportsRepository){
 		return args -> {
 
 			//Date
@@ -39,6 +39,10 @@ public class SpringBootVuejsApplication {
 			listOfDates.add("2020-08-20 10-00");
 			listOfDates.add("2020-08-19 10-30");
 			listOfDates.add("2020-08-19 11-00");
+
+			priceBookRepository.save(new PriceBook("Examination",50));
+			priceBookRepository.save(new PriceBook("Operation",250));
+
 			//============================================================================
 
 			//Authorities
