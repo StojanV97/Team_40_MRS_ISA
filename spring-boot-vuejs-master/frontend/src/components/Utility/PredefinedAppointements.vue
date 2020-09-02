@@ -23,6 +23,16 @@
           :rules="[v => !!v || 'Room is required']"
           label="Room"
           required
+          @change="showTimeMethod"
+        ></v-select>
+
+        <v-select
+          v-model="eTerm"
+          :items="eTime"
+          :rules="[v => !!v || 'eTime is required']"
+          label="Time"
+          required
+          v-if="showTime"
         ></v-select>
 
         <v-select
@@ -37,7 +47,7 @@
           v-model="select"
           :items="items"
           :rules="[v => !!v || 'Time is required']"
-          label="Time"
+          label="Duration"
           required
         ></v-select>
 
@@ -70,6 +80,7 @@ import api from "../backend-api";
 
 export default {
   data: () => ({
+    showTime: false,
     snackbar: false,
     text: "",
     date: new Date().toISOString().substr(0, 10),
@@ -86,6 +97,8 @@ export default {
       (v) => !!v || "E-mail is required",
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
+    eTerm: null,
+    eTime: [],
     select: null,
     items: ["30"],
     itemsRooms: [],
@@ -107,6 +120,18 @@ export default {
     this.selectType = "Examination";
   },
   methods: {
+    showTimeMethod() {
+      this.showTime = true;
+      api
+        .getFreeTermsForRoom(
+          this.appointement.roomID,
+          this.appointement.dateAndTime
+        )
+        .then((response) => {
+          this.eTime = response.data;
+          console.log(response.data);
+        });
+    },
     validate() {
       this.appointement.clinicID = parseInt(localStorage.getItem("clinicID"));
       const array = this.appointement.doctorID.split("-");
@@ -118,7 +143,7 @@ export default {
           this.appointement.doctorID,
           this.appointement.patientID,
           this.appointement.type,
-          this.appointement.dateAndTime
+          this.appointement.dateAndTime + " " + this.eTerm
         )
         .then((response) => {
           this.text = "Predefined appointement created!";

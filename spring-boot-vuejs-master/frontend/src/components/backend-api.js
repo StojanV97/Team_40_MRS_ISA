@@ -162,7 +162,10 @@ export default {
     createPredefinedAppointement(clinicID, roomID, doctorID, patientID, type, dateAndTime) {
         return AXIOS.post('admin/predefined-appointements/' + dateAndTime + '/' + type + '/' + clinicID + '/' + patientID + '/' + doctorID + '/' + roomID)
     },
+    getFreeTermsForRoom(id, date) {
+        return AXIOS.get('/admin/free-terms/' + id + '/' + date);
 
+    },
     getDoctorsForClinic(id) {
         return AXIOS.get('/patient/get-doctors/' + id);
     },

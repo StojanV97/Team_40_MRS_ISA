@@ -36,7 +36,7 @@ public class SpringBootVuejsApplication {
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
 			ArrayList<String> listOfDates = new ArrayList<String>();
 			String d2 = sp.format(d);
-			listOfDates.add("2020-08-20 10-00");
+			listOfDates.add("2020-09-11 10-00");
 			listOfDates.add("2020-08-19 10-30");
 			listOfDates.add("2020-08-19 11-00");
 

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
@@ -56,4 +57,50 @@ public class RoomController {
         return new ResponseEntity<Collection<Room>>(greetings, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/admin/free-terms/{id}/{date}")
+    public ResponseEntity<ArrayList<String>> getFreeTerms(@PathVariable long id,@PathVariable String date) {
+        ArrayList<String> termini = new ArrayList<String>();
+        termini.add("10-00");
+        termini.add("10-30");
+        termini.add("11-00");
+        termini.add("11-30");
+        termini.add("12-00");
+        termini.add("12-30");
+        termini.add("13-00");
+        termini.add("13-30");
+        termini.add("14-00");
+        Room r = roomService.getRoom(id);
+
+        if(r.getCalendar().isEmpty()){
+            return new ResponseEntity<ArrayList<String>>(termini, HttpStatus.OK);
+
+        }
+
+        for(String tDate : r.getCalendar()){
+                if(tDate.contains(date)){
+                    String[] splited = tDate.split(" ");
+                    termini.remove(splited[1]);
+                    System.out.println(splited[1]);
+                }
+        }
+        System.out.println(termini);
+
+        if(r.getCalendar().contains(date)){
+            System.out.println(r.getCalendar());
+            String[] dateArray = date.split(" ");
+            ArrayList<String> terms = new ArrayList<String>();
+            for (String term : r.getCalendar()){
+
+                String[] termSpliter = term.split(" ");
+                if(!termini.contains(termSpliter[1])){
+                    terms.add(termSpliter[1]);
+                }
+
+            }
+            return new ResponseEntity<ArrayList<String>>(r.getCalendar(), HttpStatus.OK);
+
+        }
+
+        return new ResponseEntity<ArrayList<String>>(termini, HttpStatus.OK);
+    }
 }
