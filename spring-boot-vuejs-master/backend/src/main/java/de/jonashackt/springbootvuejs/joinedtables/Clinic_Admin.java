@@ -21,7 +21,6 @@ public class Clinic_Admin {
     {
         this.Clinic_ID = cId;
         this.Admin_ID = aId;
-
     }
 
     public Long getClinic_ID() {

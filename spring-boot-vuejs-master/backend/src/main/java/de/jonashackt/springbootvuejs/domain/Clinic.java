@@ -9,10 +9,22 @@ import java.util.Set;
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "clinics")
-public class Clinic
-{
+public class Clinic {
     @Id
     private long id;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAdministrators(Set<ClinicAdmin> administrators) {
+        this.administrators = administrators;
+    }
+
     private String name;
     private String address;
     private String description;
@@ -90,15 +102,12 @@ public class Clinic
         this.rooms = rooms;
     }
 
-    public void setAdministrators(Set<ClinicAdmin> administrators) {
-        this.administrators = administrators;
+    public Set<ClinicAdmin> getAdministrator() {
+        return administrators;
+
     }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+
+
 }

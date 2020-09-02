@@ -37,22 +37,23 @@ export default {
         { text: "Room ID", value: "roomID" },
         { text: "Room Name", value: "roomName" },
         { text: "Calendar", value: "calendar" },
-        { text: "First Available", value: "firstAvailableDate" }
+        { text: "First Available", value: "firstAvailableDate" },
       ],
       appointement: {
         dateAndTime: null,
         roomID: null,
         patientID: null,
         doctorID: null,
-        type: null
+        type: null,
+        clinicID: null,
       },
       message: {
         msg: null,
-        email: []
+        email: [],
       },
       doctor: "",
       partient: "",
-      idAndDate: null
+      idAndDate: null,
     };
   },
   mounted() {
@@ -110,14 +111,14 @@ export default {
       api.getUser(this.appointement.doctorID).then(response => {
         this.doctor = response.data;
       });
-      api.getUser(this.appointement.patientID).then(response => {
+      api.getUser(this.appointement.patientID).then((response) => {
         this.partient = response.data;
       });
       this.message.email.push("stojan.v1997@gmail.com");
       this.message.email.push("stojan.v1997@gmail.com");
       api
         .createAppoitnment(this.appointement)
-        .then(response => {
+        .then((response) => {
           this.idAndDate = response.data;
           console.log(response.data);
           api

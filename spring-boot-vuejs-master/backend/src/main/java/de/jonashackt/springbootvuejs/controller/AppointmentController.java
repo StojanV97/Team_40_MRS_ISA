@@ -1,11 +1,8 @@
 package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.domain.Appointment;
-import de.jonashackt.springbootvuejs.repository.AppointmentRepository;
+import de.jonashackt.springbootvuejs.repository.*;
 import de.jonashackt.springbootvuejs.domain.*;
-import de.jonashackt.springbootvuejs.repository.ApointmentRepository;
-import de.jonashackt.springbootvuejs.repository.RoomRepository;
-import de.jonashackt.springbootvuejs.repository.UserRepository;
 import de.jonashackt.springbootvuejs.service.RoomService;
 
 import de.jonashackt.springbootvuejs.service.UserService;
@@ -32,6 +29,8 @@ public class AppointmentController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    FreeAppointementsRepository freeAppointementsRepository;
 
 
     @GetMapping(value = "user/get-current-examinations/{userID}")
@@ -107,7 +106,13 @@ public class AppointmentController {
         }
         return new ResponseEntity<>(cancelable,HttpStatus.ACCEPTED);
     }
+    @PostMapping(value = "admin/predefined-appointements/{date}/{type}/{clinicID}/{patientID}/{doctorID}/{roomID}")
+    public ResponseEntity<?> createPredefinedAppointment(@PathVariable String date,@PathVariable String type, @PathVariable Long clinicID,@PathVariable Long patientID,@PathVariable Long doctorID,@PathVariable Long roomID){
+        FreeAppointements fr = new FreeAppointements(date,type,roomID,patientID,doctorID,clinicID);
+        freeAppointementsRepository.save(fr);
+        return new ResponseEntity<String>("OK", HttpStatus.OK);
 
+    }
 
     @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAppoitment(@RequestBody Appointment appointment){
@@ -152,16 +157,17 @@ public class AppointmentController {
        }
         ArrayList<String> appt = new ArrayList<>(room.getCalendar());
         appt.add(newTerm);
+
         room.setCalendar(appt);
         roomRepository.save(room);
         Room newRoom  =  roomService.getRoom(room.getRoomID());
-        System.out.println("Doktor ID : ");
-       System.out.println(appointment.getDoctorID());
+
 
       Optional<User> d = userRepository.findById(appointment.getDoctorID());
       Doctor doctor = (Doctor) d.get();
       doctor.setListOfPatients(appointment.getPatientID());
       doctor.setListOfAppoitnements(newTerm);
+      appointment.setClinicID(appointment.getClinicID());
       userRepository.save(doctor);
       apointmentRepository.save(appointment);
       AptIDandDate aptd = new AptIDandDate(newTerm,appointment.getId());

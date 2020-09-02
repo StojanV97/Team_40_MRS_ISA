@@ -1,6 +1,10 @@
 <template>
   <v-card>
     <v-card-title>
+      ^
+      <v-btn id="backbtn" icon @click="reloadAppoitements">
+        <v-icon id="icon-arrow">mdi-reload</v-icon>Reload
+      </v-btn>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -183,6 +187,17 @@ export default {
           })
           .catch((e) => {});
       }
+    },
+    reloadAppoitements() {
+      api
+        .getAppoitementRequests(localStorage.getItem("clinicID"))
+        .then((response) => {
+          this.appoitements = response.data;
+          console.log(this.appoitements);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
 
     openDialog() {

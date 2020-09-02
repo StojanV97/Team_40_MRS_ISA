@@ -32,7 +32,9 @@
                 class="my-2"
                 color="blue"
               >Show</v-btn>
-              <v-btn icon = "true"><v-icon>mdi-pencil</v-icon></v-btn>
+              <v-btn icon="true">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
             </td>
           </tr>
         </template>
@@ -140,10 +142,10 @@ export default {
     DoctorProfile,
     ScheduleExemination,
     PatientProfile,
-    RequestDaysOff
+    RequestDaysOff,
   },
   props: {
-    source: String
+    source: String,
   },
   data: () => ({
     showProfile: false,
@@ -164,9 +166,9 @@ export default {
         "icon-alt": "mdi-cog",
         text: "Settings",
         model: false,
-        children: [{ text: "Dark mode On/Off" }]
+        children: [{ text: "Dark mode On/Off" }],
       },
-      { icon: "mdi-help-circle", text: "Help" }
+      { icon: "mdi-help-circle", text: "Help" },
     ],
     search: "",
     headers: [
@@ -174,30 +176,44 @@ export default {
         text: "Id Number",
         align: "start",
         sortable: false,
-        value: "id"
+        value: "id",
       },
       { text: "First Name", value: "firstName" },
       { text: "Last Name", value: "lastName" },
       { text: "Email", value: "email" },
-      { text: "Medical History", value: "medicalHistory" }
+      { text: "Medical History", value: "medicalHistory" },
     ],
     patients: [],
     name: "",
     lastName: "",
     patientProfile: null,
-    currentAppointements: null
+    currentAppointements: null,
   }),
   mounted() {
     api.setAuthentication().defaults.headers["Authorization"] =
       "Bearer " + localStorage.getItem("token");
     this.name = localStorage.getItem("firstName");
     this.lastName = localStorage.getItem("lastName");
+
     api
       .getPatients()
-      .then(response => {
+      .then((response) => {
         this.patients = response.data;
+        console.log(this.patients);
       })
-      .catch(e => {
+      .catch((e) => {
+        console.log(e);
+      });
+
+    api
+      .getCurretExaminations(localStorage.getItem("userID"))
+      .then((response) => {
+        console.log("sadasd");
+
+        this.currentAppointements = response.data;
+        console.log(response.data);
+      })
+      .catch((e) => {
         console.log(e);
       });
   },
@@ -224,17 +240,10 @@ export default {
       } else if (text === "Request days off") {
         this.dialogDaysOff = true;
       } else if (text === "Scheduled examination") {
-        api
-          .getCurretExaminations(localStorage.getItem("userID"))
-          .then(response => {
-            this.currentAppointements = response.data;
-          })
-          .catch(e => {});
-
-        this.showExaminationScheduling = true;
         this.showProfile = false;
         this.showCalendar = false;
         this.showPatients = false;
+        this.showExaminationScheduling = true;
       } else {
         this.showExaminationScheduling = false;
         this.showProfile = false;
@@ -243,7 +252,7 @@ export default {
       }
     },
     showHistoryDialog(id) {
-      api.getUser(id).then(response => {
+      api.getUser(id).then((response) => {
         this.patientProfile = response.data;
       });
       console.log(this.patientProfile);
@@ -251,11 +260,11 @@ export default {
     },
     signOut() {
       this.$router.push("/");
-    }
+    },
   },
   created() {
     this.$vuetify.theme.dark = false;
-  }
+  },
 };
 </script>
 

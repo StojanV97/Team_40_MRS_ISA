@@ -24,6 +24,16 @@
           />
         </div>
         <div class="form-group">
+          <label for="exampleInputEmail1">Clinic Description</label>
+          <v-textarea
+            v-model="$store.getters.getClinic.description"
+            required
+            outlined
+            dense
+            height="100px"
+          />
+        </div>
+        <div class="form-group">
           <label for="exampleInputEmail1">Clinic address</label>
           <v-text-field
             v-model="$store.getters.getClinic.address"
@@ -40,12 +50,11 @@
             :rules="administratorRules"
             outlined
             dense
-            disabled="true"
+            disabled
           />
         </div>
         <div>
-          <v-btn disabled class="btn btn-primary" @click="editClinic()">Submit</v-btn>
-          <v-btn disabled class="ma-2" outlined color="indigo" @click="reset">Reset</v-btn>
+          <v-btn class="btn btn-primary" @click="editClinic()">Submit</v-btn>
         </div>
       </v-form>
     </div>
@@ -163,7 +172,7 @@ import api from "../backend-api";
 import RoomConfig from "../Utility/RoomConfig";
 export default {
   components: {
-    RoomConfig
+    RoomConfig,
   },
   name: "ClinicEditForm",
   props: ["clinicEdit"],
@@ -176,32 +185,32 @@ export default {
       snackbar: false,
       flag: false,
       form: {
-        quantityOption: null
+        quantityOption: null,
       },
       valid: true,
       clinic: {
         name: "",
         address: "",
         administrator: "",
-        id: ""
+        id: "",
       },
       nameRules: [
-        v => !!v || "Name is required",
-        v => (v && v.length <= 20) || "Name must be less than 10 characters"
+        (v) => !!v || "Name is required",
+        (v) => (v && v.length <= 20) || "Name must be less than 10 characters",
       ],
       idRules: [
-        v => !!v || "ID is required",
-        v => (v && v.length <= 10) || "ID must be less than 10 characters"
+        (v) => !!v || "ID is required",
+        (v) => (v && v.length <= 10) || "ID must be less than 10 characters",
       ],
       administratorRules: [
-        v => !!v || "Administrator is required",
-        v =>
+        (v) => !!v || "Administrator is required",
+        (v) =>
           (v && v.length <= 12) ||
-          "Administrator must be less than 12 characters"
+          "Administrator must be less than 12 characters",
       ],
       select: null,
       checkbox: false,
-      flag: false
+      flag: false,
     };
   },
   mounted() {
@@ -223,7 +232,6 @@ export default {
       this.clinic.id = i;
       this.clinic.name = n;
       this.clinic.address = a;
-      this.clinic.administrator = ad;
     },
     validate() {
       this.$refs.form.validate();
@@ -235,38 +243,27 @@ export default {
       this.clinic.id = this.$store.getters.getClinic.id;
       this.clinic.name = this.$store.getters.getClinic.name;
       this.clinic.address = this.$store.getters.getClinic.address;
+      console.log(this.clinic.id);
 
       api
-        .editClinicInfo(this.clinic, this.oldID)
-        .then(response => {
-          localStorage.setItem("clinicID", this.$store.getters.getClinic.id);
-          api
-            .changeAdminClinicID(
-              localStorage.getItem("userName"),
-              this.$store.getters.getClinic.id
-            )
-            .then(response => {
-              api.getClinic(localStorage.getItem("clinicID")).then(response => {
-                this.$store.commit("setClinic", response.data);
-                this.snackbar = true;
-                this.msg = "Successufully changed!";
-              });
-            })
-            .catch(e => {
-              console.log();
-            });
-        })
-        .catch(e => {
+        .editClinicInfo(
+          this.$store.getters.getClinic.description,
+          this.clinic.name,
+          this.clinic.address,
+          this.oldID
+        )
+        .then((response) => {})
+        .catch((e) => {
           console.log(e);
         });
-    }
+    },
   },
 
   computed: {
     state() {
       return Boolean(this.form.quantityOption);
-    }
-  }
+    },
+  },
 };
 </script>
 
