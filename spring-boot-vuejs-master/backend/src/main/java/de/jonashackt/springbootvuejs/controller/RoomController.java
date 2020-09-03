@@ -1,8 +1,10 @@
 package de.jonashackt.springbootvuejs.controller;
 
+import de.jonashackt.springbootvuejs.domain.FreeAppointements;
 import de.jonashackt.springbootvuejs.domain.Room;
 import de.jonashackt.springbootvuejs.joinedtables.ClinicRooms;
 import de.jonashackt.springbootvuejs.repository.ClinicRoomRepository;
+import de.jonashackt.springbootvuejs.repository.FreeAppointementsRepository;
 import de.jonashackt.springbootvuejs.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ public class RoomController {
     RoomService roomService;
     @Autowired
     ClinicRoomRepository clinicRoomRepository;
+    @Autowired
+    FreeAppointementsRepository freeAppointementsRepository;
 
     @PostMapping(value = "room/registration/{clinicID}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<String> registerRoom(@RequestBody Room room, @PathVariable long clinicID) {
@@ -83,8 +87,6 @@ public class RoomController {
                     System.out.println(splited[1]);
                 }
         }
-        System.out.println(termini);
-
         if(r.getCalendar().contains(date)){
             System.out.println(r.getCalendar());
             String[] dateArray = date.split(" ");

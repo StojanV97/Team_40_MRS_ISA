@@ -159,13 +159,6 @@ export default {
           { icon: "mdi-roman-numeral-4", text: "Income" },
         ],
       },
-      {
-        icon: "mdi-arrow-down",
-        "icon-alt": "mdi-pencil-box-multiple",
-        text: "Edits",
-        model: false,
-        children: [{ icon: "mdi-roman-numeral-1", text: "Edit examinations" }],
-      },
       { icon: "mdi-account-cog", text: "Profile" },
       {
         icon: "mdi-arrow-down",

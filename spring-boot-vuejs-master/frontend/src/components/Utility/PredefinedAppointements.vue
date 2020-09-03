@@ -1,5 +1,29 @@
 <template>
   <div id="main">
+    <div id="table">
+      <v-data-table
+        dark
+        dense
+        :headers="headers"
+        :items="appointements"
+        :page.sync="page"
+        :items-per-page="itemsPerPage"
+        hide-default-footer
+        class="elevation-1"
+        @page-count="pageCount = $event"
+      ></v-data-table>
+      <div class="text-center pt-2">
+        <v-pagination v-model="page" :length="pageCount"></v-pagination>
+        <v-text-field
+          :value="itemsPerPage"
+          label="Items per page"
+          type="number"
+          min="-1"
+          max="15"
+          @input="itemsPerPage = parseInt($event, 10)"
+        ></v-text-field>
+      </div>
+    </div>
     <v-row align="center">
       <v-form id="forma" ref="form" v-model="valid" :lazy-validation="lazy">
         <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
@@ -63,7 +87,7 @@
 
         <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
 
-        <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
+        <v-btn color="blue" class="mr-4" @click="reset">Reset Form</v-btn>
       </v-form>
     </v-row>
     <div class="text-center ma-2">
@@ -115,9 +139,23 @@ export default {
       clinicID: null,
       patientID: 0,
     },
+    page: 1,
+    pageCount: 0,
+    itemsPerPage: 10,
+
+    headers: [
+      { text: "Date and Time", value: "dateAndTime" },
+      { text: "Room", value: "roomID" },
+      { text: "Doctor", value: "doctorID" },
+    ],
+    appointements: [],
   }),
   mounted() {
     this.selectType = "Examination";
+    api.getAllPredefinedAppointements().then((response) => {
+      this.appointements = response.data;
+      console.log(this.appointements);
+    });
   },
   methods: {
     showTimeMethod() {
@@ -129,7 +167,6 @@ export default {
         )
         .then((response) => {
           this.eTime = response.data;
-          console.log(response.data);
         });
     },
     validate() {
@@ -146,8 +183,18 @@ export default {
           this.appointement.dateAndTime + " " + this.eTerm
         )
         .then((response) => {
-          this.text = "Predefined appointement created!";
-          this.snackbar = true;
+          if (response.status == "OK") {
+            this.text = "Predefined appointement created!";
+            this.snackbar = true;
+          } else {
+            this.text = "Appointemnet already reserved!!";
+            this.snackbar = true;
+          }
+
+          api.getAllPredefinedAppointements().then((response) => {
+            this.appointements = response.data;
+            console.log(response.data);
+          });
         });
     },
     reset() {
@@ -158,11 +205,9 @@ export default {
     },
     getRooms() {
       this.itemsRooms = [];
-      console.log(this.date);
       api
         .getFirstAvailableDates(localStorage.getItem("clinicID"), this.date)
         .then((response) => {
-          console.log(response.data);
           for (const index in response.data) {
             if (response.data[index].roomName === "Examination") {
               this.itemsRooms.push(response.data[index].roomID);
@@ -184,15 +229,17 @@ export default {
             );
           }
         });
-
-      console.log("asdasd");
     },
   },
 };
 </script>
 <style >
+#table {
+  margin-top: 8%;
+}
 #main {
-  margin-left: 200px;
+  display: flex;
+  margin-left: 10%;
 }
 #forma {
   margin-left: 20%;

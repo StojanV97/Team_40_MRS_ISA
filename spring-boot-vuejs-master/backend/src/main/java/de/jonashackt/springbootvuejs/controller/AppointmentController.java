@@ -109,12 +109,33 @@ public class AppointmentController {
     @PostMapping(value = "admin/predefined-appointements/{date}/{type}/{clinicID}/{patientID}/{doctorID}/{roomID}")
     public ResponseEntity<?> createPredefinedAppointment(@PathVariable String date,@PathVariable String type, @PathVariable Long clinicID,@PathVariable Long patientID,@PathVariable Long doctorID,@PathVariable Long roomID){
         FreeAppointements fr = new FreeAppointements(date,type,roomID,patientID,doctorID,clinicID);
+        Collection<Appointment> appointements = (Collection<Appointment>) apointmentRepository.findAll();
+        Collection<FreeAppointements> fappointements = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
+        for(Appointment a : appointements){
+            if (a.getDateAndTime().equalsIgnoreCase(fr.getDateAndTime())){
+                return new ResponseEntity<String>("!OK", HttpStatus.OK);
+            }
+        }
+        for(FreeAppointements fa : fappointements){
+            if (fa.getDateAndTime().equalsIgnoreCase(fr.getDateAndTime()) && roomID == fa.getRoomID()){
+                return new ResponseEntity<String>("!OK", HttpStatus.OK);
+            }
+        }
+
         freeAppointementsRepository.save(fr);
         return new ResponseEntity<String>("OK", HttpStatus.OK);
 
     }
+    @GetMapping(value = "/admin/get-all-free-appoint/")
+    public ResponseEntity<?> getAllPredef(){
+        Collection<FreeAppointements> apt = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
+        System.out.println(apt);
+        return new ResponseEntity<Collection<FreeAppointements>>(apt,HttpStatus.OK);
 
-    @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    }
+
+
+        @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAppoitment(@RequestBody Appointment appointment){
         ArrayList<String> termini = new ArrayList<String>();
         termini.add("10-00");

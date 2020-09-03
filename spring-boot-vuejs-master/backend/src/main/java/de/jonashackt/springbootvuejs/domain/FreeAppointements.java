@@ -10,10 +10,41 @@ public class FreeAppointements{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    public long getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(long roomID) {
+        this.roomID = roomID;
+    }
+
+    public long getPatientID() {
+        return patientID;
+    }
+
+    public void setPatientID(long patientID) {
+        this.patientID = patientID;
+    }
+
+    public long getDoctorID() {
+        return doctorID;
+    }
+
+    public void setDoctorID(long doctorID) {
+        this.doctorID = doctorID;
+    }
+
+    public long getClinicID() {
+        return clinicID;
+    }
+
+    public void setClinicID(long clinicID) {
+        this.clinicID = clinicID;
+    }
+
     String dateAndTime;
     //int duration;
     String type;
-
     long roomID;
     long patientID;
     long doctorID;

@@ -166,6 +166,10 @@ export default {
         return AXIOS.get('/admin/free-terms/' + id + '/' + date);
 
     },
+    getAllPredefinedAppointements() {
+        return AXIOS.get('/admin/get-all-free-appoint/');
+
+    },
     getDoctorsForClinic(id) {
         return AXIOS.get('/patient/get-doctors/' + id);
     },
