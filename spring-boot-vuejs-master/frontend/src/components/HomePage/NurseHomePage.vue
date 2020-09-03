@@ -165,7 +165,6 @@
             showPatients: false,
             items: [
                 {icon: 'mdi-contacts', text: 'List of patients'},
-                {icon: 'mdi-history', text: 'Schedule examination'},
                 {icon: 'mdi-history', text: 'Working calendar'},
                 {icon: 'mdi-iframe-parentheses', text: 'Request days off'},
                 {icon: 'mdi-account-cog', text: 'Profile'},

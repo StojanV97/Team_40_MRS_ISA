@@ -85,6 +85,7 @@ public class SpringBootVuejsApplication {
 			//Users
 			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin(10,"ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
 			ClinicAdmin clinincAdmin = new ClinicAdmin(11,"ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
+			ClinicAdmin clinincAdmin2 = new ClinicAdmin(22,"ClinicAdmin2","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin2",bc.encode("password"));
 			ArrayList<Long> appointments = new ArrayList<>();
 			Patient patient = new Patient(1,"Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312",appointments);
 			//Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
@@ -111,6 +112,7 @@ public class SpringBootVuejsApplication {
 			doctor4.getAuthorities().add(doctorAuthority);
 			doctor.setListOfAppoitnements("2020-08-20 15-30");
 			doctor.setPassChanged(true);
+			nurse.setPassChanged(true);
 			clinincAdmin.setClinicName((long) 1);
 			//DaysOffRequest daysOffRequest = new DaysOffRequest((long) 3,"Doctor","Doctor","2020-06-14","2020-07-00","Vacation",2,"stojan.v1997@gmail.com");
 			//daysOffRepository.save(daysOffRequest); Nmg da sacuvam request, moze se kreairati u DoctorHomePage -> Request Days off
@@ -137,7 +139,7 @@ public class SpringBootVuejsApplication {
 			requestRepository.save(new RegisterRequests("Stojan","Stojanovic","noteventryingyo@gmail.com","77777777", "Srbija", "Novi Sad", "Bulevar 4", "0611565111", "1234881132"));
 
 			appointmentRequestRepository.save(new AppointmentRequest("2020-09-07","EXAMINATION", 1,1,3));
-
+			appointmentRequestRepository.save(new AppointmentRequest("2020-09-08","OPERATION", 1,2,3));
 			//Appointment apt= new Appointment("2020-08-20 15-30", "EXAMINATION",1,1,3,2);
 			Appointment apt= new Appointment("2020-08-22 11-20", "EXAMINATION",1,1,3,1);
 
