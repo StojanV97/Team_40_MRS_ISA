@@ -199,6 +199,7 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
+      this;
     },
     resetValidation() {
       this.$refs.form.resetValidation();
@@ -239,7 +240,7 @@ export default {
 }
 #main {
   display: flex;
-  margin-left: 10%;
+  margin-left: 20%;
 }
 #forma {
   margin-left: 20%;

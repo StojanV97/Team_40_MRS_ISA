@@ -8,7 +8,12 @@ const AXIOS = axios.create({
 
 export default {
 
-
+    getAllPrices() {
+        return AXIOS.get('admin/price-book')
+    },
+    EditPrice(priceBookItem) {
+        return AXIOS.post('admin/price-book-update', priceBookItem)
+    },
     // USERS ====================================================================================
     createDoctor(doctor, clinicID) {
         return AXIOS.post('/user/create-doctor/' + clinicID, doctor)

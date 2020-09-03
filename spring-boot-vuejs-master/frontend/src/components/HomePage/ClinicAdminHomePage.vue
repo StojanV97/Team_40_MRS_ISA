@@ -7,6 +7,7 @@
       @editRoomsEvent="this.openEditRooms"
       @editDoctorsEvent="this.openEditDoctors"
     />
+    <PriceBook v-if="showPriceBook" />
     <PredefinedAppointements v-if="predefeinedApp" />
     <ExaminationRequests @goBack="catchExamGoBack" v-if="examinationRequests" />
     <OperationRequests @goBack="catchExamGoBack" v-if="operationRequests" />
@@ -108,7 +109,7 @@ import ExaminationRequests from "../Utility/ExaminationRequests";
 import OperationRequests from "../Utility/OperationRequests";
 import DaysOffRequests from "../Utility/DaysOffRequests";
 import PredefinedAppointements from "../Utility/PredefinedAppointements";
-
+import PriceBook from "../Utility/PriceBook";
 export default {
   components: {
     OperationRequests,
@@ -119,11 +120,13 @@ export default {
     ExaminationRequests,
     DaysOffRequests,
     PredefinedAppointements,
+    PriceBook,
   },
   props: {
     source: String,
   },
   data: () => ({
+    showPriceBook: false,
     predefeinedApp: false,
     disableMenu: false,
     showProfile: false,
@@ -229,6 +232,7 @@ export default {
       if (text === "Dark mode On/Off") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       } else if (text === "Examination requests") {
+        this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = true;
         this.operationRequests = false;
@@ -237,6 +241,7 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Operation requests") {
+        this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = false;
         this.operationRequests = true;
@@ -244,7 +249,17 @@ export default {
         this.editClinicProfile = false;
         this.editAdminProfile = false;
         this.reqtrue = false;
+      } else if (text === "Price Book") {
+        this.showPriceBook = true;
+        this.predefeinedApp = false;
+        this.examinationRequests = false;
+        this.operationRequests = false;
+        this.roomConfig = false;
+        this.editClinicProfile = false;
+        this.editAdminProfile = false;
+        this.reqtrue = false;
       } else if (text === "Edit Clinic info") {
+        this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = false;
         this.operationRequests = false;
@@ -253,6 +268,7 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Predefined Apppointements") {
+        this.showPriceBook = false;
         this.predefeinedApp = true;
         this.examinationRequests = false;
         this.operationRequests = false;
@@ -261,6 +277,7 @@ export default {
         this.reqtrue = false;
         this.roomConfig = false;
       } else if (text === "Profile") {
+        this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = false;
         this.operationRequests = false;
@@ -269,6 +286,7 @@ export default {
         this.reqtrue = false;
         this.roomConfig = false;
       } else if (text === "Days off requests") {
+        this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = false;
         this.editAdminProfile = false;
