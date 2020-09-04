@@ -88,8 +88,6 @@ public class SpringBootVuejsApplication {
 			ClinicCenterAdmin predefinedCCA = new ClinicCenterAdmin(100,"ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","predefinedCCA",bc.encode("password"));
 			ClinicAdmin clinincAdmin = new ClinicAdmin(11,"ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
 			ClinicAdmin clinincAdmin2 = new ClinicAdmin(22,"ClinicAdmin2","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin2",bc.encode("password"));
-			ClinicAdmin clinincAdmin = new ClinicAdmin(11,"Milos","Milivojevic","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
-			ClinicAdmin clinincAdmin2 = new ClinicAdmin(22,"Radomir","Radivojevic","ClinicAdmin2@gmail.com","ClinicAdmin2",bc.encode("password"));
 			ArrayList<Long> appointments = new ArrayList<>();
 			Patient patient = new Patient(1,"Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "061233423", "12312312312",appointments);
 			//Patient patient3 = new Patient("Zoran","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
