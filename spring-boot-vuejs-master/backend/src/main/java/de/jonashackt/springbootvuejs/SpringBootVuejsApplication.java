@@ -28,7 +28,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(FreeAppointementsRepository freeAppointementsRepository,PriceBookRepository priceBookRepository,MedicalRecordRepository  medicalRecordRepository, DaysOffRepository daysOffRepository, MedicineRepository medicineRepository, AppointmentRepository appointmentRepository , AppointmentRequestRepository appointmentRequestRepository, ClinicRoomRepository clinicRoomRepository, ClinicDoctorRepository clinicDoctorRepository, UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository , ClinicRepository clinicRepository, ClinicAdminRepository clinicAdminRepository, RecordReportsRepository recordReportsRepository){
+	CommandLineRunner runner(AppointmentReportRepository appointmentReportRepository, FreeAppointementsRepository freeAppointementsRepository,PriceBookRepository priceBookRepository,MedicalRecordRepository  medicalRecordRepository, DaysOffRepository daysOffRepository, MedicineRepository medicineRepository, AppointmentRepository appointmentRepository , AppointmentRequestRepository appointmentRequestRepository, ClinicRoomRepository clinicRoomRepository, ClinicDoctorRepository clinicDoctorRepository, UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository , ClinicRepository clinicRepository, ClinicAdminRepository clinicAdminRepository, RecordReportsRepository recordReportsRepository){
 		return args -> {
 
 			//Date
@@ -142,6 +142,8 @@ public class SpringBootVuejsApplication {
 			appointmentRequestRepository.save(new AppointmentRequest("2020-09-08","OPERATION", 1,2,3));
 			//Appointment apt= new Appointment("2020-08-20 15-30", "EXAMINATION",1,1,3,2);
 			Appointment apt= new Appointment("2020-08-22 11-20", "EXAMINATION",1,1,3,1);
+			AppointmentReport apr = new AppointmentReport(13l,"Bronhitis","Light cough and a sore throat.");
+			appointmentReportRepository.save(apr);
 
 			appointmentRepository.save(apt);
 			//appointments.add(apt.getId());

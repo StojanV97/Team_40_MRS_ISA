@@ -8,8 +8,18 @@ public class AppointmentReport {
     @Id
     private Long appointmentReportId;
 
+    private String illness;
+    private String Description;
     public AppointmentReport() {
     }
+
+    public AppointmentReport(Long appointmentReportId, String illness, String description) {
+        this.appointmentReportId = appointmentReportId;
+        this.illness = illness;
+        Description = description;
+    }
+
+   
 
     public AppointmentReport(Long arId) {
         this.appointmentReportId = arId;
@@ -21,5 +31,21 @@ public class AppointmentReport {
 
     public void setAppointmentReportId(Long appointmentReportId) {
         this.appointmentReportId = appointmentReportId;
+    }
+
+    public String getIllness() {
+        return illness;
+    }
+
+    public void setIllness(String illness) {
+        this.illness = illness;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
     }
 }

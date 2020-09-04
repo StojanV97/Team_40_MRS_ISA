@@ -24,6 +24,15 @@ public class Appointment {
     long patientID;
     long doctorID;
     long clinicID;
+    long appointmentReportID;
+
+    public long getAppointmentReportID() {
+        return appointmentReportID;
+    }
+
+    public void setAppointmentReportID(long appointmentReportID) {
+        this.appointmentReportID = appointmentReportID;
+    }
 
     public long getClinicID() {
         return clinicID;
