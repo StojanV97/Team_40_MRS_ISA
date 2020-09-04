@@ -248,6 +248,10 @@ export default {
     createDaysOff(req) {
         return AXIOS.post('admin/create-days-off/', req);
     }
+    ,
+    getApointmentsForDoctor(id) {
+        return AXIOS.get('doctor/get-apt/' + id);
+    }
 }
 
 

@@ -129,9 +129,22 @@ public class AppointmentController {
         return new ResponseEntity<Collection<FreeAppointements>>(apt,HttpStatus.OK);
 
     }
+    @GetMapping(value = "doctor/get-apt/{id}")
+    public ResponseEntity<?> getForDoctor(@PathVariable Long id){
+        Collection<Appointment> apt = (Collection<Appointment>) apointmentRepository.findAll();
+        for(Appointment ap : apt){
+            if(!(ap.getDoctorID() == id)){
+                apt.remove(ap);
+            }
+        }
+        System.out.println(apt);
+        return new ResponseEntity<Collection<Appointment>>(apt,HttpStatus.OK);
+
+    }
 
 
-        @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAppoitment(@RequestBody Appointment appointment){
         ArrayList<String> termini = new ArrayList<String>();
         termini.add("10-00");
