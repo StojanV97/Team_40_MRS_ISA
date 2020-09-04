@@ -5,7 +5,6 @@ import de.jonashackt.springbootvuejs.repository.*;
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.service.RoomService;
 
-import de.jonashackt.springbootvuejs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -240,6 +239,97 @@ public class AppointmentController {
         return new ResponseEntity<ArrayList<Appointment>>(apt,HttpStatus.OK);
     }
 
+    @GetMapping(value = "admin/get-chart-apt/{type}")
+    public ResponseEntity<?> getChartData(@PathVariable Long type){
+        System.out.println("USO U METODU");
+        Date d = new Date();
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sp.format(d);
+        HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+        hmap.put("10-00",0);
+        hmap.put("10-30",0);
+        hmap.put("11-00",0);
+        hmap.put("11-30",0);
+        hmap.put("12-00",0);
+        hmap.put("12-30",0);
+        hmap.put("13-00",0);
+        hmap.put("13-30",0);
+        hmap.put("14-00",0);
+        Collection<Appointment> appointments = (Collection<Appointment>) apointmentRepository.findAll();
+        if(type == 1){
+                ArrayList<String> dates = new ArrayList<String>();
+                for(Appointment a : appointments){
+                    String[] splited = a.getDateAndTime().split(" ");
+                    if(splited[0].equalsIgnoreCase(date)){
+                        hmap.put(splited[1],1);
+                    }
+                }
+                return new ResponseEntity<HashMap<String,Integer>>(hmap,HttpStatus.OK);
+        }else if(type == 2){
 
+            System.out.println("USAO");
+            HashMap<String, Integer> hmapWeek = new HashMap<String, Integer>();
+            Date today = new Date();
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(today);
+            cal.add(Calendar.DAY_OF_MONTH, -7);
+            Date today7 = cal.getTime();
+            while(today7.before(today)){
+                String datum = sp.format(today7);
+                hmapWeek.put(datum,0);
+                Calendar cal2 = new GregorianCalendar();
+                cal2.setTime(today7);
+                cal2.add(Calendar.DAY_OF_MONTH,1);
+                today7 = cal2.getTime();
+            }
+            for(Appointment a : appointments){
+                String[] split = a.getDateAndTime().split(" ");
+                if(hmapWeek.containsKey(split[0])){
+                    hmapWeek.put(split[0],hmapWeek.get(split[0]) + 1);
+                }
+            }
+            ArrayList<String> arl = new ArrayList<>();
+            ArrayList<Integer> aint = new ArrayList<>();
+            HashMap<ArrayList<String>,ArrayList<Integer>> hashmap = new HashMap<>();
+            TreeMap<String, Integer> sorted = new TreeMap<>();
+            sorted.putAll(hmapWeek);
+            for (Map.Entry<String, Integer> entry : sorted.entrySet())
+            {
+                arl.add(entry.getKey());
+                aint.add(entry.getValue());
+                System.out.println("Key = " + entry.getKey() +
+                        ", Value = " + entry.getValue());
+            }
+            System.out.println("IZASAO");
+
+            hashmap.put(arl,aint);
+            return new ResponseEntity<HashMap<ArrayList<String>,ArrayList<Integer>>>(hashmap,HttpStatus.OK);
+
+        }else{
+            HashMap<String, Integer> hmapMonth = new HashMap<String, Integer>();
+            Date today = new Date();
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(today);
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            Date today30 = cal.getTime();
+            while(today30.before(today)){
+                String datum = sp.format(today30);
+                hmapMonth.put(datum,0);
+                Calendar cal2 = new GregorianCalendar();
+                cal2.setTime(today30);
+                cal2.add(Calendar.DAY_OF_MONTH,1);
+                today30 = cal2.getTime();
+            }
+
+            for(Appointment a : appointments){
+                String[] split = a.getDateAndTime().split(" ");
+                if(hmapMonth.containsKey(split[0])){
+                    hmapMonth.put(split[0],hmapMonth.get(split[0]) + 1);
+                }
+            }
+            return new ResponseEntity<HashMap<String,Integer>>(hmapMonth,HttpStatus.OK);
+
+        }
+    }
 
     }

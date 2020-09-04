@@ -14,6 +14,7 @@
     <OperationRequests @goBack="catchExamGoBack" v-if="operationRequests" />
     <RoomConfig @goBack="this.openClinicProfile" v-if="this.roomConfig" />
     <EditDoctors @goBack="this.openClinicProfile" v-if="editDoctors" />
+    <ExaminationChart v-if="this.showExamChart" />
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <v-list dense :disabled="disableMenu">
         <template v-for="item in items">
@@ -112,9 +113,11 @@ import DaysOffRequests from "../Utility/DaysOffRequests";
 import PredefinedAppointements from "../Utility/PredefinedAppointements";
 import PriceBook from "../Utility/PriceBook";
 import IncomeReport from "../Utility/IncomeReport";
+import ExaminationChart from "../Utility/ExaminationChart";
 
 export default {
   components: {
+    ExaminationChart,
     OperationRequests,
     ClinicEditForm,
     RoomConfig,
@@ -130,6 +133,7 @@ export default {
     source: String,
   },
   data: () => ({
+    showExamChart: false,
     showIncomeReport: false,
     showPriceBook: false,
     predefeinedApp: false,
@@ -161,7 +165,7 @@ export default {
         text: "Work report",
         model: false,
         children: [
-          { icon: "mdi-roman-numeral-1", text: "Examination gra ph" },
+          { icon: "mdi-roman-numeral-1", text: "Examination Chart" },
           { icon: "mdi-roman-numeral-2", text: "Income" },
         ],
       },
@@ -321,7 +325,17 @@ export default {
             this.reqtrue = true;
           })
           .catch((e) => {});
-      } else if (text === "Schedule examination") {
+      } else if (text === "Examination Chart") {
+        this.showExamChart = true;
+        this.showIncomeReport = false;
+        this.showPriceBook = false;
+        this.predefeinedApp = false;
+        this.examinationRequests = false;
+        this.operationRequests = false;
+        this.editAdminProfile = false;
+        this.editClinicProfile = false;
+        this.reqtrue = false;
+        this.roomConfig = false;
       } else {
       }
     },

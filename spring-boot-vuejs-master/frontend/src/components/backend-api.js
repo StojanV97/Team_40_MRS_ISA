@@ -11,7 +11,10 @@ export default {
         return AXIOS.get('admin/get-income' + '/' + dates)
     }
     ,
+    getAppointemensForChart(type) {
+        return AXIOS.get('admin/get-chart-apt/' + type)
 
+    },
     getAllPrices() {
         return AXIOS.get('admin/price-book')
     },
