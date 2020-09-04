@@ -9,7 +9,7 @@ vue add vuetify
 npm install --save vuex-persistedstate  
 npm install --save moment   
 npm install vue-chartjs chart.js --save    
-
+npm i vue-trend-chart
 
 
 NAPOMENA:
