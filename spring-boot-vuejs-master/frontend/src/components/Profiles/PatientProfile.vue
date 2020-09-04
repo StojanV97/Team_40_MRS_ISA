@@ -89,7 +89,10 @@
                       <td>{{row.item.clinicAddress}}</td>
                       <td>{{row.item.appointmentType}}</td>
                       <td>
-                        Bronhitis
+                        {{row.item.illness}}
+                      </td>
+                      <td>
+                        {{row.item.reportDescription}}
                       </td>
 
 
@@ -155,7 +158,8 @@ export default {
         { text: 'Clinic Name', value: 'clinicName' },
         { text: 'Clinic Address', value: 'clinicAddress' },
         { text: 'Appointment type', value: 'appointmentType' },
-        { text: 'Appointment report'}
+        { text: 'Illness', value: 'illness'},
+        { text: 'Appointment report', value: 'reportDescription'}
         // { text: 'Diagnosis', value: 'diagnosis' },
 
         //{ text: 'Medical History', value: 'medicalHistory' },

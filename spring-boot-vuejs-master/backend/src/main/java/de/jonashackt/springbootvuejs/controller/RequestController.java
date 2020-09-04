@@ -251,7 +251,7 @@ public class RequestController {
                     if (busy.size() != termini.size()) {
                         freeRoomsForDate.add(r);
                     } else {
-                        System.out.println("Isti");
+
                     }
                 }
             }

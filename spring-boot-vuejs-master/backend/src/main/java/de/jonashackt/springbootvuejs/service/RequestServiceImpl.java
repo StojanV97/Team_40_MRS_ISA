@@ -57,9 +57,8 @@ public class RequestServiceImpl implements RequestService{
 
     @Override
     public String delete(String request) {
-        System.out.println(request);
         RegisterRequests rg = requestRepository.findByUserName(request);
-        System.out.println(rg);
+
        requestRepository.delete(rg);
        return "Deleted";
     }

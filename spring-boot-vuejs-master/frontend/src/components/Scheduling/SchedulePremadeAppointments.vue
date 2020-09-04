@@ -64,6 +64,7 @@
                         <td>{{row.item.clinicName}}</td>
                         <td>{{row.item.clinicAddress}}</td>
                         <td>{{row.item.appointmentType}}</td>
+                        <td>50€</td>
                         <td>
                             <v-btn  @click="scheduleAppointment(row.item.appointmentID)"><v-icon>  mdi-checkbox-marked-circle-outline</v-icon></v-btn>
                         </td>
@@ -107,6 +108,7 @@
                 { text: 'Clinic Name', value: 'clinicName' },
                 { text: 'Clinic Address', value: 'clinicAddress' },
                 { text: 'Appointment type', value: 'appointmentType' },
+                { text: 'Price' },
                 { text: 'Schedule this appointment'}
 
 
