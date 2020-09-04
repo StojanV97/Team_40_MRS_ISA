@@ -59,27 +59,25 @@ public class AppointmentController {
         Collection<Appointment> listOfAppointments = (Collection<Appointment>) apointmentRepository.findAll();
         ArrayList<Appointment> doctorsListOfAppointments = new ArrayList<Appointment>();
         ArrayList<Appointment> currentAppointments = new ArrayList<Appointment>();
-        for(Appointment appointment : listOfAppointments){
-            if(appointment.getDoctorID() == userID){
+        for (Appointment appointment : listOfAppointments) {
+            if (appointment.getDoctorID() == userID) {
                 doctorsListOfAppointments.add(appointment);
             }
         }
-        if(!doctorsListOfAppointments.isEmpty()){
-            for(Appointment appointment : doctorsListOfAppointments){
+        if (!doctorsListOfAppointments.isEmpty()) {
+            for (Appointment appointment : doctorsListOfAppointments) {
                 Date examinationTerm = sp.parse(appointment.getDateAndTime());
-                examinationTerm.setTime(examinationTerm.getTime() - (120  * 60000));
-                Date endTerm = new Date(examinationTerm.getTime() + (30  * 60000));
+                examinationTerm.setTime(examinationTerm.getTime() - (120 * 60000));
+                Date endTerm = new Date(examinationTerm.getTime() + (30 * 60000));
 
-                if(now.after(examinationTerm) && now.before(endTerm)){
-                   currentAppointments.add(appointment);
+                if (now.after(examinationTerm) && now.before(endTerm)) {
+                    currentAppointments.add(appointment);
                 }
             }
         }
 
-        return new ResponseEntity<ArrayList<Appointment>>(currentAppointments,HttpStatus.ACCEPTED);
+        return new ResponseEntity<ArrayList<Appointment>>(currentAppointments, HttpStatus.ACCEPTED);
     }
-
-
 
 
     @PostMapping(value = "appointment/cancel/{id}")
@@ -90,50 +88,47 @@ public class AppointmentController {
 
         Optional<Appointment> ap = apointmentRepository.findById(id);
         Appointment appointment = new Appointment();
-        if(ap.isPresent())
-        {
+        if (ap.isPresent()) {
             appointment = ap.get();
         }
 
         Patient patient = new Patient();
         Optional<User> p = userRepository.findById(appointment.getPatientID());
-        if(p.isPresent())
-        {
-             patient = (Patient) p.get();
+        if (p.isPresent()) {
+            patient = (Patient) p.get();
         }
-
 
 
         boolean cancelable = true;
         Date appointmentDate = sp.parse(appointment.getDateAndTime());
         Date current = new Date(System.currentTimeMillis());
-        Date minus24 = new Date(appointmentDate.getTime() - 26*3600 * 1000);
+        Date minus24 = new Date(appointmentDate.getTime() - 26 * 3600 * 1000);
 
-        if(current.after(minus24))
-        {
+        if (current.after(minus24)) {
 
             cancelable = false;
 
-        }else{
+        } else {
             apointmentRepository.delete(appointment);
             patient.getAppointments().remove(id);
             userRepository.save(patient);
 
         }
-        return new ResponseEntity<>(cancelable,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(cancelable, HttpStatus.ACCEPTED);
     }
+
     @PostMapping(value = "admin/predefined-appointements/{date}/{type}/{clinicID}/{patientID}/{doctorID}/{roomID}")
-    public ResponseEntity<?> createPredefinedAppointment(@PathVariable String date,@PathVariable String type, @PathVariable Long clinicID,@PathVariable Long patientID,@PathVariable Long doctorID,@PathVariable Long roomID){
-        FreeAppointements fr = new FreeAppointements(date,type,roomID,patientID,doctorID,clinicID);
+    public ResponseEntity<?> createPredefinedAppointment(@PathVariable String date, @PathVariable String type, @PathVariable Long clinicID, @PathVariable Long patientID, @PathVariable Long doctorID, @PathVariable Long roomID) {
+        FreeAppointements fr = new FreeAppointements(date, type, roomID, patientID, doctorID, clinicID);
         Collection<Appointment> appointements = (Collection<Appointment>) apointmentRepository.findAll();
         Collection<FreeAppointements> fappointements = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
-        for(Appointment a : appointements){
-            if (a.getDateAndTime().equalsIgnoreCase(fr.getDateAndTime())){
+        for (Appointment a : appointements) {
+            if (a.getDateAndTime().equalsIgnoreCase(fr.getDateAndTime())) {
                 return new ResponseEntity<String>("!OK", HttpStatus.OK);
             }
         }
-        for(FreeAppointements fa : fappointements){
-            if (fa.getDateAndTime().equalsIgnoreCase(fr.getDateAndTime()) && roomID == fa.getRoomID()){
+        for (FreeAppointements fa : fappointements) {
+            if (fa.getDateAndTime().equalsIgnoreCase(fr.getDateAndTime()) && (roomID == fa.getRoomID())) {
                 return new ResponseEntity<String>("!OK", HttpStatus.OK);
             }
         }
@@ -142,30 +137,31 @@ public class AppointmentController {
         return new ResponseEntity<String>("OK", HttpStatus.OK);
 
     }
+
     @GetMapping(value = "/admin/get-all-free-appoint/")
-    public ResponseEntity<?> getAllPredef(){
+    public ResponseEntity<?> getAllPredef() {
         Collection<FreeAppointements> apt = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
         System.out.println(apt);
-        return new ResponseEntity<Collection<FreeAppointements>>(apt,HttpStatus.OK);
+        return new ResponseEntity<Collection<FreeAppointements>>(apt, HttpStatus.OK);
 
     }
+
     @GetMapping(value = "doctor/get-apt/{id}")
-    public ResponseEntity<?> getForDoctor(@PathVariable Long id){
+    public ResponseEntity<?> getForDoctor(@PathVariable Long id) {
         Collection<Appointment> apt = (Collection<Appointment>) apointmentRepository.findAll();
-        for(Appointment ap : apt){
-            if(!(ap.getDoctorID() == id)){
+        for (Appointment ap : apt) {
+            if (!(ap.getDoctorID() == id)) {
                 apt.remove(ap);
             }
         }
         System.out.println(apt);
-        return new ResponseEntity<Collection<Appointment>>(apt,HttpStatus.OK);
+        return new ResponseEntity<Collection<Appointment>>(apt, HttpStatus.OK);
 
     }
 
 
-
-    @PostMapping(value = "admin/create-appoitnment/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createAppoitment(@RequestBody Appointment appointment){
+    @PostMapping(value = "admin/create-appoitnment/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createAppoitment(@RequestBody Appointment appointment) {
         ArrayList<String> termini = new ArrayList<String>();
         termini.add("10-00");
         termini.add("10-30");
@@ -178,51 +174,52 @@ public class AppointmentController {
         termini.add("14-00");
         String newTerm = "";
         Room room = roomService.getRoom(appointment.getRoomID());
-       if(room.getCalendar().isEmpty()){
-           newTerm = appointment.getDateAndTime() + " " + "10-00";
-           appointment.setDateAndTime(appointment.getDateAndTime() + " 10-00");
-       }else{
-           ArrayList<String> busy = new ArrayList<String>();
-           for(String s : room.getCalendar()){
-               String[] splited = s.split(" ");
-               if(splited[0].equalsIgnoreCase(appointment.getDateAndTime())){
-                   busy.add(splited[1]);
-               }
-           }
-           if(busy.isEmpty()){
-               newTerm = appointment.getDateAndTime() + " " + "10-00";
-               appointment.setDateAndTime(appointment.getDateAndTime() + " " + "10-00");
-           }else{
+        if (room.getCalendar().isEmpty()) {
+            newTerm = appointment.getDateAndTime() + " " + "10-00";
+            appointment.setDateAndTime(appointment.getDateAndTime() + " 10-00");
+        } else {
+            ArrayList<String> busy = new ArrayList<String>();
+            for (String s : room.getCalendar()) {
+                String[] splited = s.split(" ");
+                if (splited[0].equalsIgnoreCase(appointment.getDateAndTime())) {
+                    busy.add(splited[1]);
+                }
+            }
+            if (busy.isEmpty()) {
+                newTerm = appointment.getDateAndTime() + " " + "10-00";
+                appointment.setDateAndTime(appointment.getDateAndTime() + " " + "10-00");
+            } else {
                 boolean flag = true;
-                busyFor : for(String s : termini) {
-                    if(busy.contains(s)){
+                busyFor:
+                for (String s : termini) {
+                    if (busy.contains(s)) {
 
-                    }else{
+                    } else {
                         newTerm = appointment.getDateAndTime() + " " + s;
                         appointment.setDateAndTime(appointment.getDateAndTime() + " " + s);
                         break busyFor;
                     }
                 }
-           }
-       }
+            }
+        }
         ArrayList<String> appt = new ArrayList<>(room.getCalendar());
         appt.add(newTerm);
 
         room.setCalendar(appt);
         roomRepository.save(room);
-        Room newRoom  =  roomService.getRoom(room.getRoomID());
+        Room newRoom = roomService.getRoom(room.getRoomID());
 
 
-      Optional<User> d = userRepository.findById(appointment.getDoctorID());
-      Doctor doctor = (Doctor) d.get();
-      doctor.setListOfPatients(appointment.getPatientID());
-      doctor.setListOfAppoitnements(newTerm);
-      appointment.setClinicID(appointment.getClinicID());
-      userRepository.save(doctor);
-      apointmentRepository.save(appointment);
-      AptIDandDate aptd = new AptIDandDate(newTerm,appointment.getId());
-      appointment.setClinicID(appointment.getClinicID());
-      //Treba dodati u listu kod pacijenta datum
+        Optional<User> d = userRepository.findById(appointment.getDoctorID());
+        Doctor doctor = (Doctor) d.get();
+        doctor.setListOfPatients(appointment.getPatientID());
+        doctor.setListOfAppoitnements(newTerm);
+        appointment.setClinicID(appointment.getClinicID());
+        userRepository.save(doctor);
+        apointmentRepository.save(appointment);
+        AptIDandDate aptd = new AptIDandDate(newTerm, appointment.getId());
+        appointment.setClinicID(appointment.getClinicID());
+        //Treba dodati u listu kod pacijenta datum
 
         return new ResponseEntity<AptIDandDate>(aptd, HttpStatus.OK);
     }
@@ -234,72 +231,72 @@ public class AppointmentController {
         Date date2 = null;
         ArrayList<Appointment> apt = new ArrayList<Appointment>();
         Collection<Appointment> appointments = (Collection<Appointment>) apointmentRepository.findAll();
-        if(dates.size() == 1){
+        if (dates.size() == 1) {
             date1 = sp.parse(dates.get(0));
-            for(Appointment a : appointments){
+            for (Appointment a : appointments) {
                 String[] podeli = a.getDateAndTime().split(" ");
                 Date dateOfAppointement = sp.parse(podeli[0]);
-                if(dates.get(0).equalsIgnoreCase(podeli[0])){
+                if (dates.get(0).equalsIgnoreCase(podeli[0])) {
                     apt.add(a);
                 }
             }
-            return new ResponseEntity<ArrayList<Appointment>>(apt,HttpStatus.OK);
+            return new ResponseEntity<ArrayList<Appointment>>(apt, HttpStatus.OK);
 
 
-        }else if (dates.size() == 0){
-            return new ResponseEntity<ArrayList<Appointment>>(apt,HttpStatus.OK);
-        }else{
+        } else if (dates.size() == 0) {
+            return new ResponseEntity<ArrayList<Appointment>>(apt, HttpStatus.OK);
+        } else {
             date1 = sp.parse(dates.get(0));
             date2 = sp.parse(dates.get(1));
 
         }
-        if(date1.before(date2)){
-            for(Appointment a : appointments){
+        if (date1.before(date2)) {
+            for (Appointment a : appointments) {
                 String[] podeli = a.getDateAndTime().split(" ");
                 Date dateOfAppointement = sp.parse(podeli[0]);
-                if(dateOfAppointement.after(date1) && dateOfAppointement.before(date2)){
+                if (dateOfAppointement.after(date1) && dateOfAppointement.before(date2)) {
                     apt.add(a);
                 }
             }
-        }else{
-            for(Appointment a : appointments){
+        } else {
+            for (Appointment a : appointments) {
                 String[] podeli = a.getDateAndTime().split(" ");
                 Date dateOfAppointement = sp.parse(podeli[0]);
-                if(dateOfAppointement.after(date2) && dateOfAppointement.before(date1)){
+                if (dateOfAppointement.after(date2) && dateOfAppointement.before(date1)) {
                     apt.add(a);
                 }
             }
         }
-        return new ResponseEntity<ArrayList<Appointment>>(apt,HttpStatus.OK);
+        return new ResponseEntity<ArrayList<Appointment>>(apt, HttpStatus.OK);
     }
 
     @GetMapping(value = "admin/get-chart-apt/{type}")
-    public ResponseEntity<?> getChartData(@PathVariable Long type){
+    public ResponseEntity<?> getChartData(@PathVariable Long type) {
         System.out.println("USO U METODU");
         Date d = new Date();
         SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
         String date = sp.format(d);
         HashMap<String, Integer> hmap = new HashMap<String, Integer>();
-        hmap.put("10-00",0);
-        hmap.put("10-30",0);
-        hmap.put("11-00",0);
-        hmap.put("11-30",0);
-        hmap.put("12-00",0);
-        hmap.put("12-30",0);
-        hmap.put("13-00",0);
-        hmap.put("13-30",0);
-        hmap.put("14-00",0);
+        hmap.put("10-00", 0);
+        hmap.put("10-30", 0);
+        hmap.put("11-00", 0);
+        hmap.put("11-30", 0);
+        hmap.put("12-00", 0);
+        hmap.put("12-30", 0);
+        hmap.put("13-00", 0);
+        hmap.put("13-30", 0);
+        hmap.put("14-00", 0);
         Collection<Appointment> appointments = (Collection<Appointment>) apointmentRepository.findAll();
-        if(type == 1){
-                ArrayList<String> dates = new ArrayList<String>();
-                for(Appointment a : appointments){
-                    String[] splited = a.getDateAndTime().split(" ");
-                    if(splited[0].equalsIgnoreCase(date)){
-                        hmap.put(splited[1],1);
-                    }
+        if (type == 1) {
+            ArrayList<String> dates = new ArrayList<String>();
+            for (Appointment a : appointments) {
+                String[] splited = a.getDateAndTime().split(" ");
+                if (splited[0].equalsIgnoreCase(date)) {
+                    hmap.put(splited[1], 1);
                 }
-                return new ResponseEntity<HashMap<String,Integer>>(hmap,HttpStatus.OK);
-        }else if(type == 2){
+            }
+            return new ResponseEntity<HashMap<String, Integer>>(hmap, HttpStatus.OK);
+        } else if (type == 2) {
 
             System.out.println("USAO");
             HashMap<String, Integer> hmapWeek = new HashMap<String, Integer>();
@@ -308,27 +305,26 @@ public class AppointmentController {
             cal.setTime(today);
             cal.add(Calendar.DAY_OF_MONTH, -7);
             Date today7 = cal.getTime();
-            while(today7.before(today)){
+            while (today7.before(today)) {
                 String datum = sp.format(today7);
-                hmapWeek.put(datum,0);
+                hmapWeek.put(datum, 0);
                 Calendar cal2 = new GregorianCalendar();
                 cal2.setTime(today7);
-                cal2.add(Calendar.DAY_OF_MONTH,1);
+                cal2.add(Calendar.DAY_OF_MONTH, 1);
                 today7 = cal2.getTime();
             }
-            for(Appointment a : appointments){
+            for (Appointment a : appointments) {
                 String[] split = a.getDateAndTime().split(" ");
-                if(hmapWeek.containsKey(split[0])){
-                    hmapWeek.put(split[0],hmapWeek.get(split[0]) + 1);
+                if (hmapWeek.containsKey(split[0])) {
+                    hmapWeek.put(split[0], hmapWeek.get(split[0]) + 1);
                 }
             }
             ArrayList<String> arl = new ArrayList<>();
             ArrayList<Integer> aint = new ArrayList<>();
-            HashMap<ArrayList<String>,ArrayList<Integer>> hashmap = new HashMap<>();
+            HashMap<ArrayList<String>, ArrayList<Integer>> hashmap = new HashMap<>();
             TreeMap<String, Integer> sorted = new TreeMap<>();
             sorted.putAll(hmapWeek);
-            for (Map.Entry<String, Integer> entry : sorted.entrySet())
-            {
+            for (Map.Entry<String, Integer> entry : sorted.entrySet()) {
                 arl.add(entry.getKey());
                 aint.add(entry.getValue());
                 System.out.println("Key = " + entry.getKey() +
@@ -336,15 +332,50 @@ public class AppointmentController {
             }
             System.out.println("IZASAO");
 
-            hashmap.put(arl,aint);
-            return new ResponseEntity<HashMap<ArrayList<String>,ArrayList<Integer>>>(hashmap,HttpStatus.OK);
+            hashmap.put(arl, aint);
+            return new ResponseEntity<HashMap<ArrayList<String>, ArrayList<Integer>>>(hashmap, HttpStatus.OK);
+        } else {
+            HashMap<String, Integer> hmapMonth = new HashMap<String, Integer>();
+            Date today = new Date();
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(today);
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            Date today30 = cal.getTime();
+            while (today30.before(today)) {
+                String datum = sp.format(today30);
+                hmapMonth.put(datum, 0);
+                Calendar cal2 = new GregorianCalendar();
+                cal2.setTime(today30);
+                cal2.add(Calendar.DAY_OF_MONTH, 1);
+                today30 = cal2.getTime();
+            }
+            for (Appointment a : appointments) {
+                String[] split = a.getDateAndTime().split(" ");
+                if (hmapMonth.containsKey(split[0])) {
+                    hmapMonth.put(split[0], hmapMonth.get(split[0]) + 1);
+                }
+            }
+            ArrayList<String> arl2 = new ArrayList<>();
+            ArrayList<Integer> aint2 = new ArrayList<>();
+            HashMap<ArrayList<String>, ArrayList<Integer>> hashmap2 = new HashMap<>();
+            TreeMap<String, Integer> sorted = new TreeMap<>();
+            sorted.putAll(hmapMonth);
+            for (Map.Entry<String, Integer> entry : sorted.entrySet()) {
+                arl2.add(entry.getKey());
+                aint2.add(entry.getValue());
+                System.out.println("Key = " + entry.getKey() +
+                        ", Value = " + entry.getValue());
+            }
+            hashmap2.put(arl2, aint2);
+            return new ResponseEntity<HashMap<ArrayList<String>, ArrayList<Integer>>>(hashmap2, HttpStatus.OK);
+        }
+    }
+
     @PostMapping(value = "patient/schedule-existing-appointment/{appointmentID}/{patientID}")
-    public ResponseEntity<?> scheduleExistingAppointment(@PathVariable long appointmentID,@PathVariable long patientID)
-    {
+    public ResponseEntity<?> scheduleExistingAppointment(@PathVariable long appointmentID, @PathVariable long patientID) {
         Collection<FreeAppointements> freeAppointements = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
-        for(FreeAppointements fapt : freeAppointements){
-            if(fapt.getId() == appointmentID)
-            {
+        for (FreeAppointements fapt : freeAppointements) {
+            if (fapt.getId() == appointmentID) {
                 Appointment appointment = new Appointment();
                 appointment.setDateAndTime(fapt.getDateAndTime());
                 appointment.setClinicID(fapt.getClinicID());
@@ -358,8 +389,7 @@ public class AppointmentController {
 
                 Optional<User> p = userRepository.findById(patientID);
 
-                if(p.isPresent())
-                {
+                if (p.isPresent()) {
                     Patient patient = (Patient) p.get();
                     ArrayList<Long> patientAppointments = patient.getAppointments();
                     patientAppointments.add(fapt.getId());
@@ -372,107 +402,66 @@ public class AppointmentController {
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 
+
     @GetMapping(value = "patient/get-appointments-for-clinic/{clinicID}")
     public ResponseEntity<Collection<AppointmentPreviewer>> getExistingAppointmentsForClinic(@PathVariable long clinicID) throws ParseException {
 
 
-            SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH-mm");
-            sp.setTimeZone(TimeZone.getTimeZone("GMT"));
-            Date now = new Date();
-            Collection<AppointmentPreviewer> previewer = new ArrayList<AppointmentPreviewer>();
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+        sp.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date now = new Date();
+        Collection<AppointmentPreviewer> previewer = new ArrayList<AppointmentPreviewer>();
 
-            Collection<FreeAppointements> freeAppointements = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
+        Collection<FreeAppointements> freeAppointements = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
 
-            Appointment appointment = new Appointment();
-
-
-
-            for(FreeAppointements fapt : freeAppointements){
-                Doctor doctor = new Doctor();
-                AppointmentPreviewer appointmentPreviewer = new AppointmentPreviewer();
-                if(sp.parse(fapt.getDateAndTime()).after(now)) {
-                    if (fapt.getClinicID() == clinicID) {
-                        appointmentPreviewer.setAppointmentID(fapt.getId());
-
-                        Clinic clinic = clinicRepository.findById(fapt.getClinicID());
-
-                        appointmentPreviewer.setClinicName(clinic.getName());
-                        appointmentPreviewer.setClinicAddress(clinic.getAddress());
+        Appointment appointment = new Appointment();
 
 
-                        Optional<User> dc = userRepository.findById(fapt.getDoctorID());
-                        if (dc.isPresent()) {
-                            doctor = (Doctor) dc.get();
-                        }
 
-                        Date appointmentDate = sp.parse(fapt.getDateAndTime());
-                        Date today = new Date();
+        for(FreeAppointements fapt : freeAppointements){
+            Doctor doctor = new Doctor();
+            AppointmentPreviewer appointmentPreviewer = new AppointmentPreviewer();
+            if(sp.parse(fapt.getDateAndTime()).after(now)) {
+                if (fapt.getClinicID() == clinicID) {
+                    appointmentPreviewer.setAppointmentID(fapt.getId());
+
+                    Clinic clinic = clinicRepository.findById(fapt.getClinicID());
+
+                    appointmentPreviewer.setClinicName(clinic.getName());
+                    appointmentPreviewer.setClinicAddress(clinic.getAddress());
 
 
-                        appointmentPreviewer.setDoctorFirstName(doctor.getFirstName());
-                        appointmentPreviewer.setDoctorLastName(doctor.getLastName());
+                    Optional<User> dc = userRepository.findById(fapt.getDoctorID());
+                    if (dc.isPresent()) {
+                        doctor = (Doctor) dc.get();
+                    }
 
-                        appointmentPreviewer.setAppointmentType(fapt.getType());
+                    Date appointmentDate = sp.parse(fapt.getDateAndTime());
+                    Date today = new Date();
 
-                        appointmentPreviewer.setDateAndTime(fapt.getDateAndTime());
 
-                        appointmentPreviewer.setClinicAddress(clinic.getAddress());
-                        appointmentPreviewer.setClinicName(clinic.getName());
+                    appointmentPreviewer.setDoctorFirstName(doctor.getFirstName());
+                    appointmentPreviewer.setDoctorLastName(doctor.getLastName());
 
-                        appointmentPreviewer.setAppointmentType(fapt.getType());
-                        if (appointmentDate.after(today)) {
-                            previewer.add(appointmentPreviewer);
+                    appointmentPreviewer.setAppointmentType(fapt.getType());
 
-                        }
+                    appointmentPreviewer.setDateAndTime(fapt.getDateAndTime());
+
+                    appointmentPreviewer.setClinicAddress(clinic.getAddress());
+                    appointmentPreviewer.setClinicName(clinic.getName());
+
+                    appointmentPreviewer.setAppointmentType(fapt.getType());
+                    if (appointmentDate.after(today)) {
+                        previewer.add(appointmentPreviewer);
 
                     }
+
                 }
             }
-
-
-            return new ResponseEntity<Collection<AppointmentPreviewer>>(previewer, HttpStatus.OK);
         }
 
-        }else{
-            HashMap<String, Integer> hmapMonth = new HashMap<String, Integer>();
-            Date today = new Date();
-            Calendar cal = new GregorianCalendar();
-            cal.setTime(today);
-            cal.add(Calendar.DAY_OF_MONTH, -30);
-            Date today30 = cal.getTime();
-            while(today30.before(today)){
-                String datum = sp.format(today30);
-                hmapMonth.put(datum,0);
-                Calendar cal2 = new GregorianCalendar();
-                cal2.setTime(today30);
-                cal2.add(Calendar.DAY_OF_MONTH,1);
-                today30 = cal2.getTime();
-            }
 
-            for(Appointment a : appointments){
-                String[] split = a.getDateAndTime().split(" ");
-                if(hmapMonth.containsKey(split[0])){
-                    hmapMonth.put(split[0],hmapMonth.get(split[0]) + 1);
-                }
-            }
-            ArrayList<String> arl2 = new ArrayList<>();
-            ArrayList<Integer> aint2 = new ArrayList<>();
-            HashMap<ArrayList<String>,ArrayList<Integer>> hashmap2 = new HashMap<>();
-            TreeMap<String, Integer> sorted = new TreeMap<>();
-            sorted.putAll(hmapMonth);
-            for (Map.Entry<String, Integer> entry : sorted.entrySet())
-            {
-                arl2.add(entry.getKey());
-                aint2.add(entry.getValue());
-                System.out.println("Key = " + entry.getKey() +
-                        ", Value = " + entry.getValue());
-            }
-
-
-            hashmap2.put(arl2,aint2);
-            return new ResponseEntity<HashMap<ArrayList<String>,ArrayList<Integer>>>(hashmap2,HttpStatus.OK);
-
-        }
+        return new ResponseEntity<Collection<AppointmentPreviewer>>(previewer, HttpStatus.OK);
     }
 
 }

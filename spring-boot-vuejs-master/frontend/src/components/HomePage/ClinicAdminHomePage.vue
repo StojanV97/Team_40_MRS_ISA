@@ -239,6 +239,8 @@ export default {
       if (text === "Dark mode On/Off") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       } else if (text === "Examination requests") {
+        this.showExamChart = false;
+
         this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
@@ -249,6 +251,8 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Operation requests") {
+        this.showExamChart = false;
+
         this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
@@ -259,6 +263,8 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Price Book") {
+        this.showExamChart = false;
+
         this.showIncomeReport = false;
         this.showPriceBook = true;
         this.predefeinedApp = false;
@@ -269,6 +275,8 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Edit Clinic info") {
+        this.showExamChart = false;
+
         this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
@@ -279,6 +287,8 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Predefined Apppointements") {
+        this.showExamChart = false;
+
         this.showPriceBook = false;
         this.showIncomeReport = false;
         this.predefeinedApp = true;
@@ -289,6 +299,8 @@ export default {
         this.reqtrue = false;
         this.roomConfig = false;
       } else if (text === "Income") {
+        this.showExamChart = false;
+
         this.showIncomeReport = true;
         this.showPriceBook = false;
         this.predefeinedApp = false;
@@ -299,6 +311,8 @@ export default {
         this.reqtrue = false;
         this.roomConfig = false;
       } else if (text === "Profile") {
+        this.showExamChart = false;
+
         this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
@@ -309,6 +323,8 @@ export default {
         this.reqtrue = false;
         this.roomConfig = false;
       } else if (text === "Days off requests") {
+        this.showExamChart = false;
+
         this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;

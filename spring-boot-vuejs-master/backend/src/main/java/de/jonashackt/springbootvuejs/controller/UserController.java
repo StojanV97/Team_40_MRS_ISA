@@ -81,12 +81,8 @@ public class UserController {
 
     @PostMapping(value = "/email/{message}/{email}")
     public ResponseEntity<String> sendEmail(@PathVariable String message,@PathVariable ArrayList<String> email) throws MessagingException {
-
-
-
         final String username = "team40mrsisa@gmail.com";
         final String password = "no0013144";
-
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");

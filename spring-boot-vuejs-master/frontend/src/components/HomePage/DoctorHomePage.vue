@@ -32,9 +32,6 @@
                 class="my-2"
                 color="blue"
               >Show</v-btn>
-              <v-btn icon="true">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
             </td>
           </tr>
         </template>

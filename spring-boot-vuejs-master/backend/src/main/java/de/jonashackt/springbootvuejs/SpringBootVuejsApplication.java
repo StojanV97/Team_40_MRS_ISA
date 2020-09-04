@@ -39,7 +39,6 @@ public class SpringBootVuejsApplication {
 			listOfDates.add("2020-09-11 10-00");
 			listOfDates.add("2020-08-19 10-30");
 			listOfDates.add("2020-08-19 11-00");
-
 			priceBookRepository.save(new PriceBook("Examination",50));
 			priceBookRepository.save(new PriceBook("Operation",250));
 
@@ -147,7 +146,7 @@ public class SpringBootVuejsApplication {
 			appointmentRequestRepository.save(new AppointmentRequest("2020-09-07","EXAMINATION", 1,1,3));
 			appointmentRequestRepository.save(new AppointmentRequest("2020-09-08","OPERATION", 1,2,3));
 			//Appointment apt= new Appointment("2020-08-20 15-30", "EXAMINATION",1,1,3,2);
-			Appointment apt= new Appointment("2020-08-22 11-20", "EXAMINATION",2,1,6,1);
+			Appointment apt= new Appointment("2020-08-22 11-30", "EXAMINATION",2,1,6,1);
 			AppointmentReport apr = new AppointmentReport(13l,"Cold","Light cough and a sore throat.");
 			appointmentReportRepository.save(apr);
 

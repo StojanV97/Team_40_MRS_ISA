@@ -57,7 +57,10 @@
       <v-card>
         <v-card-title class="grey darken-2">Examination</v-card-title>
         <v-container id="container">
-          <StartExamination v-bind:appointment="$props.appoitements" />
+          <StartExamination
+            @delete="deleteElement($event)"
+            v-bind:appointment="$props.appoitements"
+          />
         </v-container>
         <v-card-actions>
           <v-spacer />
@@ -81,7 +84,7 @@ import StartExamination from "../Scheduling/StartExamination";
 export default {
   components: {
     AppointRoom,
-    StartExamination
+    StartExamination,
   },
   props: ["appoitements"],
   data() {
@@ -94,17 +97,17 @@ export default {
         { text: "Doctor", value: "doctorID" },
         { text: "Patient", value: "patientID" },
         { text: "Room", value: "roomID" },
-        { text: "Start", value: "actions" }
+        { text: "Start", value: "actions" },
       ],
       room: {
         calendar: null,
         roomID: null,
-        roomName: ""
+        roomName: "",
       },
       user: {
         firstName: "",
         lastBane: "",
-        id: ""
+        id: "",
       },
       previewUser: false,
       appointRoomDialog: false,
@@ -114,8 +117,8 @@ export default {
       msg: "",
       message: {
         msg: null,
-        email: []
-      }
+        email: [],
+      },
     };
   },
   mounted() {
@@ -128,16 +131,19 @@ export default {
       this.appointRoomDialog = true;
       this.$store.commit("setAppointment", item);
     },
+    deleteElemet(event) {
+      console.log(event);
+    },
     reloadAppt() {
       api
         .getCurretExaminations(localStorage.getItem("userID"))
-        .then(response => {
+        .then((response) => {
           console.log(response.data);
-          $props.appoitements = response.data;
+          this.$props.appoitements = response.data;
         })
-        .catch(e => {});
-    }
-  }
+        .catch((e) => {});
+    },
+  },
 };
 </script>
 
