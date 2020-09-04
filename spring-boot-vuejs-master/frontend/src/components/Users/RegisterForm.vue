@@ -1,7 +1,7 @@
 <template>
     <div id="app" class="forma">
         <v-app id="inspire">
-            <v-row class ="row" align="center" >
+            <v-row class ="row"  >
                 <v-row justify="space-around">
                 </v-row>
                 <v-form
@@ -117,7 +117,7 @@
 
 <style>
     .forma {
-        margin-right: 700px;
+       width: 200px;
 
 
     }
@@ -127,7 +127,8 @@
     }
     .row
     {
-        margin-top: 50px;
+
+        margin-left: -10px;
     }
 
 

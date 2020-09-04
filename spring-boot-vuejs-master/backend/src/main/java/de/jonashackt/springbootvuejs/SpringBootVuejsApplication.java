@@ -28,7 +28,7 @@ public class SpringBootVuejsApplication {
 
 	}
 	@Bean
-	CommandLineRunner runner(PriceBookRepository priceBookRepository,MedicalRecordRepository  medicalRecordRepository, DaysOffRepository daysOffRepository, MedicineRepository medicineRepository, AppointmentRepository appointmentRepository , AppointmentRequestRepository appointmentRequestRepository, ClinicRoomRepository clinicRoomRepository, ClinicDoctorRepository clinicDoctorRepository, UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository , ClinicRepository clinicRepository, ClinicAdminRepository clinicAdminRepository, RecordReportsRepository recordReportsRepository){
+	CommandLineRunner runner(FreeAppointementsRepository freeAppointementsRepository,PriceBookRepository priceBookRepository,MedicalRecordRepository  medicalRecordRepository, DaysOffRepository daysOffRepository, MedicineRepository medicineRepository, AppointmentRepository appointmentRepository , AppointmentRequestRepository appointmentRequestRepository, ClinicRoomRepository clinicRoomRepository, ClinicDoctorRepository clinicDoctorRepository, UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository , ClinicRepository clinicRepository, ClinicAdminRepository clinicAdminRepository, RecordReportsRepository recordReportsRepository){
 		return args -> {
 
 			//Date
@@ -100,7 +100,7 @@ public class SpringBootVuejsApplication {
 			Nurse nurse = new Nurse(9,"Nurse","Nurse","Nurse@gmail.com","Nurse",bc.encode("password"));
 			clinincCenterAdmin.getAuthorities().add(clinicCenterAdminAuthority);
 			clinincAdmin.getAuthorities().add(clinicAdminAuthority);
-			clinincAdmin2.getAuthorities().add(clinicAdminAuthority);
+			//clinincAdmin2.getAuthorities().add(clinicAdminAuthority);
 			clinincAdmin.setPassChanged(true);
 			nurse.getAuthorities().add(nurseAuthority);
 			patient.getAuthorities().add(patientAuthority);
@@ -126,7 +126,7 @@ public class SpringBootVuejsApplication {
 			userRepository.save(doctor23);
 			userRepository.save(clinincCenterAdmin);
 			userRepository.save(clinincAdmin);
-			userRepository.save(clinincAdmin2);
+			//userRepository.save(clinincAdmin2);
 			userRepository.save(nurse);
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr1"));
 			requestRepository.save(new RegisterRequests("asdsa","sdqssasd","stojan.v1997@gmail.com","rr2"));
@@ -209,6 +209,18 @@ public class SpringBootVuejsApplication {
 			Record_Reports rr = new Record_Reports(m.getMedicalRecordId(), ar.getAppointmentReportId());
 			recordReportsRepository.save(rr);
 
+			FreeAppointements fa = new FreeAppointements("2020-12-12 10-30", "EXAMINATION",1,3,1);
+			freeAppointementsRepository.save(fa);
+			FreeAppointements fa1 = new FreeAppointements("2020-10-15 10-30", "EXAMINATION",1,4,1);
+			freeAppointementsRepository.save(fa1);
+			FreeAppointements fa2 = new FreeAppointements("2020-09-16 10-30", "Ocni Pregled",1,5,1);
+			FreeAppointements fa4 = new FreeAppointements("2020-09-16 11-30", "Regular examination",1,4,2);
+			FreeAppointements fa5 = new FreeAppointements("2020-09-16 12-00", "Eye examination",1,6,2);
+			FreeAppointements fa6 = new FreeAppointements("2020-09-17 10-30", "Skin examination",1,7,2);
+			freeAppointementsRepository.save(fa2);
+			freeAppointementsRepository.save(fa6);
+			freeAppointementsRepository.save(fa4);
+			freeAppointementsRepository.save(fa5);
 		};
 
 	}

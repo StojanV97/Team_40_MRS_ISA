@@ -71,8 +71,6 @@ public class UserController {
     @GetMapping(value = "/account-verify/{username}")
     public ResponseEntity<String> verifyAccount(@PathVariable String username) throws MessagingException {
 
-        System.out.println("tu smoooo");
-        System.out.println(username);
         RegisterRequests patient =  requestRepository.findByUserName(username);
 
         userRepository.save(new Patient(patient.getId(),patient.getFirstName(),patient.getLastName(),patient.getEmail(),patient.getUserName(),"123123",patient.getCountry(),patient.getCity(),patient.getAddress(),patient.getPhoneNumber(),patient.getInsuranceNumber()));
@@ -151,7 +149,6 @@ public class UserController {
 
         Clinic clinic = clinicService.getClinic(id);
         Set<Doctor> doctors = clinic.getDoctors();
-        System.out.println(doctors.toString());
         return doctors;
     }
 
