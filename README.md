@@ -1,7 +1,7 @@
 Skinuti i instalirati Nodejs
 Importovati springboot projekat u radno okruzenje 
 U terminalu locirati se u frontend folder
-Pokrenuti : ž
+Pokrenuti : 
 
 npm install vue   
 npm install vuetify    
@@ -24,8 +24,8 @@ Pacijent :
   *Password: 123
   
 Doktor:
-  *Username:Doctor
-  *Password:password
+  *Username: Doctor
+  *Password: password
   
 Admin Klinickog Centra:
   *Username: ClinicCenterAdmin
@@ -36,5 +36,5 @@ Medicinska Sestra:
   *Password: password
   
 Admin Klinike:
-  *Username:ClinicAdmin
+  *Username: ClinicAdmin
   *Password: password
