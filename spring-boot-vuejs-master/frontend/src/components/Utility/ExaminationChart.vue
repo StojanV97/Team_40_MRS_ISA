@@ -20,7 +20,7 @@ export default {
     BarChart,
   },
   data: () => ({
-    data: [1, 1, 1, 1, 1, 1],
+    data: [],
     labels: [],
   }),
   methods: {
@@ -37,23 +37,23 @@ export default {
           "13:30",
           "14:00",
         ];
-        for (const index in response.data) {
-          this.data.push(response.data[index]);
-        }
-        this.data = [1, 1, 1, 1, 1, 1, 2];
+
         this.$refs.chart.reRender(this.labels, this.data);
       });
     },
     showMonthly() {
       api.getAppointemensForChart(3).then((response) => {
-        this.data = [];
-        for (var key in response.data) {
-          this.data.push(response.data[key]);
-        }
-        this.labels = Object.keys(response.data);
-        this.data = Object.values(response.data);
+        var datumi = Object.keys(response.data);
+        datumi = datumi[0];
+        datumi = datumi.split(",");
+        var fixDate = datumi[0].split("[");
+        var fixDate2 = datumi[datumi.length - 1].split("]");
+        datumi.splice(0, 1, fixDate[1]);
+        datumi.splice(datumi.length - 1, 1, fixDate2[0]);
+        this.labels = datumi;
+        var values = Object.values(response.data);
+        this.data = values[0];
         console.log(this.data);
-        this.data = [2, 2, 2, 2, 1, 1, 2];
         this.$refs.chart.reRender(this.labels, this.data);
       });
     },
@@ -67,7 +67,9 @@ export default {
         datumi.splice(0, 1, fixDate[1]);
         datumi.splice(datumi.length - 1, 1, fixDate2[0]);
         this.labels = datumi;
-        this.data.splice(1, 1);
+        var values = Object.values(response.data);
+        this.data = values[0];
+        console.log(this.data);
         this.$refs.chart.reRender(this.labels, this.data);
       });
     },

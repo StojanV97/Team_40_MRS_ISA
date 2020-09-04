@@ -327,7 +327,22 @@ public class AppointmentController {
                     hmapMonth.put(split[0],hmapMonth.get(split[0]) + 1);
                 }
             }
-            return new ResponseEntity<HashMap<String,Integer>>(hmapMonth,HttpStatus.OK);
+            ArrayList<String> arl2 = new ArrayList<>();
+            ArrayList<Integer> aint2 = new ArrayList<>();
+            HashMap<ArrayList<String>,ArrayList<Integer>> hashmap2 = new HashMap<>();
+            TreeMap<String, Integer> sorted = new TreeMap<>();
+            sorted.putAll(hmapMonth);
+            for (Map.Entry<String, Integer> entry : sorted.entrySet())
+            {
+                arl2.add(entry.getKey());
+                aint2.add(entry.getValue());
+                System.out.println("Key = " + entry.getKey() +
+                        ", Value = " + entry.getValue());
+            }
+
+
+            hashmap2.put(arl2,aint2);
+            return new ResponseEntity<HashMap<ArrayList<String>,ArrayList<Integer>>>(hashmap2,HttpStatus.OK);
 
         }
     }

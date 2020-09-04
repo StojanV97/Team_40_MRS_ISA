@@ -76,6 +76,7 @@ export default {
   methods: {
     reRender(labels, data) {
       this.chartData.labels = labels;
+      this.chartData.datasets[0].data = data;
       this.renderChart(this.chartData, this.options);
     },
   },
