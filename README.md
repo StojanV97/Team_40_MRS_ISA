@@ -19,7 +19,7 @@ NAPOMENA:
 
 *USERI ZA PROVERU FUNKCIONALNOST:
 
-Pacijent : 
+--Pacijent : 
 
   *Username: Patient
   
@@ -27,7 +27,7 @@ Pacijent :
 
 
 
-Doktor:
+--Doktor:
 
   *Username: Doctor
   
@@ -35,7 +35,7 @@ Doktor:
   
   
   
-Admin Klinickog Centra:
+--Admin Klinickog Centra:
 
   *Username: ClinicCenterAdmin
   
@@ -43,7 +43,7 @@ Admin Klinickog Centra:
   
   
   
-Medicinska Sestra:
+--Medicinska Sestra:
 
   *Username: Nurse
   
@@ -52,7 +52,7 @@ Medicinska Sestra:
   
   
   
-Admin Klinike:
+--Admin Klinike:
 
   *Username: ClinicAdmin
   
