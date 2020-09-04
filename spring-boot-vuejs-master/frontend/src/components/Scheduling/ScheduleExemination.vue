@@ -139,7 +139,7 @@ export default {
         .getCurretExaminations(localStorage.getItem("userID"))
         .then((response) => {
           console.log(response.data);
-          this.$props.appoitements = response.data;
+          this.$emit("reload");
         })
         .catch((e) => {});
     },

@@ -3,6 +3,7 @@
     <calendar id="calendar" v-if="this.showCalendar"></calendar>
     <DoctorProfile v-if="this.showProfile"></DoctorProfile>
     <ScheduleExemination
+      @reload="reloadAPT"
       v-bind:appoitements="currentAppointements"
       v-if="this.showExaminationScheduling"
     ></ScheduleExemination>
@@ -215,6 +216,19 @@ export default {
       });
   },
   methods: {
+    reloadAPT() {
+      api
+        .getCurretExaminations(localStorage.getItem("userID"))
+        .then((response) => {
+          console.log("sadasd");
+
+          this.currentAppointements = response.data;
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
     getOption(text) {
       if (text === "Dark mode On/Off") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
