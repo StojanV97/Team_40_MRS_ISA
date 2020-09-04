@@ -20,21 +20,33 @@ NAPOMENA:
 *USERI ZA PROVERU FUNKCIONALNOST:
 
 Pacijent : 
+
   *Username: Patient
+  
   *Password: 123
   
 Doktor:
+
   *Username: Doctor
+  
   *Password: password
   
 Admin Klinickog Centra:
+
   *Username: ClinicCenterAdmin
+  
   *Password: password
   
 Medicinska Sestra:
+
   *Username: Nurse
+  
   *Password: password
   
+  
 Admin Klinike:
+
   *Username: ClinicAdmin
+  
   *Password: password
+  
