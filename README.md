@@ -24,12 +24,16 @@ Pacijent :
   *Username: Patient
   
   *Password: 123
-  
+
+
+
 Doktor:
 
   *Username: Doctor
   
   *Password: password
+  
+  
   
 Admin Klinickog Centra:
 
@@ -37,11 +41,15 @@ Admin Klinickog Centra:
   
   *Password: password
   
+  
+  
 Medicinska Sestra:
 
   *Username: Nurse
   
   *Password: password
+  
+  
   
   
 Admin Klinike:
