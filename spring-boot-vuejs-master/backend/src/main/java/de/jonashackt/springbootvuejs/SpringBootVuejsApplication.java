@@ -30,7 +30,6 @@ public class SpringBootVuejsApplication {
 	@Bean
 	CommandLineRunner runner(PriceBookRepository priceBookRepository,MedicalRecordRepository  medicalRecordRepository, DaysOffRepository daysOffRepository, MedicineRepository medicineRepository, AppointmentRepository appointmentRepository , AppointmentRequestRepository appointmentRequestRepository, ClinicRoomRepository clinicRoomRepository, ClinicDoctorRepository clinicDoctorRepository, UserRepository userRepository, RoomRepository roomRepository, RequestRepository requestRepository, DiagnoseRepository diagnoseRepository , ClinicRepository clinicRepository, ClinicAdminRepository clinicAdminRepository, RecordReportsRepository recordReportsRepository){
 		return args -> {
-
 			//Date
 			Date d = new Date();
 			SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
@@ -39,12 +38,9 @@ public class SpringBootVuejsApplication {
 			listOfDates.add("2020-09-11 10-00");
 			listOfDates.add("2020-08-19 10-30");
 			listOfDates.add("2020-08-19 11-00");
-
 			priceBookRepository.save(new PriceBook("Examination",50));
 			priceBookRepository.save(new PriceBook("Operation",250));
-
 			//============================================================================
-
 			//Authorities
 			Authority doctorAuthority = new Authority();
 			doctorAuthority.setName(String.valueOf(UserAuthorities.DOCTOR));
@@ -111,7 +107,7 @@ public class SpringBootVuejsApplication {
 			doctor2.getAuthorities().add(doctorAuthority);
 			doctor3.getAuthorities().add(doctorAuthority);
 			doctor4.getAuthorities().add(doctorAuthority);
-			doctor.setListOfAppoitnements("2020-08-20 15-30");
+			doctor.setListOfAppoitnements("2020-09-04 13-30");
 			doctor.setPassChanged(true);
 			clinincAdmin.setClinicName((long) 1);
 			clinincAdmin2.setClinicName((long) 1);
@@ -142,9 +138,13 @@ public class SpringBootVuejsApplication {
 			appointmentRequestRepository.save(new AppointmentRequest("2020-09-07","EXAMINATION", 1,1,3));
 
 			//Appointment apt= new Appointment("2020-08-20 15-30", "EXAMINATION",1,1,3,2);
-			Appointment apt= new Appointment("2020-08-22 11-20", "EXAMINATION",1,1,3,1);
+			Appointment apt= new Appointment("2020-09-04 13-30", "EXAMINATION",1,1,3,1);
+			Appointment apt2= new Appointment("2020-09-04 13-30", "OPERATION",4,1,3,1);
+
 
 			appointmentRepository.save(apt);
+			appointmentRepository.save(apt2);
+
 			//appointments.add(apt.getId());
 			//Appointment apt2 =new Appointment("2020-08-20 10-30", "OPERATION",1,1,3,2);
 			//appointmentRepository.save(apt2);

@@ -22,13 +22,16 @@ public class AppointmentController {
 
     @Autowired
     ApointmentRepository apointmentRepository;
+
     @Autowired
     RoomService roomService;
+
     @Autowired
     RoomRepository roomRepository;
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     FreeAppointementsRepository freeAppointementsRepository;
 
@@ -51,15 +54,11 @@ public class AppointmentController {
                 Date examinationTerm = sp.parse(appointment.getDateAndTime());
                 examinationTerm.setTime(examinationTerm.getTime() - (120  * 60000));
                 Date endTerm = new Date(examinationTerm.getTime() + (30  * 60000));
-                System.out.println(now);
-                System.out.println(examinationTerm);
-                System.out.println(endTerm);
                 if(now.after(examinationTerm) && now.before(endTerm)){
                    currentAppointments.add(appointment);
                 }
             }
         }
-
         return new ResponseEntity<ArrayList<Appointment>>(currentAppointments,HttpStatus.ACCEPTED);
     }
 
@@ -85,8 +84,6 @@ public class AppointmentController {
         {
              patient = (Patient) p.get();
         }
-
-
 
         boolean cancelable = true;
         Date appointmentDate = sp.parse(appointment.getDateAndTime());
@@ -197,6 +194,52 @@ public class AppointmentController {
         return new ResponseEntity<AptIDandDate>(aptd, HttpStatus.OK);
     }
 
+    @GetMapping(value = "admin/get-income/{dates}")
+    public ResponseEntity<?> getIncome(@PathVariable ArrayList<String> dates) throws ParseException {
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = null;
+        Date date2 = null;
+        ArrayList<Appointment> apt = new ArrayList<Appointment>();
+        Collection<Appointment> appointments = (Collection<Appointment>) apointmentRepository.findAll();
+        if(dates.size() == 1){
+            date1 = sp.parse(dates.get(0));
+            for(Appointment a : appointments){
+                String[] podeli = a.getDateAndTime().split(" ");
+                Date dateOfAppointement = sp.parse(podeli[0]);
+                if(dates.get(0).equalsIgnoreCase(podeli[0])){
+                    apt.add(a);
+                }
+            }
+            return new ResponseEntity<ArrayList<Appointment>>(apt,HttpStatus.OK);
 
 
-}
+        }else if (dates.size() == 0){
+            return new ResponseEntity<ArrayList<Appointment>>(apt,HttpStatus.OK);
+        }else{
+            date1 = sp.parse(dates.get(0));
+            date2 = sp.parse(dates.get(1));
+
+        }
+        if(date1.before(date2)){
+            for(Appointment a : appointments){
+                String[] podeli = a.getDateAndTime().split(" ");
+                Date dateOfAppointement = sp.parse(podeli[0]);
+                if(dateOfAppointement.after(date1) && dateOfAppointement.before(date2)){
+                    apt.add(a);
+                }
+            }
+        }else{
+            for(Appointment a : appointments){
+                String[] podeli = a.getDateAndTime().split(" ");
+                Date dateOfAppointement = sp.parse(podeli[0]);
+                if(dateOfAppointement.after(date2) && dateOfAppointement.before(date1)){
+                    apt.add(a);
+                }
+            }
+        }
+        return new ResponseEntity<ArrayList<Appointment>>(apt,HttpStatus.OK);
+    }
+
+
+
+    }

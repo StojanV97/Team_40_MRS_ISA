@@ -2,6 +2,7 @@
   <v-app id="inspire">
     <ClinicAdminProfile v-if="editAdminProfile" />
     <DaysOffRequests v-bind:req="req" v-if="reqtrue" />
+    <IncomeReport v-if="showIncomeReport" />
     <ClinicEditForm
       v-if="this.editClinicProfile"
       @editRoomsEvent="this.openEditRooms"
@@ -110,6 +111,8 @@ import OperationRequests from "../Utility/OperationRequests";
 import DaysOffRequests from "../Utility/DaysOffRequests";
 import PredefinedAppointements from "../Utility/PredefinedAppointements";
 import PriceBook from "../Utility/PriceBook";
+import IncomeReport from "../Utility/IncomeReport";
+
 export default {
   components: {
     OperationRequests,
@@ -121,11 +124,13 @@ export default {
     DaysOffRequests,
     PredefinedAppointements,
     PriceBook,
+    IncomeReport,
   },
   props: {
     source: String,
   },
   data: () => ({
+    showIncomeReport: false,
     showPriceBook: false,
     predefeinedApp: false,
     disableMenu: false,
@@ -151,15 +156,13 @@ export default {
       { icon: "mdi-history", text: "Days off requests" },
       { icon: "mdi-history", text: "Predefined Apppointements" },
       {
-        icon: "mdi-file-chart-outline",
+        icon: "mdi-arrow-down",
         "icon-alt": "mdi-file-chart-outline",
         text: "Work report",
         model: false,
         children: [
-          { icon: "mdi-alpha-i", text: "Average clinic rating" },
-          { icon: "mdi-roman-numeral-2", text: "Average ratingfor doctors" },
-          { icon: "mdi-roman-numeral-3", text: "Examination gra ph" },
-          { icon: "mdi-roman-numeral-4", text: "Income" },
+          { icon: "mdi-roman-numeral-1", text: "Examination gra ph" },
+          { icon: "mdi-roman-numeral-2", text: "Income" },
         ],
       },
       { icon: "mdi-account-cog", text: "Profile" },
@@ -232,6 +235,7 @@ export default {
       if (text === "Dark mode On/Off") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       } else if (text === "Examination requests") {
+        this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = true;
@@ -241,6 +245,7 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Operation requests") {
+        this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = false;
@@ -250,6 +255,7 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Price Book") {
+        this.showIncomeReport = false;
         this.showPriceBook = true;
         this.predefeinedApp = false;
         this.examinationRequests = false;
@@ -259,6 +265,7 @@ export default {
         this.editAdminProfile = false;
         this.reqtrue = false;
       } else if (text === "Edit Clinic info") {
+        this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = false;
@@ -269,6 +276,7 @@ export default {
         this.reqtrue = false;
       } else if (text === "Predefined Apppointements") {
         this.showPriceBook = false;
+        this.showIncomeReport = false;
         this.predefeinedApp = true;
         this.examinationRequests = false;
         this.operationRequests = false;
@@ -276,7 +284,18 @@ export default {
         this.editClinicProfile = false;
         this.reqtrue = false;
         this.roomConfig = false;
+      } else if (text === "Income") {
+        this.showIncomeReport = true;
+        this.showPriceBook = false;
+        this.predefeinedApp = false;
+        this.examinationRequests = false;
+        this.operationRequests = false;
+        this.editAdminProfile = false;
+        this.editClinicProfile = false;
+        this.reqtrue = false;
+        this.roomConfig = false;
       } else if (text === "Profile") {
+        this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = false;
@@ -286,6 +305,7 @@ export default {
         this.reqtrue = false;
         this.roomConfig = false;
       } else if (text === "Days off requests") {
+        this.showIncomeReport = false;
         this.showPriceBook = false;
         this.predefeinedApp = false;
         this.examinationRequests = false;

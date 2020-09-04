@@ -7,6 +7,10 @@ const AXIOS = axios.create({
 
 
 export default {
+    getIncome(dates) {
+        return AXIOS.get('admin/get-income' + '/' + dates)
+    }
+    ,
 
     getAllPrices() {
         return AXIOS.get('admin/price-book')
