@@ -120,6 +120,12 @@ export default {
               this.$router.push("/change-password");
             }
           } else if (response.data.role === "CLINIC_CENTER_ADMIN") {
+            /*if(localStorage.getItem(userID) === "100") {
+              this.$router.push("/predefined-center-admin")
+            }
+            else {
+              this.$router.push("/center-admin-profile");
+            }*/
             this.$router.push("/center-admin-profile");
           } else if (response.data.role === "PATIENT") {
             this.$store.commit("setUser", response.data.userID);

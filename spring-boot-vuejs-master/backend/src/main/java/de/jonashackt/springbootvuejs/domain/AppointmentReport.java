@@ -16,7 +16,7 @@ public class AppointmentReport {
     public AppointmentReport(Long appointmentReportId, String illness, String description) {
         this.appointmentReportId = appointmentReportId;
         this.illness = illness;
-        Description = description;
+        this.Description = description;
     }
 
    

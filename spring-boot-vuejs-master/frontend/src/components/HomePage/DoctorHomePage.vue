@@ -2,6 +2,7 @@
   <v-app id="inspire">
     <calendar id="calendar" v-if="this.showCalendar"></calendar>
     <DoctorProfile v-if="this.showProfile"></DoctorProfile>
+    <AppointmentReportForm v-if="this.showAppointmentReport"></AppointmentReportForm>
     <ScheduleExemination
       v-bind:appoitements="currentAppointements"
       v-if="this.showExaminationScheduling"
@@ -135,6 +136,7 @@ import DoctorProfile from "../Profiles/MedicalStaffProfile";
 import ScheduleExemination from "../Scheduling/ScheduleExemination";
 import PatientProfile from "../Profiles/PProfilePreview";
 import RequestDaysOff from "../Utility/RequestDaysOff";
+import AppointmentReportForm from "../Utility/AppointmentReportForm";
 
 export default {
   components: {
@@ -143,6 +145,7 @@ export default {
     ScheduleExemination,
     PatientProfile,
     RequestDaysOff,
+    AppointmentReportForm
   },
   props: {
     source: String,
@@ -150,6 +153,7 @@ export default {
   data: () => ({
     showProfile: false,
     showCalendar: false,
+    showAppointmentReport: false,
     dialog: false,
     showExaminationScheduling: false,
     dialogDaysOff: false,
@@ -158,6 +162,7 @@ export default {
     items: [
       { icon: "mdi-contacts", text: "List of patients" },
       { icon: "mdi-history", text: "Scheduled examination" },
+      { icon: "mdi-file-document", text: "Appointment report" },
       { icon: "mdi-history", text: "Working calendar" },
       { icon: "mdi-iframe-parentheses", text: "Request days off" },
       { icon: "mdi-account-cog", text: "Profile" },
@@ -227,16 +232,19 @@ export default {
         this.showProfile = false;
         this.showPatients = false;
         this.showExaminationScheduling = false;
+        this.showAppointmentReport = false;
       } else if (text === "List of patients") {
         this.showPatients = true;
         this.showProfile = false;
         this.showCalendar = false;
         this.showExaminationScheduling = false;
+        this.showAppointmentReport = false;
       } else if (text === "Profile") {
         this.showPatients = false;
         this.showCalendar = false;
         this.showProfile = true;
         this.showExaminationScheduling = false;
+        this.showAppointmentReport = false;
       } else if (text === "Request days off") {
         this.dialogDaysOff = true;
       } else if (text === "Scheduled examination") {
@@ -244,11 +252,19 @@ export default {
         this.showCalendar = false;
         this.showPatients = false;
         this.showExaminationScheduling = true;
+        this.showAppointmentReport = false;
+      } else if (text === "Appointment report") {
+        this.showProfile = false;
+        this.showCalendar = false;
+        this.showPatients = false;
+        this.showExaminationScheduling = false;
+        this.showAppointmentReport = true;
       } else {
         this.showExaminationScheduling = false;
         this.showProfile = false;
         this.showCalendar = false;
         this.showPatients = false;
+        this.showAppointmentReport = false;
       }
     },
     showHistoryDialog(id) {

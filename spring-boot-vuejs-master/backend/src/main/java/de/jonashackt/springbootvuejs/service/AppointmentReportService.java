@@ -1,5 +1,7 @@
 package de.jonashackt.springbootvuejs.service;
 
-public interface AppointmentReportService {
+import de.jonashackt.springbootvuejs.domain.AppointmentReport;
 
+public interface AppointmentReportService {
+    String createAppointmentReport(AppointmentReport appointmentReport);
 }

@@ -18,6 +18,7 @@ import FirstLogIn from "./components/Users/FirstLogIn"
 import PatientScheduleExamination from "./components/Scheduling/PatientScheduleExamination";
 import PProfilePreview from "./components/Profiles/PProfilePreview"
 import ScheduleHistory from "./components/Scheduling/ScheduleHistory";
+import PredefinedClinicCenterAdmin from "./components/Profiles/PredefinedClinicCenterAdmin";
 
 
 Vue.use(Router);
@@ -90,6 +91,19 @@ const router = new Router({
             requiresAuth: true
         }
     },
+        {
+            path: '/predefined-center-admin', component: PredefinedClinicCenterAdmin,
+            beforeEnter(to, from, next) {
+                if (localStorage.getItem('role') === 'CLINIC_CENTER_ADMIN') {
+                    next();
+                } else {
+                    next('/')
+                }
+            },
+            meta: {
+                requiresAuth: true
+            }
+        },
     {
         path: '/patient-homepage', component: PatientHomePage,
         beforeEnter(to, from, next) {

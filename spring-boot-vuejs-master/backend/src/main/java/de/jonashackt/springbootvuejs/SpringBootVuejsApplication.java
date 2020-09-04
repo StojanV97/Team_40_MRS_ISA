@@ -84,6 +84,7 @@ public class SpringBootVuejsApplication {
 
 			//Users
 			ClinicCenterAdmin clinincCenterAdmin = new ClinicCenterAdmin(10,"ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","ClinicCenterAdmin",bc.encode("password"));
+			ClinicCenterAdmin predefinedCCA = new ClinicCenterAdmin(100,"ClinicCenterAdmin","ClinicCenterAdmin","ClinicCenterAdmin@gmail.com","predefinedCCA",bc.encode("password"));
 			ClinicAdmin clinincAdmin = new ClinicAdmin(11,"ClinicAdmin","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin",bc.encode("password"));
 			ClinicAdmin clinincAdmin2 = new ClinicAdmin(22,"ClinicAdmin2","ClinicAdmin","ClinicAdmin@gmail.com","ClinicAdmin2",bc.encode("password"));
 			ArrayList<Long> appointments = new ArrayList<>();
@@ -99,6 +100,7 @@ public class SpringBootVuejsApplication {
 			Doctor doctor4 = new Doctor(8,"Doctor4","Doctor4","Doctor4@gmail.com","Doctor4",bc.encode("password"));
 			Nurse nurse = new Nurse(9,"Nurse","Nurse","Nurse@gmail.com","Nurse",bc.encode("password"));
 			clinincCenterAdmin.getAuthorities().add(clinicCenterAdminAuthority);
+			predefinedCCA.getAuthorities().add(clinicCenterAdminAuthority);
 			clinincAdmin.getAuthorities().add(clinicAdminAuthority);
 			//clinincAdmin2.getAuthorities().add(clinicAdminAuthority);
 			clinincAdmin.setPassChanged(true);
@@ -125,6 +127,7 @@ public class SpringBootVuejsApplication {
 			userRepository.save(doctor22);
 			userRepository.save(doctor23);
 			userRepository.save(clinincCenterAdmin);
+			userRepository.save(predefinedCCA);
 			userRepository.save(clinincAdmin);
 			//userRepository.save(clinincAdmin2);
 			userRepository.save(nurse);
