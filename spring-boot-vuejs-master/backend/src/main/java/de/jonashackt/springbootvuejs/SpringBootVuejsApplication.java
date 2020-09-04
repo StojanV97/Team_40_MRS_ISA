@@ -90,7 +90,7 @@ public class SpringBootVuejsApplication {
 			Patient patient = new Patient(1,"Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312",appointments);
 			//Patient patient = new Patient("Milan","Gajic","mikig@gmail.com","Patient",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			patient.setPassChanged(true);
-			Patient patient2 = new Patient(2,"Pera","Peric","mikig@gmail.com","Patient2",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
+			Patient patient2 = new Patient(2,"Pera","Peric","mikisssg@gmail.com","Patient2",bc.encode("123"),"Srbija", "Novi Sad", "Bulevar 154", "016123423", "12312312312");
 			Doctor doctor = new Doctor(3,"Doctor","Doctor","Doctor@gmail.com","Doctor",bc.encode("password"));
 			Doctor doctor2 = new Doctor(4,"Doctor2","Doctor2","Doctor2@gmail.com","Doctor2",bc.encode("password"));
 			Doctor doctor22 = new Doctor(5,"Doctor2","Doctor2","Doctor2@gmail.com","Doctor22",bc.encode("password"));
