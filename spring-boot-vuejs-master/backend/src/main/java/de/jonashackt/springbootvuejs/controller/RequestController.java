@@ -118,7 +118,7 @@ public class RequestController {
         daysOffRequestRepository.save(daysOffRequest);
         return  new ResponseEntity<String>("OK",HttpStatus.OK);
 
-    };
+    }
 
 
     @PostMapping(value = "/auth/registration",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -160,7 +160,6 @@ public class RequestController {
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 
-    ;
 
     @PostMapping(value = "admin/automatic-appointment/{clinicID}/{date}")
     public ResponseEntity<?> automaticAppointment(@PathVariable Long clinicID, @PathVariable String date, @RequestBody AppointmentRequest appointmentRequest) throws ParseException {
@@ -524,7 +523,6 @@ public class RequestController {
 
     @PostMapping(value = "patient/create-appointment-request/{dateAndTime}/{type}/{patientID}/{doctorID}/{clinicID}")
     public ResponseEntity<String> createAppointmentRequest(@PathVariable String dateAndTime,@PathVariable String type, @PathVariable long clinicID, @PathVariable long patientID, @PathVariable long doctorID ){
-        System.out.println(clinicID);
         AppointmentRequest ar = new AppointmentRequest(dateAndTime,type,clinicID,patientID,doctorID);
         appointmentRequestRepository.save(ar);
         return new ResponseEntity<String>("OK", HttpStatus.OK);

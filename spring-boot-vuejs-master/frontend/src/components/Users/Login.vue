@@ -1,8 +1,8 @@
 <template class="tmp">
   <div>
-    <v-dialog id="registerDialog" v-model="dialog" width="600" height="300px">
-      <v-card>
-        <RegisterForm id="forma"></RegisterForm>
+    <v-dialog width="700px"  v-model="dialog" >
+      <v-card >
+        <RegisterForm class="registerDialog"></RegisterForm>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text color="primary" @click="dialog = false">Close</v-btn>
@@ -163,10 +163,13 @@ export default {
 </script>
 
 <style>
-#forma {
-  margin-top: -80px;
-  margin-left: 65px;
-  margin-bottom: 60px;
+
+.registerDialog{
+    width: 200px;
+    margin-left: 10%;
+    margin-left: 10%;
+
+
 }
 
 #loginForm {

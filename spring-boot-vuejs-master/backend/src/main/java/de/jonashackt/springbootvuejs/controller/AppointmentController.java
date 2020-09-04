@@ -1,8 +1,10 @@
 package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.domain.Appointment;
+import de.jonashackt.springbootvuejs.domain.FreeAppointements;
 import de.jonashackt.springbootvuejs.repository.*;
 import de.jonashackt.springbootvuejs.domain.*;
+import de.jonashackt.springbootvuejs.service.AppointmentService;
 import de.jonashackt.springbootvuejs.service.RoomService;
 
 import de.jonashackt.springbootvuejs.service.UserService;
@@ -21,14 +23,31 @@ import java.util.*;
 public class AppointmentController {
 
     @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private AppointmentService appointmentService;
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private DaysOffRepository daysOffRepository;
+
+    @Autowired
+    private ClinicRepository clinicRepository;
+
+    @Autowired
     ApointmentRepository apointmentRepository;
+
     @Autowired
     RoomService roomService;
+
     @Autowired
     RoomRepository roomRepository;
 
-    @Autowired
-    UserRepository userRepository;
     @Autowired
     FreeAppointementsRepository freeAppointementsRepository;
 
@@ -48,12 +67,11 @@ public class AppointmentController {
         }
         if(!doctorsListOfAppointments.isEmpty()){
             for(Appointment appointment : doctorsListOfAppointments){
+
                 Date examinationTerm = sp.parse(appointment.getDateAndTime());
                 examinationTerm.setTime(examinationTerm.getTime() - (120  * 60000));
                 Date endTerm = new Date(examinationTerm.getTime() + (30  * 60000));
-                System.out.println(now);
-                System.out.println(examinationTerm);
-                System.out.println(endTerm);
+
                 if(now.after(examinationTerm) && now.before(endTerm)){
                    currentAppointments.add(appointment);
                 }
@@ -146,7 +164,7 @@ public class AppointmentController {
                 boolean flag = true;
                 busyFor : for(String s : termini) {
                     if(busy.contains(s)){
-                        System.out.println();
+
                     }else{
                         newTerm = appointment.getDateAndTime() + " " + s;
                         appointment.setDateAndTime(appointment.getDateAndTime() + " " + s);
@@ -177,6 +195,100 @@ public class AppointmentController {
         return new ResponseEntity<AptIDandDate>(aptd, HttpStatus.OK);
     }
 
+    @PostMapping(value = "patient/schedule-existing-appointment/{appointmentID}/{patientID}")
+    public ResponseEntity<?> scheduleExistingAppointment(@PathVariable long appointmentID,@PathVariable long patientID)
+    {
+        Collection<FreeAppointements> freeAppointements = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
+        for(FreeAppointements fapt : freeAppointements){
+            if(fapt.getId() == appointmentID)
+            {
+                Appointment appointment = new Appointment();
+                appointment.setDateAndTime(fapt.getDateAndTime());
+                appointment.setClinicID(fapt.getClinicID());
+                appointment.setDoctorID(fapt.getDoctorID());
+                appointment.setType(fapt.getType());
+                appointment.setPatientID(patientID);
+                appointment.setRoomID(fapt.getRoomID());
+
+                appointmentRepository.save(appointment);
+                freeAppointementsRepository.delete(fapt);
+
+                Optional<User> p = userRepository.findById(patientID);
+
+                if(p.isPresent())
+                {
+                    Patient patient = (Patient) p.get();
+                    ArrayList<Long> patientAppointments = patient.getAppointments();
+                    patientAppointments.add(fapt.getId());
+                    patient.setAppointments(patientAppointments);
+                    userRepository.save(patient);
+                }
+
+            }
+        }
+        return new ResponseEntity<String>("OK", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "patient/get-appointments-for-clinic/{clinicID}")
+    public ResponseEntity<Collection<AppointmentPreviewer>> getExistingAppointmentsForClinic(@PathVariable long clinicID) throws ParseException {
+
+
+            SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+            sp.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date now = new Date();
+            Collection<AppointmentPreviewer> previewer = new ArrayList<AppointmentPreviewer>();
+
+            Collection<FreeAppointements> freeAppointements = (Collection<FreeAppointements>) freeAppointementsRepository.findAll();
+
+            Appointment appointment = new Appointment();
+
+
+
+            for(FreeAppointements fapt : freeAppointements){
+                Doctor doctor = new Doctor();
+                AppointmentPreviewer appointmentPreviewer = new AppointmentPreviewer();
+                if(sp.parse(fapt.getDateAndTime()).after(now)) {
+                    if (fapt.getClinicID() == clinicID) {
+                        appointmentPreviewer.setAppointmentID(fapt.getId());
+
+                        Clinic clinic = clinicRepository.findById(fapt.getClinicID());
+
+                        appointmentPreviewer.setClinicName(clinic.getName());
+                        appointmentPreviewer.setClinicAddress(clinic.getAddress());
+
+
+                        Optional<User> dc = userRepository.findById(fapt.getDoctorID());
+                        if (dc.isPresent()) {
+                            doctor = (Doctor) dc.get();
+                        }
+
+                        Date appointmentDate = sp.parse(fapt.getDateAndTime());
+                        Date today = new Date();
+
+
+                        appointmentPreviewer.setDoctorFirstName(doctor.getFirstName());
+                        appointmentPreviewer.setDoctorLastName(doctor.getLastName());
+
+                        appointmentPreviewer.setAppointmentType(fapt.getType());
+
+                        appointmentPreviewer.setDateAndTime(fapt.getDateAndTime());
+
+                        appointmentPreviewer.setClinicAddress(clinic.getAddress());
+                        appointmentPreviewer.setClinicName(clinic.getName());
+
+                        appointmentPreviewer.setAppointmentType(fapt.getType());
+                        if (appointmentDate.after(today)) {
+                            previewer.add(appointmentPreviewer);
+
+                        }
+
+                    }
+                }
+            }
+
+
+            return new ResponseEntity<Collection<AppointmentPreviewer>>(previewer, HttpStatus.OK);
+        }
 
 
 }
