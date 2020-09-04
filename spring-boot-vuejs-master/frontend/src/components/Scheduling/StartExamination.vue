@@ -48,8 +48,17 @@ export default {
           )
           .then((response) => {
             this.msg = "Scheduled!";
-            console.log(this.msg);
+
             this.snackbar = true;
+            for (const index in this.$props.appointment) {
+              if (
+                this.$props.appointment[index].patientID ==
+                this.$store.getters.getAppt.patientID
+              ) {
+                console.log(index);
+                this.$emit("delete", index);
+              }
+            }
           })
           .catch((e) => {});
       }

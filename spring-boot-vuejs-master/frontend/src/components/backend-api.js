@@ -7,8 +7,20 @@ const AXIOS = axios.create({
 
 
 export default {
+    getIncome(dates) {
+        return AXIOS.get('admin/get-income' + '/' + dates)
+    }
+    ,
+    getAppointemensForChart(type) {
+        return AXIOS.get('admin/get-chart-apt/' + type)
 
-
+    },
+    getAllPrices() {
+        return AXIOS.get('admin/price-book')
+    },
+    EditPrice(priceBookItem) {
+        return AXIOS.post('admin/price-book-update', priceBookItem)
+    },
     // USERS ====================================================================================
     createDoctor(doctor, clinicID) {
         return AXIOS.post('/user/create-doctor/' + clinicID, doctor)
@@ -172,6 +184,10 @@ export default {
         return AXIOS.get('/admin/free-terms/' + id + '/' + date);
 
     },
+    getAllPredefinedAppointements() {
+        return AXIOS.get('/admin/get-all-free-appoint/');
+
+    },
     getDoctorsForClinic(id) {
         return AXIOS.get('/patient/get-doctors/' + id);
     },
@@ -243,6 +259,10 @@ export default {
     },
     getExistingAppointmentsForClinic(clinicID){
         return AXIOS.get('patient/get-appointments-for-clinic/'+ clinicID)
+    }
+    ,
+    getApointmentsForDoctor(id) {
+        return AXIOS.get('doctor/get-apt/' + id);
     }
 }
 

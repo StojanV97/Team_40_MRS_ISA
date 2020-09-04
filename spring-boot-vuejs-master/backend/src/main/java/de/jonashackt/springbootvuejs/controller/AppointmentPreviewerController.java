@@ -26,6 +26,9 @@ public class AppointmentPreviewerController {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private AppointmentReportRepository appointmentReportRepository;
+
+    @Autowired
     private AppointmentService appointmentService;
 
     @Autowired
@@ -150,12 +153,15 @@ public class AppointmentPreviewerController {
             }
         }
 
-        Appointment appointment = new Appointment();
-        Doctor doctor = new Doctor();
+
 
         for(Long ids : appointments){
+            Appointment appointment = new Appointment();
+            Doctor doctor = new Doctor();
+
             AppointmentPreviewer appointmentPreviewer = new AppointmentPreviewer();
             appointmentPreviewer.setAppointmentID(ids);
+
 
 
             Optional<Appointment> ap = appointmentRepository.findById(ids);
@@ -186,6 +192,15 @@ public class AppointmentPreviewerController {
 
             Clinic clinic = clinicRepository.findById(appointment.getClinicID());
 
+            AppointmentReport appointmentReport = new AppointmentReport();
+            Optional<AppointmentReport> apr = appointmentReportRepository.findById(ids);
+            if(apr.isPresent())
+            {
+                appointmentReport = apr.get();
+            }
+            appointmentPreviewer.setIllness(appointmentReport.getIllness());
+            appointmentPreviewer.setReportDescription(appointmentReport.getDescription());
+
             appointmentPreviewer.setDoctorFirstName(doctor.getFirstName());
             appointmentPreviewer.setDoctorLastName(doctor.getLastName());
 
@@ -195,6 +210,8 @@ public class AppointmentPreviewerController {
 
             appointmentPreviewer.setClinicAddress(clinic.getAddress());
             appointmentPreviewer.setClinicName(clinic.getName());
+
+
 
             previewer.add(appointmentPreviewer);
 

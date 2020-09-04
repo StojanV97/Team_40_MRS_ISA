@@ -75,13 +75,15 @@
 
                             <td max-width="30px"  >
                                 <v-col  class="selectType" >
-                                    <v-select v-model="appointmentTypes"
+                                    <v-select
+                                            v-model="appointmentTypes"
                                             :items="appointmentTypes"
-                                            @change="enableButton"
+
 
                                     ></v-select>
                                 </v-col>
                             </td>
+                            <td>50€</td>
                             <td>
                                 <v-btn  @click="submitRequest(row.item.id)"><v-icon> mdi-checkbox-marked-circle-outline</v-icon></v-btn>
                             </td>
@@ -122,7 +124,7 @@
         },
 
         data: () => ({
-            appointmentTypes:"EXAMINATION ( price:50€ )",
+            appointmentTypes:"EXAMINATION",
             search:'',
             disabledSubmit:true,
             price:50,
@@ -149,13 +151,14 @@
             headersDoctors: [
                 { text: 'First Name', value: 'firstName' },
                 { text: 'Last Name', value: 'lastName'},
-                { text: 'Appointment Type', value: 'rating'},
+                { text: 'Appointment Type'},
+                { text: 'Price'},
                 { text: 'Finalize Scheduling '}
 
             ],
             appointmentRequest:{
                 dateAndTime:'',
-                type:'EXAMINATION',
+                type:'',
                 clinicID:'',
                 patientID:'',
                 doctorID:'',
@@ -165,10 +168,14 @@
         }),
         mounted() {
             api.setAuthentication().defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+
         },
         methods:
         {
 
+            onSelectChange(){
+                console.log(this.appointmentRequest.type)
+            },
             closeDialog(){
               this.dialog = false;
 
@@ -186,21 +193,14 @@
                 this.appointmentRequest.clinicID=id;
                 api.getClinicDoctorsForDate(this.selectedDate,id).then(response =>{
                     this.doctors = response.data;
-                }
-
-                )
-
+                })
 
             },
-            enableButton(){
-                this.disabledSubmit= !this.disabledSubmit;
-            }
-            ,
             submitRequest(doctorId){
 
                 this.appointmentRequest.patientID = Number(localStorage.getItem('userID'));
                 this.appointmentRequest.doctorID = doctorId;
-                console.log(this.appointmentRequest);
+                if(this.appointmentRequest.type)
                 api.createAppointmentRequest(this.appointmentRequest.dateAndTime,this.appointmentRequest.type,this.appointmentRequest.clinicID, this.appointmentRequest.patientID,this.appointmentRequest.doctorID).then(response =>{
 
                     this.msg = 'Appointment request successfully submitted! Check your email for verification.';

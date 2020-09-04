@@ -38,7 +38,6 @@ public class AppointmentRequestServiceImpl implements AppointmentRequestService 
 
     @Override
     public String delete(long appointmentID) {
-        System.out.println(appointmentID);
         AppointmentRequest ar = appointmentRequestRepository.findById(appointmentID);
         appointmentRequestRepository.delete(ar);
         return "Deleted";
