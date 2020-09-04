@@ -86,11 +86,16 @@
         methods:{
             cancelAppointment(id){
                 api.cancelAppointment(id).then(response=>{
-                    console.log(response.data)
+
                     if(response.data == true)
                     {
                         this.msg = 'Successfully canceled an appointment!';
                         this.snackbar = true;
+                        api.setAuthentication().defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+                        api.getAppointmentPreview(localStorage.getItem('userID')).then(response =>{
+                            this.appointments = response.data;
+                        })
+
 
 
 
@@ -100,6 +105,7 @@
                     }
 
                 })
+
             },
 
 

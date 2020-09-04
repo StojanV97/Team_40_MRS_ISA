@@ -49,7 +49,6 @@ public class ClinicController {
 
     @PostMapping(path = "/clinic/edit/{oldID}/{name}/{address}/{desc}")
     public ResponseEntity<String> editClinic(@PathVariable String address,@PathVariable String name,@PathVariable long oldID,@PathVariable String desc) throws Exception {
-        System.out.println(address);
         Clinic clinic2 = clinicService.getClinic(oldID);
         clinic2.setName(name);
         clinic2.setAddress(address);
@@ -112,7 +111,7 @@ public class ClinicController {
                     continue;
 
             Set<Doctor> doctors = userController.getDoctorsForClinic(clinic.getId());
-            System.out.println(doctors);
+
             if(doctors.isEmpty()) {
                 continue;
             }

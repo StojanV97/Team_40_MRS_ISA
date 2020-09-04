@@ -46,7 +46,7 @@
         label="Date To"
         required
       ></v-text-field>
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Submit</v-btn>
+       <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Submit</v-btn>
     </v-form>
     <div class="text-center ma-2">
       <v-snackbar v-model="snackbar">

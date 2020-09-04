@@ -92,11 +92,51 @@ public class FreeAppointements{
         this.doctorID = doctorID;
         this.clinicID = clinicID;
     }
+    public FreeAppointements(String dateAndTime, String type, long roomID, long doctorID,long clinicID) {
+        this.dateAndTime = dateAndTime;
+        this.type = type;
+        this.roomID = roomID;
+
+        this.doctorID = doctorID;
+        this.clinicID = clinicID;
+    }
+
 
     public long getId() {
         return id;
     }
 
+    public long getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(long roomID) {
+        this.roomID = roomID;
+    }
+
+    public long getPatientID() {
+        return patientID;
+    }
+
+    public void setPatientID(long patientID) {
+        this.patientID = patientID;
+    }
+
+    public long getDoctorID() {
+        return doctorID;
+    }
+
+    public void setDoctorID(long doctorID) {
+        this.doctorID = doctorID;
+    }
+
+    public long getClinicID() {
+        return clinicID;
+    }
+
+    public void setClinicID(long clinicID) {
+        this.clinicID = clinicID;
+    }
 
     public void setId(long id) {
         this.id = id;

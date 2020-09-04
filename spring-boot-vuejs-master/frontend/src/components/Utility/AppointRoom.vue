@@ -63,7 +63,7 @@ export default {
         localStorage.getItem("clinicID"),
         this.$store.getters.getDatum
       )
-      .then((response) => {
+      .then(response => {
         console.log(response.data);
         this.$store.getters.getClinic.rooms = response.data;
         for (const index in this.$store.getters.getClinic.rooms) {
@@ -75,7 +75,7 @@ export default {
           }
         }
       })
-      .catch((e) => {});
+      .catch(e => {});
   },
   methods: {
     getFirstDate() {
@@ -86,7 +86,7 @@ export default {
           localStorage.getItem("clinicID"),
           this.$store.getters.getDatum
         )
-        .then((response) => {
+        .then(response => {
           this.$store.getters.getClinic.rooms = response.data;
           for (const index in this.$store.getters.getClinic.rooms) {
             if (
@@ -97,7 +97,7 @@ export default {
             }
           }
         })
-        .catch((e) => {});
+        .catch(e => {});
     },
 
     appoint(item) {
@@ -107,7 +107,8 @@ export default {
       this.appointement.dateAndTime = this.$store.getters.getDatum;
       this.appointement.type = "EXAMINATION";
       this.appointement.clinicID = localStorage.getItem("clinicID");
-      api.getUser(this.appointement.doctorID).then((response) => {
+
+      api.getUser(this.appointement.doctorID).then(response => {
         this.doctor = response.data;
       });
       api.getUser(this.appointement.patientID).then((response) => {
@@ -122,20 +123,20 @@ export default {
           console.log(response.data);
           api
             .deleteAppointmentRequest(this.$props.appt.id)
-            .then((response) => {
+            .then(response => {
               this.message.msg =
                 "Appoitnement scheduled at " + this.idAndDate.date;
               api
                 .sendEmail(this.message)
-                .then((response) => {})
-                .catch((e) => {
+                .then(response => {})
+                .catch(e => {
                   console.log(e);
                 });
               this.$emit("deleteRequestEvent");
             })
-            .catch((e) => {});
+            .catch(e => {});
         })
-        .catch((e) => {});
+        .catch(e => {});
     },
     customFilter(event) {
       if (event === "") {
@@ -154,8 +155,8 @@ export default {
           this.rooms.splice(index, 1);
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

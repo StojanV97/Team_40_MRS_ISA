@@ -71,8 +71,6 @@ public class UserController {
     @GetMapping(value = "/account-verify/{username}")
     public ResponseEntity<String> verifyAccount(@PathVariable String username) throws MessagingException {
 
-        System.out.println("tu smoooo");
-        System.out.println(username);
         RegisterRequests patient =  requestRepository.findByUserName(username);
 
         userRepository.save(new Patient(patient.getId(),patient.getFirstName(),patient.getLastName(),patient.getEmail(),patient.getUserName(),"123123",patient.getCountry(),patient.getCity(),patient.getAddress(),patient.getPhoneNumber(),patient.getInsuranceNumber()));
@@ -81,7 +79,7 @@ public class UserController {
         return new ResponseEntity<String>("Verified", HttpStatus.OK);
     }
 
-        @PostMapping(value = "/email/{message}/{email}")
+    @PostMapping(value = "/email/{message}/{email}")
     public ResponseEntity<String> sendEmail(@PathVariable String message,@PathVariable ArrayList<String> email) throws MessagingException {
 
 
@@ -151,7 +149,6 @@ public class UserController {
 
         Clinic clinic = clinicService.getClinic(id);
         Set<Doctor> doctors = clinic.getDoctors();
-        System.out.println(doctors.toString());
         return doctors;
     }
 
@@ -165,7 +162,7 @@ public class UserController {
     @PostMapping(path = "/user/delete/{userName}")
     public ResponseEntity<String> deleteUser(@PathVariable String userName) {
         Doctor d = (Doctor) userService.findByUsername(userName);
-      clinicDoctorRepository.deleteById(d.getId());
+        clinicDoctorRepository.deleteById(d.getId());
         return new ResponseEntity<String>("", HttpStatus.OK);
 
     }
@@ -245,7 +242,7 @@ public class UserController {
         Optional<User> u  = userRepository.findById(clinicAdmin.getId());
         String s = null;
         if(u.isPresent()){
-        User user = u.get();
+            User user = u.get();
             User u2 = userService.findByUsername(clinicAdmin.getUsername());
             if(u2 == null){
                 return new ResponseEntity<User>(user, HttpStatus.NOT_ACCEPTABLE);
@@ -336,7 +333,7 @@ public class UserController {
 
     @PostMapping(value = "/user/create-doctor/{clinicID}")
     public ResponseEntity<?> createDoctor(@RequestBody User doctor,@PathVariable Long clinicID){
-       User u = (userService.findByUsername(doctor.getUsername()));
+        User u = (userService.findByUsername(doctor.getUsername()));
 
         if(u != null){
             return new ResponseEntity<String>("Exists!", HttpStatus.OK);

@@ -1,7 +1,7 @@
 <template>
     <div id="app" class="forma">
         <v-app id="inspire">
-            <v-row class ="row" align="center" >
+            <v-row class ="row"  >
                 <v-row justify="space-around">
                 </v-row>
                 <v-form
@@ -17,22 +17,21 @@
 
                     <v-text-field
                             v-model="user.firstName"
-                            :counter="10"
-                            :rules="nameRules"
+
                             label="First Name"
                             required
                     ></v-text-field>
 
                     <v-text-field
                             v-model="user.lastName"
-                            :counter="10"
+
                             label="Last Name"
                             required
                     ></v-text-field>
 
                     <v-text-field class="text"
                                   v-model="user.userName"
-                                  :counter="10"
+
                                   label="UserName *"
                                   required
                     ></v-text-field>
@@ -117,7 +116,7 @@
 
 <style>
     .forma {
-        margin-right: 700px;
+       width: 200px;
 
 
     }
@@ -127,7 +126,8 @@
     }
     .row
     {
-        margin-top: 50px;
+
+        margin-left: -10px;
     }
 
 
@@ -199,9 +199,11 @@
 
                         this.msg = 'Request successfully submitted!';
                         this.snackbar = true;
+
+                        this.$refs.form.reset();
+
                         this.message="http://localhost:8080/api/account-verify/"+this.user.username;
-                        console.log(this.message);
-                        console.log(this.user.email);
+
                         api.sendEmail(this.message, this.user.email)
 
                     }

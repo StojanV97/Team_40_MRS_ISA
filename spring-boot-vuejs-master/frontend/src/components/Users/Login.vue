@@ -1,8 +1,8 @@
 <template class="tmp">
   <div>
-    <v-dialog id="registerDialog" v-model="dialog" width="600" height="300px">
-      <v-card>
-        <RegisterForm id="forma"></RegisterForm>
+    <v-dialog width="700px"  v-model="dialog" >
+      <v-card >
+        <RegisterForm class="registerDialog"></RegisterForm>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text color="primary" @click="dialog = false">Close</v-btn>
@@ -126,7 +126,14 @@ export default {
               this.$router.push("/change-password");
             }
           } else if (response.data.role === "NURSE") {
-            this.$router.push("/nurse-homepage");
+            this.$store.commit("setUser", response.data.userID);
+            localStorage.setItem("doctorID", response.data.userID.id);
+            console.log(this.$store.getters.getUser);
+            if (response.data.userID.passChanged) {
+              this.$router.push("/nurse-homepage");
+            } else {
+              this.$router.push("/change-password");
+            }
           }
         })
         .catch((e) => {
@@ -153,10 +160,13 @@ export default {
 </script>
 
 <style>
-#forma {
-  margin-top: -80px;
-  margin-left: 65px;
-  margin-bottom: 60px;
+
+.registerDialog{
+    width: 200px;
+    margin-left: 10%;
+    margin-left: 10%;
+
+
 }
 
 #loginForm {

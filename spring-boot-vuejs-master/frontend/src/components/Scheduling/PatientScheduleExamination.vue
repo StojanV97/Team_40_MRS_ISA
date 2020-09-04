@@ -35,7 +35,7 @@
                         <td>{{row.item.city}}</td>
 
                         <td>{{row.item.address}}</td>
-                        <td>{{row.item.grade}}</td>
+                        <td class="starRating"><v-icon> mdi-star</v-icon><v-icon> mdi-star</v-icon><v-icon> mdi-star</v-icon><v-icon> mdi-star</v-icon><v-icon> mdi-star</v-icon></td>
                         <td>
                             <v-btn :icon=true @click="showDoctors(row.item.id)"><v-icon>mdi-arrow-right-bold-circle</v-icon></v-btn>
                         </td>
@@ -73,15 +73,25 @@
                             <td>{{row.item.firstName}}</td>
                             <td>{{row.item.lastName}}</td>
 
-                            <td>{{row.item.grade}}</td>
+                            <td max-width="30px"  >
+                                <v-col  class="selectType" >
+                                    <v-select v-model="appointmentTypes"
+                                            :items="appointmentTypes"
+                                            @change="enableButton"
+
+                                    ></v-select>
+                                </v-col>
+                            </td>
                             <td>
-                                <v-btn :icon=true @click="submitRequest(row.item.id)"><v-icon> mdi-checkbox-marked-circle-outline</v-icon></v-btn>
+                                <v-btn  @click="submitRequest(row.item.id)"><v-icon> mdi-checkbox-marked-circle-outline</v-icon></v-btn>
                             </td>
 
 
                         </tr>
                     </template>
                 </v-data-table>
+
+
             </v-card>
         </v-div>
         <div class="text-center ma-2">
@@ -112,7 +122,10 @@
         },
 
         data: () => ({
+            appointmentTypes:"EXAMINATION ( price:50€ )",
             search:'',
+            disabledSubmit:true,
+            price:50,
             dialog: false,
             nowDate: new Date().toISOString().slice(0,10),
             date: new Date(),
@@ -136,8 +149,8 @@
             headersDoctors: [
                 { text: 'First Name', value: 'firstName' },
                 { text: 'Last Name', value: 'lastName'},
-                { text: 'Average rating', value: 'rating'},
-                { text: 'Choose a doctor'}
+                { text: 'Appointment Type', value: 'rating'},
+                { text: 'Finalize Scheduling '}
 
             ],
             appointmentRequest:{
@@ -179,6 +192,10 @@
 
 
             },
+            enableButton(){
+                this.disabledSubmit= !this.disabledSubmit;
+            }
+            ,
             submitRequest(doctorId){
 
                 this.appointmentRequest.patientID = Number(localStorage.getItem('userID'));

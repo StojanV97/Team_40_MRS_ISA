@@ -1,6 +1,7 @@
 <template>
     <v-app id="inspire">
         <calendar id="calendar" v-if="this.showCalendar"></calendar>
+        <DoctorProfile v-if="this.showProfile"></DoctorProfile>
         <v-card v-if="this.showPatients">
             <v-card-title>
                 Patients
@@ -124,19 +125,32 @@
                 </v-row>
             </v-container>
            </v-content>
+        <v-dialog id="daysOffDialog" v-model="dialogDaysOff" width="800px">
+            <v-card>
+                <v-card-actions>
+                    <v-content>
+                        <RequestDaysOff id="dysof" />
+                    </v-content>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
 <script>
     import api from "../backend-api";
     import Calendar from "./Calendar";
-    import DoctorProfile from "../Profiles/DoctorProfile";
+    import DoctorProfile from "../Profiles/MedicalStaffProfile";
     import ScheduleExemination from "../Scheduling/ScheduleExemination";
+    import RequestDaysOff from "../Utility/RequestDaysOff";
 
 
     export default {
         components: {
             Calendar,
+            RequestDaysOff,
+            DoctorProfile
         },
         props: {
             source: String,
@@ -151,7 +165,6 @@
             showPatients: false,
             items: [
                 {icon: 'mdi-contacts', text: 'List of patients'},
-                {icon: 'mdi-history', text: 'Schedule examination'},
                 {icon: 'mdi-history', text: 'Working calendar'},
                 {icon: 'mdi-iframe-parentheses', text: 'Request days off'},
                 {icon: 'mdi-account-cog', text: 'Profile'},

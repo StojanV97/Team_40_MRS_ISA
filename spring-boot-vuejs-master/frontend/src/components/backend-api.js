@@ -56,6 +56,9 @@ export default {
     getAppointmentPreview(appointments) {
         return AXIOS.get('appointment-preview/' + appointments)
     },
+    getAppointmentPreviewHistory(appointments) {
+        return AXIOS.get('appointment-preview-history/' + appointments)
+    },
     getMedicalRecordForPatient(id) {
         return AXIOS.get('/patient/medicalrecord/' + id)
     },
@@ -247,6 +250,12 @@ export default {
     },
     createDaysOff(req) {
         return AXIOS.post('admin/create-days-off/', req);
+    },
+    scheduleExistingAppointment(appointmentID,patientID){
+        return AXIOS.post('patient/schedule-existing-appointment/' + appointmentID + '/' + patientID)
+    },
+    getExistingAppointmentsForClinic(clinicID){
+        return AXIOS.get('patient/get-appointments-for-clinic/'+ clinicID)
     }
     ,
     getApointmentsForDoctor(id) {
