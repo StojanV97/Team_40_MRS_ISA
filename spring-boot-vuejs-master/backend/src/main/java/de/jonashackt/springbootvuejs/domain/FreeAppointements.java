@@ -10,10 +10,10 @@ public class FreeAppointements{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+
     String dateAndTime;
     //int duration;
     String type;
-
     long roomID;
     long patientID;
     long doctorID;

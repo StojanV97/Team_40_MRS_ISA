@@ -44,7 +44,7 @@ import RegisterForm from "./RegisterForm";
 export default {
   name: "Login",
   components: {
-    RegisterForm
+    RegisterForm,
   },
   data() {
     return {
@@ -52,7 +52,7 @@ export default {
       userName: "",
       password: "",
       error: null,
-      errorMessage: ""
+      errorMessage: "",
     };
   },
   methods: {
@@ -62,12 +62,12 @@ export default {
 
       const jwtAuthenticationRequest = {
         userName: this.userName,
-        password: this.password
+        password: this.password,
       };
 
       api
         .login(jwtAuthenticationRequest)
-        .then(response => {
+        .then((response) => {
           //console.log(response)
 
           if (response.status === 200) {
@@ -77,7 +77,7 @@ export default {
             this.getRole();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           if (err.response.status === 400) {
             this.errorMessage = "Wrong username or password!";
             this.error = true;
@@ -85,7 +85,6 @@ export default {
             this.errorMessage = "Check your email!";
             this.error = true;
           }
-          console.log();
         });
     },
     getRole() {
@@ -93,7 +92,7 @@ export default {
         "Bearer " + localStorage.getItem("token");
       api
         .getRoleAndId()
-        .then(response => {
+        .then((response) => {
           localStorage.setItem("userName", response.data.userID.username);
           localStorage.setItem("firstName", response.data.userID.firstName);
           localStorage.setItem("lastName", response.data.userID.lastName);
@@ -104,14 +103,12 @@ export default {
           if (response.data.role === "DOCTOR") {
             this.$store.commit("setUser", response.data.userID);
             localStorage.setItem("doctorID", response.data.userID.id);
-            console.log(this.$store.getters.getUser);
             if (response.data.userID.passChanged) {
               this.$router.push("/doctor-homepage");
             } else {
               this.$router.push("/change-password");
             }
           } else if (response.data.role === "CLINIC_ADMIN") {
-            console.log(response.data.userID);
             localStorage.setItem("clinicID", response.data.userID.clinicID);
             this.$store.commit("setUser", response.data.userID);
             if (response.data.userID.passChanged) {
@@ -139,10 +136,10 @@ export default {
             }
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log("GetRoleCatchBlock");
         });
-    }
+    },
 
     /*
             isChangedPass(id) {
@@ -158,7 +155,7 @@ export default {
 
 
                */
-  }
+  },
 };
 </script>
 
