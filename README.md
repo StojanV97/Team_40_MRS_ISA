@@ -7,7 +7,7 @@
   First it is required to log in as clinic center admin, clinic admin, doctor, nurse or patient. Users have to be registered in order to use application. Each of the users has     homepage with functionalities according to their role. For example Doctor can preview list of all patients where he can preview medical record for patients that he had appointment with, edit profile info ( username , password etc.), preview work schedule, start an appointment, request for new appointment, request days off or vacation. Nurse can preview list of all patients, preview work schedule, request days off or vacation, edit profile, validate prescriptions.
    
 ## Run Locally
-   git clone 
+   git clone https://github.com/StojanV97/Team_40_MRS_ISA.git
    npm install vue   
    npm install vuetify    
    vue add vuetify    
