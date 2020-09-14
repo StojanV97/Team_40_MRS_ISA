@@ -8,6 +8,7 @@
    
 ## Run Locally
    git clone https://github.com/StojanV97/Team_40_MRS_ISA.git
+   
    npm install vue   
    npm install vuetify    
    vue add vuetify    
